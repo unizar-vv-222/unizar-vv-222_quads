@@ -1,0 +1,217 @@
+package es.unizar.eina.G222_quads.ui.reservas;
+
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Calendar;
+
+import es.unizar.eina.G222_quads.R;
+import es.unizar.eina.G222_quads.utils.DateUtils;
+
+/**
+ * Activity para CREAR o EDITAR los datos básicos de una reserva.
+ */
+public class ReservaModify extends AppCompatActivity {
+
+    /* =========================
+       EXTRAS
+       ========================= */
+
+    public static final String RESERVA_ID = "reserva_id";
+    public static final String RESERVA_NOMBRE = "nombre_cliente";
+    public static final String RESERVA_MOVIL = "movil_cliente";
+    public static final String RESERVA_FECHA_RECOGIDA = "fecha_recogida";
+    public static final String RESERVA_HORA_RECOGIDA = "hora_recogida";
+    public static final String RESERVA_FECHA_DEVOLUCION = "fecha_devolucion";
+    public static final String RESERVA_HORA_DEVOLUCION = "hora_devolucion";
+    public static final String FECHAS_MODIFICADAS = "fechas_modificadas";
+    public static final String RESERVA_QUADS_CASCOS = "reserva_quads_cascos";
+
+    /* =========================
+       VISTAS
+       ========================= */
+
+    private EditText mNombre;
+    private EditText mMovil;
+    private TextView mFechaRecogida;
+    private RadioGroup mHoraRecogida;
+    private TextView mFechaDevolucion;
+    private RadioGroup mHoraDevolucion;
+    private Button mContinueButton;
+    private Button mCancelButton;
+    private TextView mTitle;
+    private TextView mReservaId;
+    private View mLayoutReservaId;
+
+    /* =========================
+       ESTADO
+       ========================= */
+
+    private boolean isEditMode = false;
+    private int reservaId = -1;
+
+    private long fechaInicioMillis = -1;
+    private long fechaFinMillis = -1;
+
+    private long fechaInicioOriginal = -1;
+    private long fechaFinOriginal = -1;
+
+    /* =========================
+       CICLO DE VIDA
+       ========================= */
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_reserva_form);
+
+        bindViews();
+        determineMode();
+        configureUiForMode();
+        preloadDataIfEditing();
+
+        mFechaRecogida.setOnClickListener(v -> pickDate(true));
+        mFechaDevolucion.setOnClickListener(v -> pickDate(false));
+
+        mContinueButton.setOnClickListener(v -> continueReserva());
+        mCancelButton.setOnClickListener(v -> cancel());
+    }
+
+    /* =========================
+       INIT
+       ========================= */
+
+    private void bindViews() {
+        mNombre = findViewById(R.id.nombre_cliente);
+        mMovil = findViewById(R.id.movil_cliente);
+        mFechaRecogida = findViewById(R.id.reserva_fecha_recogida);
+        mHoraRecogida = findViewById(R.id.reserva_hora_recogida);
+        mFechaDevolucion = findViewById(R.id.reserva_fecha_devolucion);
+        mHoraDevolucion = findViewById(R.id.reserva_hora_devolucion);
+        mContinueButton = findViewById(R.id.button_continue);
+        mCancelButton = findViewById(R.id.button_cancel);
+        mTitle = findViewById(R.id.title_create_reserva);
+        mLayoutReservaId = findViewById(R.id.layout_reserva_id);
+        mReservaId = findViewById(R.id.text_reserva_id);
+    }
+
+    private void determineMode() {
+        isEditMode = getIntent().hasExtra(RESERVA_ID);
+        if (isEditMode) {
+            reservaId = getIntent().getIntExtra(RESERVA_ID, -1);
+        }
+    }
+
+    private void configureUiForMode() {
+        if (isEditMode) {
+            mTitle.setText(R.string.edit_reserva);
+            mLayoutReservaId.setVisibility(View.VISIBLE);
+            mReservaId.setText("#" + reservaId);
+        } else {
+            mTitle.setText(R.string.create_reserva);
+            mLayoutReservaId.setVisibility(View.GONE);
+        }
+    }
+
+    private void preloadDataIfEditing() {
+        if (!isEditMode) return;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) return;
+
+        mNombre.setText(extras.getString(RESERVA_NOMBRE));
+        mMovil.setText(extras.getString(RESERVA_MOVIL));
+
+        fechaInicioMillis = extras.getLong(RESERVA_FECHA_RECOGIDA);
+        fechaFinMillis = extras.getLong(RESERVA_FECHA_DEVOLUCION);
+
+        fechaInicioOriginal = fechaInicioMillis;
+        fechaFinOriginal = fechaFinMillis;
+
+        mFechaRecogida.setText(DateUtils.toHumanDate(fechaInicioMillis));
+        mFechaDevolucion.setText(DateUtils.toHumanDate(fechaFinMillis));
+    }
+
+    /* =========================
+       FECHAS
+       ========================= */
+
+    private void pickDate(boolean inicio) {
+        Calendar cal = Calendar.getInstance();
+
+        new DatePickerDialog(
+                this,
+                (view, year, month, day) -> {
+                    Calendar c = Calendar.getInstance();
+                    c.set(year, month, day, 0, 0, 0);
+                    c.set(Calendar.MILLISECOND, 0);
+
+                    if (inicio) {
+                        fechaInicioMillis = c.getTimeInMillis();
+                        mFechaRecogida.setText(DateUtils.toHumanDate(fechaInicioMillis));
+                    } else {
+                        fechaFinMillis = c.getTimeInMillis();
+                        mFechaDevolucion.setText(DateUtils.toHumanDate(fechaFinMillis));
+                    }
+                },
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+        ).show();
+    }
+
+    /* =========================
+       FLUJO
+       ========================= */
+
+    private void continueReserva() {
+        if (!isFormValid()) {
+            Toast.makeText(this,
+                    R.string.empty_not_saved,
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        boolean fechasModificadas =
+                fechaInicioOriginal != -1 &&
+                        (fechaInicioMillis != fechaInicioOriginal ||
+                                fechaFinMillis != fechaFinOriginal);
+
+        Intent intent = new Intent(this, ReservaSelectQuads.class);
+        intent.putExtra(RESERVA_NOMBRE, mNombre.getText().toString().trim());
+        intent.putExtra(RESERVA_MOVIL, mMovil.getText().toString().trim());
+        intent.putExtra(RESERVA_FECHA_RECOGIDA, fechaInicioMillis);
+        intent.putExtra(RESERVA_FECHA_DEVOLUCION, fechaFinMillis);
+        intent.putExtra(FECHAS_MODIFICADAS, fechasModificadas);
+
+        if (isEditMode) {
+            intent.putExtra(RESERVA_ID, reservaId);
+        }
+
+        startActivity(intent);
+        finish();
+    }
+
+    private void cancel() {
+        setResult(RESULT_CANCELED);
+        finish();
+    }
+
+    private boolean isFormValid() {
+        return !TextUtils.isEmpty(mNombre.getText())
+                && !TextUtils.isEmpty(mMovil.getText())
+                && fechaInicioMillis != -1
+                && fechaFinMillis != -1
+                && fechaFinMillis >= fechaInicioMillis;
+    }
+}
