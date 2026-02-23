@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/reserva">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/reserva_dark"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/title_quads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/test_sistema"
+            android:textColor="@color/color_dark"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/header_divider4"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:background="@color/color_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <Button
+        android:id="@+id/prueba_volumen_reserva"
+        android:layout_width="224dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="159dp"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="159dp"
+        android:backgroundTint="@color/reserva_dark"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/boton_prueba_volumen"
+        android:textColor="@color/color_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp" />
+
+    <Button
+        android:id="@+id/prueba_unitaria_reserva"
+        android:layout_width="224dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="159dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="159dp"
+        android:backgroundTint="@color/reserva_dark"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/boton_prueba_unitaria"
+        android:textColor="@color/color_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp" />
+
+    <Button
+        android:id="@+id/limpiar_reserva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="157dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="344dp"
+        android:backgroundTint="@color/reserva_dark"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/button_limpiar"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prueba_volumen_reserva"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2sp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
