@@ -1,0 +1,6 @@
+# Backups Visual Paradigm
+*.vpp.bak*
+*.bak*
+
+# Archivos temporales
+*.lck
