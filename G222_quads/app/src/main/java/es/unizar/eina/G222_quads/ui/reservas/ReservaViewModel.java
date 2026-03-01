@@ -49,11 +49,11 @@ public class ReservaViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Reserva>> getReservasOrderByFechaRecogida() {
-        return mRepository.getReservasOrderByFechaRecogida();
+        return mRepository.getReservasOrderByRecogida();
     }
 
     public LiveData<List<Reserva>> getReservasOrderByFechaDevolucion() {
-        return mRepository.getReservasOrderByFechaDevolucion();
+        return mRepository.getReservasOrderByDevolucion();
     }
 
      /* =========================
