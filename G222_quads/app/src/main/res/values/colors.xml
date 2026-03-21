@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_dark">#23282b</color>
+    <color name="edit">#1883FF</color>
+    <color name="delete">#DC001D</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorSave">#C0FFC0</color>
+    <color name="colorCancel">#FFC0C0</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="buttonLabel">#FFFFFF</color>
+    <color name="quad">#FFFFC0</color>
+    <color name="quad_dark">#FFD971</color>
+    <color name="reserva">#C0FFFF</color>
+    <color name="reserva_dark">#4FC3F7</color>
+</resources>
+

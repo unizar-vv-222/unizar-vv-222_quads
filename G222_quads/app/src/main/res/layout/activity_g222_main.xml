@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.quads.G222_quads">
+
+    <!-- Botón QUADS (mitad superior) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/quad"
+        style="@style/MainButton"
+        android:layout_width="240dp"
+        android:text="@string/ent_quad"
+        app:backgroundTint="@color/quad"
+        app:strokeColor="@color/color_dark"
+        app:strokeWidth="2dp"
+        app:cornerRadius="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Divider centrado en la pantalla -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Botón RESERVAS (mitad inferior) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reserva"
+        style="@style/MainButton"
+        android:layout_width="240dp"
+        android:text="@string/ent_reserva"
+        app:backgroundTint="@color/reserva"
+        app:strokeColor="@color/color_dark"
+        app:strokeWidth="2dp"
+        app:cornerRadius="0dp"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/test_quads"
+        android:layout_width="152dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="230dp"
+        android:layout_marginTop="87dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/quad"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/test_sistema_quads"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quad"
+        app:layout_constraintVertical_bias="0.0"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp" />
+
+    <Button
+        android:id="@+id/test_reservas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="230dp"
+        android:layout_marginTop="87dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/reserva"
+        android:fontFamily="@font/poppins_regular"
+        android:text="@string/test_sistema_reservas"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reserva"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

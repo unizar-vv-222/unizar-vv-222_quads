@@ -1,0 +1,91 @@
+<resources>
+    <string name="app_name">G222_quads</string>
+
+    <string name="ent_quad">Quads</string>
+    <string name="ent_reserva">Reservas</string>
+
+    <string name="test_sistema_quads">Test Quads </string>
+    <string name="test_sistema_reservas">Test Reservas </string>
+    <string name="test_sistema">Selecciona el test a ejecutar </string>
+
+    <string name="listado_quads">Listado de quads</string>
+    <string name="listado_reservas">Listado de reservas</string>
+
+    <!-- QuadModify -->
+    <string name="create_quad">Crear quad</string>
+    <string name="edit_quad">Editar quad</string>
+    <string name="delete_quad">Eliminar quad</string>
+
+    <string name="confirm_delete_quad">¿Eliminar este quad?</string>
+    <string name="delete_quad_message">¿Seguro que deseas eliminar el quad %1$s?</string>
+    <string name="delete">Eliminar</string>
+
+    <string name="quad_form_title">Quad</string>
+    <string name="reserva_form_title">Reserva</string>
+
+    <string name="monoplaza">Monoplaza</string>
+    <string name="biplaza">Biplaza</string>
+
+    <string name="quad_detail">Detalles del quad</string>
+    <string name="reserva_detail">Detalles de la reserva</string>
+    <string name="button_edit">Editar</string>
+    <string name="button_send">Enviar</string>
+    <string name="confirm_delete_message">Esta acción no se puede deshacer.</string>
+
+    <!-- ReservaModify -->
+    <string name="create_reserva">Crear reserva</string>
+    <string name="add_reserva">Añadir reserva</string>
+    <string name="edit_reserva">Editar reserva</string>
+    <string name="delete_reserva">Eliminar reserva</string>
+    <string name="confirm_delete_reserva">¿Seguro que deseas eliminar esta reserva?</string>
+
+    <string name="reserva_created">Reserva creada</string>
+    <string name="reserva_updated">Reserva actualizada</string>
+    <string name="confirm_selection">Confirmar selección</string>
+
+    <string name="fecha_recogida">Fecha de recogida</string>
+    <string name="fecha_devolucion">Fecha de devolución</string>
+
+    <string name="hint_fecha">Selecciona una fecha</string>
+
+    <string name="reserva_cliente">Cliente</string>
+    <string name="reserva_fechas">Fechas</string>
+
+    <string name="error">Error</string>
+    <string name="quad_not_available">No hay quads disponibles para la fecha"</string>
+    <string name="select_quads">Quads disponibles</string>
+    <string name="selected_quads">Quads reservados</string>
+
+    <string name="button_continue">Siguiente</string>
+
+    <string name="id">Id. Reserva</string>
+    <string name="hint_matricula">Type matricula ...</string>
+    <string name="hint_tipo">Type tipo ...</string>
+    <string name="hint_precio">Type precio ...</string>
+    <string name="hint_descripcion">Type descripcion ...</string>
+    <string name="button_save">Guardar</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_ordenar">Ordenar</string>
+    <string name="button_limpiar">Limpiar datos</string>
+
+    <string name="empty_not_saved">Reserva no guardada porque está vacía.</string>
+    <string name="add_quad">Add quad</string>
+    <string name="matricula">Matricula</string>
+    <string name="tipo">Tipo</string>
+    <string name="precio">Precio</string>
+    <string name="precio_total">Precio total de la reserva</string>
+    <string name="descripcion">Descripcion</string>
+
+    <string name="movil">Móvil del cliente</string>
+    <string name="nombre_cliente">Nombre del cliente</string>
+    <string name="hint_movil">Type movil ...</string>
+    <string name="hint_name">Type name ...</string>
+
+
+    <string name="confirm_reserva">Confirmar reserva</string>
+
+    <string name="boton_prueba_unitaria">Prueba unitaria</string>
+    <string name="boton_prueba_volumen">Prueba volumen</string>
+    <string name="boton_prueba_sobrecarga">Prueba sobrecarga</string>
+
+</resources>
