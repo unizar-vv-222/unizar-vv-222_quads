@@ -5,4 +5,20 @@
 # Archivos temporales
 *.lck
 
+# Ignorar todas las carpetas .idea (en raíz y subcarpetas)
 .idea/
+
+# Gradle
+.gradle/
+build/
+
+# Config local
+local.properties
+
+# APKs
+*.apk
+*.aab
+
+# Otros
+*.log
+Thumbs.db
