@@ -7,13 +7,16 @@ import java.util.Locale;
 
 public class DateUtils {
 
+    private static final long HALF_DAY_MILLIS = 12L * 60 * 60 * 1000;
+
     /* =====================================
        FORMATO HUMANO (UI)
        ===================================== */
 
     /**
-     * Convierte millis a formato legible para el usuario.
-     * Ejemplo: 12/03/2026
+     * Convierte millis a formato legible para el usuario
+     * @param millis fecha de una reserva en millis
+     * @return fecha en formato legible: dd/mm/aaaa
      */
     public static String toHumanDate(long millis) {
         SimpleDateFormat sdf =
@@ -21,14 +24,24 @@ public class DateUtils {
         return sdf.format(new Date(millis));
     }
 
+    /**
+     * Convierte millis y horario a formato legible para el usuario
+     * @param millis fecha de una reserva en millis
+     * @param hora horario (mañana/tarde)
+     * @return fecha en formato legible: dd/mm/aaaa (horario)
+     */
     public static String toHumanDateTime(long millis, boolean hora) {
         String date = toHumanDate(millis);
         return date + (hora ? " (tarde)" : " (mañana)");
     }
 
     /**
-     * Convierte dos fechas a un rango legible.
-     * Ejemplo: Del 12/03/2026 al 14/03/2026
+     * Convierte dos fechas a un rango legible para el usuario
+     * @param inicio fecha de inicio de una reserva en millis
+     * @param inicioHorario horario de inicio de una reserva
+     * @param fin fecha de fin de una reserva en millis
+     * @param finHorario horario de fin de una reserva
+     * @return rango en formato legible: Del dd/mm/aaaa (horario) al dd/mm/aaaa (horario)
      */
     public static String toHumanRange(long inicio, boolean inicioHorario,
                                       long fin, boolean finHorario) {
@@ -40,8 +53,18 @@ public class DateUtils {
        ===================================== */
 
     /**
+     * Convierte una fecha en formato dd/mm/aaaa a millis
+     */
+    public static long dateToMillis(int year, int month, int day) {
+        Calendar c = Calendar.getInstance();
+        c.set(year, month - 1, day, 0, 0, 0); // mes empieza en 0
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
+    /**
      * Normaliza una fecha a las 00:00:00.000
-     * (útil para comparar días sin horas)
+     * (para comparar días sin horas)
      */
     public static long normalizeToDay(long millis) {
         Calendar c = Calendar.getInstance();
@@ -56,35 +79,46 @@ public class DateUtils {
     /**
      * Calcula número de días entre dos fechas (inclusive).
      */
-    public static long daysBetween(long inicio, long fin) {
-        long oneDay = 24L * 60 * 60 * 1000;
-        return (normalizeToDay(fin) - normalizeToDay(inicio)) / oneDay + 1;
+    public static double daysBetween(long fechaInicio, boolean horaInicio,
+                                   long fechaFin, boolean horaFin) {
+        long ini = slotToMillis(fechaInicio, horaInicio);
+        long fin = endExclusiveMillis(fechaFin, horaFin);
+        long slots = (fin - ini) / HALF_DAY_MILLIS;
+        return slots / 2.0;
     }
 
     /**
      * Convierte día + horario a un instante comparable en millis
      * horario = mañana -> inicio del día
      * horario = tarde -> +12h
-     * @param dayMillis
-     * @param horario
+     * @param dayMillis fecha de una reserva en millis
+     * @param horario horario (mañana/tarde) de una reserva
      * @return instante en millis
      */
     public static long slotToMillis(long dayMillis, boolean horario) {
         long day = normalizeToDay(dayMillis);
-        return day + (horario ? 12L * 60 * 60 * 1000 : 0L);
+        return day + (horario ? HALF_DAY_MILLIS : 0L);
     }
 
     /**
      * Devuelve el final del horario (exclusivo)
      * Para cálculos de solaapamiento
-     * @param dayMillis
-     * @param horario
-     * @return
+     * @param dayMillis fecha de una reserva en millis
+     * @param horario horario (mañana/tarde) de una reserva
+     * @return instante en millis
      */
     public static long endExclusiveMillis(long dayMillis, boolean horario) {
-        return slotToMillis(dayMillis, horario) + 12L * 60 * 60 * 1000;
+        return slotToMillis(dayMillis, horario) + HALF_DAY_MILLIS;
     }
 
+    /**
+     * Comprueba si un rango de fechas es válido
+     * @param inicio fecha de inicio de una reserva en millis
+     * @param inicioHorario horario de inicio de una reserva
+     * @param fin fecha de fin de una reserva en millis
+     * @param finHorario horario de fin de una reserva
+     * @return true si el rango es válido, false en caso contrario
+     */
     public static boolean isRangeValid(long inicio, boolean inicioHorario,
                                        long fin, boolean finHorario) {
         long _ini = slotToMillis(inicio, inicioHorario);

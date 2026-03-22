@@ -20,7 +20,7 @@ public interface ReservaDao {
 
     /**
      * Inserta una reserva en la base de datos.
-     * Si ya existe la misma matrícula se ignora y no se inserta.
+     * Si ya existe la misma reserva se ignora y no se inserta.
      * @param reserva reserva a insertar
      * @return id de fila insertada o -1 si se ha ignorado por conflicto
      */
@@ -44,7 +44,7 @@ public interface ReservaDao {
     int delete(Reserva reserva);
 
     /**
-     * Elimina todos los reservas de la tabla.
+     * Elimina todos las reservas de la tabla.
      */
     @Query("DELETE FROM reserva")
     void deleteAll();
@@ -76,7 +76,7 @@ public interface ReservaDao {
      * teniendo en cuenta el horario.
      * @return lista observable (LiveData) de reservas
      */
-    @Query("SELECT * FROM reserva ORDER BY fechaRecogida ASC, horaRecogida ASC")
+    @Query("SELECT * FROM reserva ORDER BY recogidaComparable ASC")
     LiveData<List<Reserva>> getReservasOrderByRecogida();
 
     /**
@@ -84,7 +84,7 @@ public interface ReservaDao {
      * teniendo en cuenta el horario.
      * @return lista observable (LiveData) de reservas
      */
-    @Query("SELECT * FROM reserva ORDER BY fechaDevolucion ASC, horaDevolucion ASC")
+    @Query("SELECT * FROM reserva ORDER BY devolucionComparable ASC")
     LiveData<List<Reserva>> getReservasOrderByDevolucion();
 
 }

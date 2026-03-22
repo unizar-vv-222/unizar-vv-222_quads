@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import es.unizar.eina.G222_quads.utils.DateUtils;
 import es.unizar.eina.G222_quads.utils.IdCallback;
 
 
@@ -43,67 +44,20 @@ public class ReservaRepository {
     }
 
     /**
-     * Comprueba si un rango de fechas y horarios es válido.
-     * @param fechaIniLong, horaIni, fechaFinLong, horaFin
-     * @return true si la fecha es válida, false en caso contrario
+     * Comprueba si un rango de fechas es válido
+     * @param fechaIni fecha de inicio de la reserva en millis
+     * @param horaIni horario de inicio de la reserva
+     * @param fechaFin fecha de fin de la reserva en millis
+     * @param horaFin horario de fin de la reserva
+     * @return
      */
-    private static boolean fechasValidas(long fechaIniLong, boolean horaIni,
-                                         long fechaFinLong, boolean horaFin) {
-
-        String fecha_ini = String.valueOf(fechaIniLong);
-        if (!fecha_ini.matches("\\d{8}")) {
+    private static boolean fechasValidas(long fechaIni, boolean horaIni,
+                                         long fechaFin, boolean horaFin) {
+        if (fechaIni < 0 || fechaFin < 0) {
             return false;
         }
 
-        String fecha_fin = String.valueOf(fechaFinLong);
-        if (!fecha_fin.matches("\\d{8}")) {
-            return false;
-        }
-
-        int dia_ini = Integer.parseInt(fecha_ini.substring(0, 2));
-        int mes_ini = Integer.parseInt(fecha_ini.substring(2, 4));
-        int anyo_ini = Integer.parseInt(fecha_ini.substring(4, 8));
-
-        int dia_fin = Integer.parseInt(fecha_fin.substring(0, 2));
-        int mes_fin = Integer.parseInt(fecha_fin.substring(2, 4));
-        int anyo_fin = Integer.parseInt(fecha_fin.substring(4, 8));
-
-        if (mes_ini < 1 || mes_ini > 12) return false;
-        int[] diasMes = {31,28,31,30,31,30,31,31,30,31,30,31};
-        boolean esBisiesto = (anyo_ini % 4 == 0 && anyo_ini % 100 != 0) || (anyo_ini % 400 == 0);
-        if (esBisiesto && mes_ini == 2) diasMes[1] = 29;
-        if (dia_ini < 1 || dia_ini > diasMes[mes_ini - 1]) return false;
-
-        if (mes_fin < 1 || mes_fin > 12) return false;
-        esBisiesto = (anyo_fin % 4 == 0 && anyo_fin % 100 != 0) || (anyo_fin % 400 == 0);
-        if (esBisiesto && mes_fin == 2) diasMes[1] = 29;
-        if (dia_fin < 1 || dia_fin > diasMes[mes_fin - 1]) return false;
-
-        // Ambas fechas son válidas individuamente
-        // Comprobación final -> fechaRecogida,horaRecogida <= fechaDevolución,horaDevolución
-
-        if (anyo_ini > anyo_fin) {
-            return false;
-        } else if (anyo_ini < anyo_fin ) {
-            return true;
-        } else { // anyo_ini == anyo_fin
-            if (mes_ini > mes_fin) {
-                return false;
-            } else if (mes_ini < mes_fin) {
-                return true;
-            } else { // mes_ini == mes_fin
-                if (dia_ini > dia_fin) {
-                    return false;
-                } else if (dia_ini < dia_fin) {
-                    return true;
-                } else { // dia_ini == dia_fin
-                    // true si se recoge por la mañana y se devuelve por la tarde
-                    // en cualquier otro caso, false
-                    return (!horaIni && horaFin);
-                }
-            }
-        }
-
+        return DateUtils.isRangeValid(fechaIni, horaIni, fechaFin, horaFin);
     }
 
     /**
@@ -112,6 +66,8 @@ public class ReservaRepository {
      * @return true si la reserva es válida, false en caso contrario
      */
     private static boolean reservaValida(Reserva r) {
+        if (r == null) { return false; }
+
         if (r.getNombreCliente() == null || r.getNombreCliente().trim().isEmpty()) {
             return false;
         }
@@ -148,6 +104,7 @@ public class ReservaRepository {
          * devuelto por la base de datos, se puede utilizar un Future.
          */
         if (reservaValida(reserva)) {
+            reserva.actualizarComparables();
             Future<Long> future = databaseWriteExecutor.submit(
                     () -> mReservaDao.insert(reserva));
             try {
@@ -166,10 +123,13 @@ public class ReservaRepository {
      * @param callback Callback que se ejecuta cuando se ha insertado la reserva
      */
     public void insertAndReturnIdAsync(Reserva reserva, IdCallback callback) {
-        databaseWriteExecutor.execute(() -> {
-            long id = mReservaDao.insert(reserva);
-            callback.onInserted(id);
-        });
+        if (reservaValida(reserva)) {
+            reserva.actualizarComparables();
+            databaseWriteExecutor.execute(() -> {
+                long id = mReservaDao.insert(reserva);
+                callback.onInserted(id);
+            });
+        }
     }
 
     /** Actualiza una reserva en la base de datos
@@ -187,6 +147,7 @@ public class ReservaRepository {
      */
     public int update(Reserva reserva) {
         if (reservaValida(reserva)) {
+            reserva.actualizarComparables();
             Future<Integer> future = databaseWriteExecutor.submit(
                     () -> mReservaDao.update(reserva));
             try {
@@ -271,7 +232,8 @@ public class ReservaRepository {
      * @param fechaInicio fecha de inicio de la reserva
      * @param fechaFin fecha de fin de la reserva
      */
-    public void recalcularPrecioReserva(int reservaId, long fechaInicio, long fechaFin) {
+    public void recalcularPrecioReserva(int reservaId, long fechaInicio, boolean horaInicio,
+                                        long fechaFin, boolean horaFin) {
 
         databaseWriteExecutor.execute(() -> {
 

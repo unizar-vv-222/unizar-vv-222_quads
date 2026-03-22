@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import es.unizar.eina.G222_quads.utils.DateUtils;
+
 @Database(entities = {Quad.class, Reserva.class, ReservaQuadCascos.class}, version = 6, exportSchema = false)
 public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
 
@@ -38,18 +40,12 @@ public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static long toMillis(int year, int month, int day) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(year, month - 1, day, 0, 0, 0); // mes empieza en 0
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis();
-    }
-
     private static final Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             databaseWriteExecutor.execute(() -> {
+
                 // Población inicial de Quads
                 QuadDao qDao = INSTANCE.quadDao();
                 qDao.insert(new Quad("0000XXX", false, 5.0, "Quad básico"));
@@ -58,8 +54,8 @@ public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
                 // Población inicial de Reservas
                 ReservaDao rDao = INSTANCE.reservaDao();
 
-                long fechaRecogida = toMillis(2023, 10, 1);
-                long fechaDevolucion = toMillis(2023, 10, 5);
+                long fechaRecogida = DateUtils.dateToMillis(2023, 10, 1);
+                long fechaDevolucion = DateUtils.dateToMillis(2023, 10, 5);
 
                 rDao.insert(new Reserva("Cliente Ejemplo", "600123456",
                         fechaRecogida, false, fechaDevolucion, false));
