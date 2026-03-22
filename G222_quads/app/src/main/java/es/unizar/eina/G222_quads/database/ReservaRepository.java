@@ -114,7 +114,7 @@ public class ReservaRepository {
                 return -1;
             }
         }
-        return 0;
+        return -1;
     }
 
     /**
@@ -169,6 +169,9 @@ public class ReservaRepository {
      *         un valor aceptable.
      */
     public int delete(Reserva reserva) {
+        if (reserva == null || reserva.getId() <= 0) {
+            return 0;
+        }
         Future<Integer> future = databaseWriteExecutor.submit(
                 () -> mReservaDao.delete(reserva));
         try {
@@ -230,14 +233,16 @@ public class ReservaRepository {
      * Recalcula el precio de una reserva
      * @param reservaId id de la reserva
      * @param fechaInicio fecha de inicio de la reserva
+     * @param horaInicio horario de inicio de la reserva
      * @param fechaFin fecha de fin de la reserva
+     * @param horaFin horario de fin de la reserva
      */
     public void recalcularPrecioReserva(int reservaId, long fechaInicio, boolean horaInicio,
                                         long fechaFin, boolean horaFin) {
 
         databaseWriteExecutor.execute(() -> {
 
-            long dias = TimeUnit.MILLISECONDS.toDays(fechaFin - fechaInicio) + 1;
+            double dias = DateUtils.daysBetween(fechaInicio, horaInicio, fechaFin, horaFin);
             double precioDiario = mReservaQuadCascosDao.getPrecioDiarioReserva(reservaId);
             double total = dias * precioDiario;
 
