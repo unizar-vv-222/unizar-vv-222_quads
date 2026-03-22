@@ -64,8 +64,8 @@ public class QuadViewModel extends AndroidViewModel {
         mRepository.deleteByMatricula(matricula);
     }
 
-    public LiveData<List<Quad>> getAvailableQuads(long inicio, long fin) {
-        return mRepository.getAvailableQuads(inicio, fin);
+    public LiveData<List<Quad>> getAvailableQuads(long inicio, boolean horaInicio, long fin, boolean horaFin) {
+        return mRepository.getAvailableQuads(inicio, horaInicio, fin, horaFin);
     }
 
     public Quad getQuadByMatriculaSync(String matricula) {

@@ -19,6 +19,7 @@ import java.util.Map;
 import es.unizar.eina.G222_quads.R;
 import es.unizar.eina.G222_quads.database.Quad;
 import es.unizar.eina.G222_quads.ui.quads.QuadViewModel;
+import es.unizar.eina.G222_quads.utils.DateUtils;
 
 public class ReservaSelectQuads extends AppCompatActivity {
 
@@ -28,6 +29,8 @@ public class ReservaSelectQuads extends AppCompatActivity {
 
     private long fechaInicio;
     private long fechaFin;
+    private boolean horaInicio;
+    private boolean horaFin;
 
     private boolean isEditMode = false;
     private boolean fechasModificadas = false;
@@ -76,6 +79,15 @@ public class ReservaSelectQuads extends AppCompatActivity {
         fechasModificadas =
                 i.getBooleanExtra(ReservaModify.FECHAS_MODIFICADAS, false);
 
+        horaInicio = i.getBooleanExtra(ReservaModify.RESERVA_HORA_RECOGIDA, false);
+        horaFin = i.getBooleanExtra(ReservaModify.RESERVA_HORA_DEVOLUCION, false);
+
+        if (!DateUtils.isRangeValid(fechaInicio, horaInicio, fechaFin, horaFin)) {
+            Toast.makeText(this, "Fechas inválidas", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
         isEditMode = i.hasExtra(ReservaModify.RESERVA_ID);
         if (isEditMode) {
             reservaId = i.getIntExtra(ReservaModify.RESERVA_ID, -1);
@@ -123,7 +135,7 @@ public class ReservaSelectQuads extends AppCompatActivity {
 
         // cargar quads disponibles
         mQuadViewModel
-                .getAvailableQuads(fechaInicio, fechaFin)
+                .getAvailableQuads(fechaInicio, horaInicio, fechaFin, horaFin)
                 .observe(this, quads -> {
 
                     if (quads == null) {
@@ -197,6 +209,14 @@ public class ReservaSelectQuads extends AppCompatActivity {
         intent.putExtra(
                 ReservaModify.FECHAS_MODIFICADAS,
                 fechasModificadas
+        );
+
+        intent.putExtra(ReservaModify.RESERVA_HORA_RECOGIDA,
+                horaInicio
+        );
+
+        intent.putExtra(ReservaModify.RESERVA_HORA_DEVOLUCION,
+                horaFin
         );
 
         intent.putExtra(

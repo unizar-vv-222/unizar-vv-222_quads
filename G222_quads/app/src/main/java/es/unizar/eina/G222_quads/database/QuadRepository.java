@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import es.unizar.eina.G222_quads.utils.DateUtils;
+
 /**
  * Repositorio que gestiona el acceso a los datos de Quad.
  * Actúa como única puerta de entrada a Room desde la UI/ViewModel.
@@ -104,8 +106,11 @@ public class QuadRepository {
         );
     }
 
-    public LiveData<List<Quad>> getAvailableQuads(long inicio, long fin) {
-        return mQuadDao.getAvailableQuads(inicio, fin);
+    public LiveData<List<Quad>> getAvailableQuads(long fechaInicio, boolean horaInicio, long fechaFin, boolean horaFin) {
+
+        long recogidaComparable = DateUtils.slotToMillis(fechaInicio, horaInicio);
+        long devolucionComparable = DateUtils.slotToMillis(fechaFin, horaFin);
+        return mQuadDao.getAvailableQuads(recogidaComparable, devolucionComparable);
     }
 
     public Quad getQuadByMatriculaSync(String matricula) {
