@@ -101,10 +101,10 @@ public class ReservaModify extends AppCompatActivity {
     private void bindViews() {
         mNombre = findViewById(R.id.nombre_cliente);
         mMovil = findViewById(R.id.movil_cliente);
-        mFechaRecogida = findViewById(R.id.reserva_fecha_recogida);
-        mHoraRecogida = findViewById(R.id.reserva_hora_recogida);
-        mFechaDevolucion = findViewById(R.id.reserva_fecha_devolucion);
-        mHoraDevolucion = findViewById(R.id.reserva_hora_devolucion);
+        mFechaRecogida = findViewById(R.id.fecha_recogida);
+        mHoraRecogida = findViewById(R.id.horario_recogida);
+        mFechaDevolucion = findViewById(R.id.fecha_devolucion);
+        mHoraDevolucion = findViewById(R.id.horario_devolucion);
         mContinueButton = findViewById(R.id.button_continue);
         mCancelButton = findViewById(R.id.button_cancel);
         mTitle = findViewById(R.id.title_create_reserva);
@@ -155,15 +155,15 @@ public class ReservaModify extends AppCompatActivity {
         horaFinOriginal = horaFin;
 
         if (horaInicio) {
-            mHoraRecogida.check(R.id.radio_tarde_recogida);
+            mHoraRecogida.check(R.id.horario_recogida_tarde);
         } else {
-            mHoraRecogida.check(R.id.radio_manana_recogida);
+            mHoraRecogida.check(R.id.horario_recogida_manana);
         }
 
         if (horaFin) {
-            mHoraDevolucion.check(R.id.radio_tarde_devolucion);
+            mHoraDevolucion.check(R.id.horario_devolucion_tarde);
         } else {
-            mHoraDevolucion.check(R.id.radio_manana_devolucion);
+            mHoraDevolucion.check(R.id.horario_devolucion_manana);
         }
     }
 
@@ -209,8 +209,8 @@ public class ReservaModify extends AppCompatActivity {
             return;
         }
 
-        horaInicio = mHoraRecogida.getCheckedRadioButtonId() == R.id.radio_tarde_recogida;
-        horaFin = mHoraDevolucion.getCheckedRadioButtonId() == R.id.radio_tarde_devolucion;
+        horaInicio = mHoraRecogida.getCheckedRadioButtonId() == R.id.horario_recogida_tarde;
+        horaFin = mHoraDevolucion.getCheckedRadioButtonId() == R.id.horario_devolucion_tarde;
 
         boolean fechasModificadas =
                 fechaInicioOriginal != -1 &&
@@ -252,8 +252,8 @@ public class ReservaModify extends AppCompatActivity {
     }
 
     private boolean isDateTimeRangeValid() {
-        boolean inicioHorario = mHoraRecogida.getCheckedRadioButtonId() == R.id.radio_tarde_recogida;
-        boolean finHorario = mHoraDevolucion.getCheckedRadioButtonId() == R.id.radio_tarde_devolucion;
+        boolean inicioHorario = mHoraRecogida.getCheckedRadioButtonId() == R.id.horario_recogida_tarde;
+        boolean finHorario = mHoraDevolucion.getCheckedRadioButtonId() == R.id.horario_devolucion_tarde;
 
         return DateUtils.isRangeValid(fechaInicioMillis, inicioHorario, fechaFinMillis, finHorario);
     }

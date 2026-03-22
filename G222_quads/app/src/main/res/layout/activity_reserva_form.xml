@@ -153,6 +153,7 @@
 
         </LinearLayout>
 
+        <!-- ===== FECHA DE RECOGIDA ===== -->
         <LinearLayout
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
@@ -170,7 +171,7 @@
                 android:fontFamily="@font/poppins_bold"/>
 
             <TextView
-                android:id="@+id/reserva_fecha_recogida"
+                android:id="@+id/fecha_recogida"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -186,6 +187,53 @@
 
         </LinearLayout>
 
+        <!-- ===== HORARIO DE RECOGIDA ===== -->
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/horario_recogida"
+                android:textSize="16sp"
+                android:textColor="@color/color_dark"
+                android:fontFamily="@font/poppins_bold"/>
+
+            <RadioGroup
+                android:id="@+id/horario_recogida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/horario_recogida_manana"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manana"
+                    android:fontFamily="@font/poppins_regular"
+                    android:button="@drawable/radio_button_orange"
+                    app:useMaterialThemeColors="false"
+                    android:paddingHorizontal="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/horario_recogida_tarde"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tarde"
+                    android:fontFamily="@font/poppins_regular"
+                    android:button="@drawable/radio_button_orange"
+                    app:useMaterialThemeColors="false"
+                    android:paddingHorizontal="8dp"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <!-- ===== FECHA DE DEVOLUCIÓN ===== -->
         <LinearLayout
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
@@ -203,7 +251,7 @@
                 android:fontFamily="@font/poppins_bold"/>
 
             <TextView
-                android:id="@+id/reserva_fecha_devolucion"
+                android:id="@+id/fecha_devolucion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -217,7 +265,52 @@
                 android:drawableEnd="@drawable/ic_calendar"
                 android:drawablePadding="8dp"/>
 
+        </LinearLayout>
 
+        <!-- ===== HORARIO DE DEVOLUCIÓN ===== -->
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/horario_devolucion"
+                android:textSize="16sp"
+                android:textColor="@color/color_dark"
+                android:fontFamily="@font/poppins_bold"/>
+
+            <RadioGroup
+                android:id="@+id/horario_devolucion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/horario_devolucion_manana"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manana"
+                    android:fontFamily="@font/poppins_regular"
+                    android:button="@drawable/radio_button_orange"
+                    app:useMaterialThemeColors="false"
+                    android:paddingHorizontal="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/horario_devolucion_tarde"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tarde"
+                    android:fontFamily="@font/poppins_regular"
+                    android:button="@drawable/radio_button_orange"
+                    app:useMaterialThemeColors="false"
+                    android:paddingHorizontal="8dp"/>
+            </RadioGroup>
         </LinearLayout>
 
     </LinearLayout>

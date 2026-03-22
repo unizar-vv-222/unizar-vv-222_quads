@@ -46,6 +46,11 @@
     <string name="fecha_recogida">Fecha de recogida</string>
     <string name="fecha_devolucion">Fecha de devolución</string>
 
+    <string name="horario_recogida">Horario de recogida</string>
+    <string name="horario_devolucion">Horario de devolución</string>
+    <string name="manana">Mañana</string>
+    <string name="tarde">Tarde</string>
+
     <string name="hint_fecha">Selecciona una fecha</string>
 
     <string name="reserva_cliente">Cliente</string>
