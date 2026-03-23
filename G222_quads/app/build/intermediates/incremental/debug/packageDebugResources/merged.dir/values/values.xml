@@ -20,7 +20,7 @@
     <dimen name="small_padding">8dp</dimen>
     <string name="add_quad">Add quad</string>
     <string name="add_reserva">Añadir reserva</string>
-    <string name="app_name">G222_quads</string>
+    <string name="app_name">g222_quads</string>
     <string name="biplaza">Biplaza</string>
     <string name="boton_prueba_sobrecarga">Prueba sobrecarga</string>
     <string name="boton_prueba_unitaria">Prueba unitaria</string>

@@ -102,67 +102,67 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\77
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:13:9-40
 	android:dataExtractionRules
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:7:9-65
-activity#es.unizar.eina.G222_quads.ui.quads.QuadModify
+activity#es.unizar.eina.g222_quads.ui.quads.QuadModify
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:15:9-17:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:17:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:16:13-48
-activity#es.unizar.eina.G222_quads.ui.reservas.ReservaModify
+activity#es.unizar.eina.g222_quads.ui.reservas.ReservaModify
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:19:9-21:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:21:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:20:13-54
-activity#es.unizar.eina.G222_quads.ui.quads.G222_QuadsList
+activity#es.unizar.eina.g222_quads.ui.quads.G222_QuadsList
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:24:9-26:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:26:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:25:13-52
-activity#es.unizar.eina.G222_quads.ui.reservas.G222_ReservasList
+activity#es.unizar.eina.g222_quads.ui.reservas.G222_ReservasList
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:28:9-30:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:30:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:29:13-58
-activity#es.unizar.eina.G222_quads.ui.quads.QuadDetail
+activity#es.unizar.eina.g222_quads.ui.quads.QuadDetail
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:32:9-34:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:34:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:33:13-48
-activity#es.unizar.eina.G222_quads.ui.reservas.ReservaDetail
+activity#es.unizar.eina.g222_quads.ui.reservas.ReservaDetail
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:36:9-38:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:38:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:37:13-54
-activity#es.unizar.eina.G222_quads.ui.reservas.ReservaSelectQuads
+activity#es.unizar.eina.g222_quads.ui.reservas.ReservaSelectQuads
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:40:9-42:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:42:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:41:13-59
-activity#es.unizar.eina.G222_quads.ui.reservas.ReservaConfirm
+activity#es.unizar.eina.g222_quads.ui.reservas.ReservaConfirm
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:44:9-46:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:46:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:45:13-55
-activity#es.unizar.eina.G222_quads.ui.quads.TestQuadActivity
+activity#es.unizar.eina.g222_quads.ui.quads.TestQuadActivity
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:48:9-50:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:50:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:49:13-54
-activity#es.unizar.eina.G222_quads.ui.reservas.TestReservaActivity
+activity#es.unizar.eina.g222_quads.ui.reservas.TestReservaActivity
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:52:9-54:40
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:54:13-37
 	android:name
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:53:13-60
-activity#es.unizar.eina.G222_quads.ui.quads.G222_quads
+activity#es.unizar.eina.g222_quads.ui.quads.G222_quads
 ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:57:9-64:20
 	android:exported
 		ADDED from C:\UNI\tercer0\vv\unizar-vv-222_quads\G222_quads\app\src\main\AndroidManifest.xml:59:13-36

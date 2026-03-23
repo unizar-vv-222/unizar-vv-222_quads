@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "es.unizar.eina.G222_quads.app-mergeDebugResources-2:/values-w400dp-port-v13/values-w400dp-port-v13.xml",
+            "outputFile": "es.unizar.eina.g222_quads.app-mergeDebugResources-2:/values-w400dp-port-v13/values-w400dp-port-v13.xml",
             "map": [
                 {
                     "source": "C:\\Users\\77ain\\.gradle\\caches\\transforms-4\\0cfb8bf5de2bb8adb53f9a8183b58f72\\transformed\\material-1.13.0\\res\\values-w400dp-port-v13\\values-w400dp-port-v13.xml",

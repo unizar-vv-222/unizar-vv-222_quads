@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "es.unizar.eina.G222_quads.app-mergeDebugResources-2:/values-ka/values-ka.xml",
+            "outputFile": "es.unizar.eina.g222_quads.app-mergeDebugResources-2:/values-ka/values-ka.xml",
             "map": [
                 {
                     "source": "C:\\Users\\77ain\\.gradle\\caches\\transforms-4\\398ccbdbf93fe27d4a5de9e0e65e3ec5\\transformed\\core-1.13.1\\res\\values-ka\\values-ka.xml",

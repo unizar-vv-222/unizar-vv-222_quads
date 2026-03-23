@@ -3,9 +3,9 @@ package es.unizar.eina.test;
 import android.app.Application;
 import android.util.Log;
 
-import es.unizar.eina.G222_quads.database.Quad_Reserva_RoomDataBase;
-import es.unizar.eina.G222_quads.database.Reserva;
-import es.unizar.eina.G222_quads.database.ReservaRepository;
+import es.unizar.eina.g222_quads.database.Quad_Reserva_RoomDataBase;
+import es.unizar.eina.g222_quads.database.Reserva;
+import es.unizar.eina.g222_quads.database.ReservaRepository;
 
 public class ReservaTests {
     private Quad_Reserva_RoomDataBase db;

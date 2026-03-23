@@ -3,9 +3,9 @@ package es.unizar.eina.test;
 import android.app.Application;
 import android.util.Log;
 
-import es.unizar.eina.G222_quads.database.Quad;
-import es.unizar.eina.G222_quads.database.QuadRepository;
-import es.unizar.eina.G222_quads.database.Quad_Reserva_RoomDataBase;
+import es.unizar.eina.g222_quads.database.Quad;
+import es.unizar.eina.g222_quads.database.QuadRepository;
+import es.unizar.eina.g222_quads.database.Quad_Reserva_RoomDataBase;
 
 
 public class QuadTests {

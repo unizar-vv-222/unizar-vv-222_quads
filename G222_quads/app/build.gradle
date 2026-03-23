@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'es.unizar.eina.G222_quads'
+    namespace 'es.unizar.eina.g222_quads'
     compileSdk 35
 
     defaultConfig {

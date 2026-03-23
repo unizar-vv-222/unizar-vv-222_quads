@@ -16,5 +16,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "G222_quads"
+rootProject.name = "g222_quads"
 include ':app'

@@ -28,41 +28,41 @@
         android:testOnly="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.quads.QuadModify"
+            android:name="es.unizar.eina.g222_quads.ui.quads.QuadModify"
             android:exported="false" />
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.reservas.ReservaModify"
+            android:name="es.unizar.eina.g222_quads.ui.reservas.ReservaModify"
             android:exported="false" />
 
         <!-- Lists -->
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.quads.G222_QuadsList"
+            android:name="es.unizar.eina.g222_quads.ui.quads.G222_QuadsList"
             android:exported="false" />
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.reservas.G222_ReservasList"
+            android:name="es.unizar.eina.g222_quads.ui.reservas.G222_ReservasList"
             android:exported="false" />
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.quads.QuadDetail"
+            android:name="es.unizar.eina.g222_quads.ui.quads.QuadDetail"
             android:exported="false" />
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.reservas.ReservaDetail"
+            android:name="es.unizar.eina.g222_quads.ui.reservas.ReservaDetail"
             android:exported="false" />
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.reservas.ReservaSelectQuads"
+            android:name="es.unizar.eina.g222_quads.ui.reservas.ReservaSelectQuads"
             android:exported="false" />
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.reservas.ReservaConfirm"
+            android:name="es.unizar.eina.g222_quads.ui.reservas.ReservaConfirm"
             android:exported="false" />
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.quads.TestQuadActivity"
+            android:name="es.unizar.eina.g222_quads.ui.quads.TestQuadActivity"
             android:exported="false" />
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.reservas.TestReservaActivity"
+            android:name="es.unizar.eina.g222_quads.ui.reservas.TestReservaActivity"
             android:exported="false" />
 
         <!-- Main activity -->
         <activity
-            android:name="es.unizar.eina.G222_quads.ui.quads.G222_quads"
+            android:name="es.unizar.eina.g222_quads.ui.quads.G222_quads"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

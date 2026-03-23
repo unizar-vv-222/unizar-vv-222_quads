@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">G222_quads</string>
+    <string name="app_name">g222_quads</string>
 
     <string name="ent_quad">Quads</string>
     <string name="ent_reserva">Reservas</string>
