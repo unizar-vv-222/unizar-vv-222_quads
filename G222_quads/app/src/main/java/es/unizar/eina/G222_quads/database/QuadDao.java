@@ -68,6 +68,9 @@ public interface QuadDao {
     @Query("SELECT * FROM quad q WHERE q.matricula NOT IN (SELECT rq.matriculaQuad FROM reserva_quad_cascos rq INNER JOIN reserva r ON r.id = rq.reservaId WHERE r.recogidaComparable < :devolucionComparable AND r.devolucionComparable > :recogidaComparable )")
     LiveData<List<Quad>> getAvailableQuads(long recogidaComparable, long devolucionComparable);
 
+    @Query("SELECT * FROM quad q WHERE q.matricula NOT IN (SELECT rq.matriculaQuad FROM reserva_quad_cascos rq INNER JOIN reserva r ON r.id = rq.reservaId WHERE r.id != :reservaId AND r.recogidaComparable < :devolucionComparable AND r.devolucionComparable > :recogidaComparable ) ")
+    LiveData<List<Quad>> getAvailableQuadsExcludingReserva(long recogidaComparable, long devolucionComparable, int reservaId);
+
     @Query("SELECT * FROM quad WHERE matricula = :matricula LIMIT 1")
     Quad getQuadByMatricula(String matricula);
 

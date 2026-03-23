@@ -57,6 +57,8 @@ id detail_tipo
 id divider
 id fab
 id fab_container
+id fecha_devolucion
+id fecha_recogida
 id form_container
 id header
 id header_divider
@@ -64,6 +66,12 @@ id header_divider2
 id header_divider4
 id helmet_container
 id helmet_stepper
+id horario_devolucion
+id horario_devolucion_manana
+id horario_devolucion_tarde
+id horario_recogida
+id horario_recogida_manana
+id horario_recogida_tarde
 id layout_buttons
 id layout_precio
 id layout_reserva_id
@@ -90,8 +98,6 @@ id recyclerview
 id recyclerview_quads
 id recyclerview_quads_resumen
 id reserva
-id reserva_fecha_devolucion
-id reserva_fecha_recogida
 id test_quads
 id test_reservas
 id textView
@@ -171,9 +177,12 @@ string hint_movil
 string hint_name
 string hint_precio
 string hint_tipo
+string horario_devolucion
+string horario_recogida
 string id
 string listado_quads
 string listado_reservas
+string manana
 string matricula
 string monoplaza
 string movil
@@ -191,6 +200,7 @@ string reserva_form_title
 string reserva_updated
 string select_quads
 string selected_quads
+string tarde
 string test_sistema
 string test_sistema_quads
 string test_sistema_reservas

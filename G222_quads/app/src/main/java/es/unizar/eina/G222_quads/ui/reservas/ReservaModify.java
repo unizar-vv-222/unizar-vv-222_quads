@@ -203,9 +203,6 @@ public class ReservaModify extends AppCompatActivity {
 
     private void continueReserva() {
         if (!isFormValid()) {
-            Toast.makeText(this,
-                    R.string.empty_not_saved,
-                    Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -242,13 +239,35 @@ public class ReservaModify extends AppCompatActivity {
     }
 
     private boolean isFormValid() {
-        return !TextUtils.isEmpty(mNombre.getText())
-                && !TextUtils.isEmpty(mMovil.getText())
-                && fechaInicioMillis != -1
-                && fechaFinMillis != -1
-                && mHoraRecogida.getCheckedRadioButtonId() != -1
-                && mHoraDevolucion.getCheckedRadioButtonId() != -1
-                && isDateTimeRangeValid();
+        if (TextUtils.isEmpty((mNombre.getText()))) {
+            mNombre.setError("Introduce el nombre del cliente");
+            return false;
+        }
+        if (TextUtils.isEmpty((mMovil.getText()))) {
+            mMovil.setError("Introduce el móvil del cliente");
+            return false;
+        }
+        if (fechaInicioMillis == -1) {
+            mFechaRecogida.setError("Selecciona una fecha de recogida");
+            return false;
+        }
+        if (mHoraRecogida.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Selecciona un horario de recogida", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (fechaFinMillis == -1) {
+            mFechaDevolucion.setError("Selecciona una fecha de devolución");
+            return false;
+        }
+        if (mHoraDevolucion.getCheckedRadioButtonId() == -1) {
+            Toast.makeText(this, "Selecciona un horario de devolución", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (!isDateTimeRangeValid()) {
+            Toast.makeText(this, "Fechas/horarios inválidos", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 
     private boolean isDateTimeRangeValid() {

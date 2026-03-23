@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 
 import es.unizar.eina.G222_quads.utils.DateUtils;
 
-@Database(entities = {Quad.class, Reserva.class, ReservaQuadCascos.class}, version = 6, exportSchema = false)
+@Database(entities = {Quad.class, Reserva.class, ReservaQuadCascos.class}, version = 7, exportSchema = false)
 public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
 
     public abstract QuadDao quadDao();
@@ -32,6 +32,7 @@ public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     Quad_Reserva_RoomDataBase.class, "quad_reserva_database")
+                            .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }

@@ -3881,6 +3881,8 @@ id expanded_menu
 id fab
 id fab_container
 id fade
+id fecha_devolucion
+id fecha_recogida
 id fill
 id fill_horizontal
 id fill_vertical
@@ -3919,6 +3921,12 @@ id hideable
 id home
 id homeAsUp
 id honorRequest
+id horario_devolucion
+id horario_devolucion_manana
+id horario_devolucion_tarde
+id horario_recogida
+id horario_recogida_manana
+id horario_recogida_tarde
 id horizontal_only
 id icon
 id icon_group
@@ -4098,8 +4106,6 @@ id recyclerview_quads
 id recyclerview_quads_resumen
 id report_drawn
 id reserva
-id reserva_fecha_devolucion
-id reserva_fecha_recogida
 id retreat
 id reverseSawtooth
 id right
@@ -4573,6 +4579,8 @@ string hint_movil
 string hint_name
 string hint_precio
 string hint_tipo
+string horario_devolucion
+string horario_recogida
 string icon_content_description
 string id
 string item_view_role_description
@@ -4595,6 +4603,7 @@ string m3_sys_motion_easing_linear
 string m3_sys_motion_easing_standard
 string m3_sys_motion_easing_standard_accelerate
 string m3_sys_motion_easing_standard_decelerate
+string manana
 string material_clock_display_divider
 string material_clock_toggle_content_description
 string material_hour_24h_suffix
@@ -4714,6 +4723,7 @@ string selected_quads
 string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string status_bar_notification_info_overflow
+string tarde
 string test_sistema
 string test_sistema_quads
 string test_sistema_reservas

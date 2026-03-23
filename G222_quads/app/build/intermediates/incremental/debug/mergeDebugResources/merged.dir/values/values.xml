@@ -2513,6 +2513,8 @@
     <string name="hint_name">Type name ...</string>
     <string name="hint_precio">Type precio ...</string>
     <string name="hint_tipo">Type tipo ...</string>
+    <string name="horario_devolucion">Horario de devolución</string>
+    <string name="horario_recogida">Horario de recogida</string>
     <string description="Content description for an icon that appears in the title area of a dialog" name="icon_content_description">Dialog Icon</string>
     <string name="id">Id. Reserva</string>
     <string name="item_view_role_description">Tab</string>
@@ -2537,6 +2539,7 @@
     <string name="m3_sys_motion_easing_standard" translatable="false">cubic-bezier(0.2, 0, 0, 1)</string>
     <string name="m3_sys_motion_easing_standard_accelerate" translatable="false">cubic-bezier(0.3, 0, 1, 1)</string>
     <string name="m3_sys_motion_easing_standard_decelerate" translatable="false">cubic-bezier(0, 0, 0, 1)</string>
+    <string name="manana">Mañana</string>
     <string name="material_clock_display_divider" translatable="false">:</string>
     <string description="Description for the toggle to choose between AM and PM [CHAR_LIMIT=NONE]" name="material_clock_toggle_content_description">Select AM or PM</string>
     <string description="Spoken suffix for an hour in the 24-hour clock [CHAR_LIMIT=10]" name="material_hour_24h_suffix"><ns2:g id="number">%1$s</ns2:g> hours</string>
@@ -2668,6 +2671,7 @@
     <string description="Title of the side sheet&apos;s accessibility pane that is spoken by TalkBack when the side sheet appears on screen. [CHAR_LIMIT=NONE]" name="side_sheet_accessibility_pane_title">Side Sheet</string>
     <string name="side_sheet_behavior" translatable="false">com.google.android.material.sidesheet.SideSheetBehavior</string>
     <string name="status_bar_notification_info_overflow">999+</string>
+    <string name="tarde">Tarde</string>
     <string name="test_sistema">Selecciona el test a ejecutar </string>
     <string name="test_sistema_quads">Test Quads </string>
     <string name="test_sistema_reservas">Test Reservas </string>

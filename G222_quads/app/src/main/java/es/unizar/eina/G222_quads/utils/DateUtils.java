@@ -82,7 +82,7 @@ public class DateUtils {
     public static double daysBetween(long fechaInicio, boolean horaInicio,
                                    long fechaFin, boolean horaFin) {
         long ini = slotToMillis(fechaInicio, horaInicio);
-        long fin = endExclusiveMillis(fechaFin, horaFin);
+        long fin = slotToMillis(fechaFin, horaFin);
         long slots = (fin - ini) / HALF_DAY_MILLIS;
         return slots / 2.0;
     }
@@ -123,6 +123,6 @@ public class DateUtils {
                                        long fin, boolean finHorario) {
         long _ini = slotToMillis(inicio, inicioHorario);
         long _fin = slotToMillis(fin, finHorario);
-        return _fin >= _ini;
+        return _fin > _ini;
     }
 }

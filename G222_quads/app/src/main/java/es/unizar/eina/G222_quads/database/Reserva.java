@@ -157,6 +157,13 @@ public class Reserva {
     }
 
     /**
+     * Permite actualizar la clave temporal de recogida
+     */
+    public void setRecogidaComparable(long recogidaComparable) {
+        this.recogidaComparable = recogidaComparable;
+    }
+
+    /**
      * Devuelve la fecha de devolución de los quads reservados
      */
     public long getFechaDevolucion() {
@@ -189,6 +196,13 @@ public class Reserva {
      */
     public long getDevolucionComparable() {
         return this.devolucionComparable;
+    }
+
+    /**
+     * Permite actualizar la clave temporal comparable de devolución
+     */
+    public void setDevolucionComparable(long devolucionComparable) {
+        this.devolucionComparable = devolucionComparable;
     }
 
     /**

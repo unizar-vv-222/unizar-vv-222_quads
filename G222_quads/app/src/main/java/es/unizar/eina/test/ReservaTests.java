@@ -24,7 +24,7 @@ public class ReservaTests {
     public void testInsertReserva() {
         // Insert válido
         try {
-            Reserva q = new Reserva("CL_001", "612458920", 01012026, 03012026);
+            Reserva q = new Reserva("CL_001", "612458920", 01012026, false, 03012026, false);
             reservaRepo.insert(q);
             Log.d("TEST_RESERVA", "Insert válido");
 
@@ -34,7 +34,7 @@ public class ReservaTests {
 
         // Insert con nombre vacia de cliente
         try {
-            Reserva q = new Reserva("", "612458920", 10012026, 13012026);
+            Reserva q = new Reserva("", "612458920", 10012026, false, 13012026, false);
             reservaRepo.insert(q);
             Log.d("TEST_RESERVA", "Insert nombre inválido");
 
@@ -44,7 +44,7 @@ public class ReservaTests {
 
         // Insert con número de teléfono vacio
         try {
-            Reserva q = new Reserva("CL_002", "", 10012026, 13012026);
+            Reserva q = new Reserva("CL_002", "", 10012026, false,13012026, false);
             reservaRepo.insert(q);
             Log.d("TEST_RESERVA", "Insert inválido");
 
@@ -54,7 +54,7 @@ public class ReservaTests {
 
         // Insert con número de teléfono inválido
         try {
-            Reserva q = new Reserva("CL_003", "a5463b", 10012026, 13012026);
+            Reserva q = new Reserva("CL_003", "a5463b", 10012026, false, 13012026, false);
             reservaRepo.insert(q);
             Log.d("TEST_RESERVA", "Insert inválido");
 
@@ -64,7 +64,7 @@ public class ReservaTests {
 
         // Insert con fecha de recogida invalida (formato)
         try {
-            Reserva q = new Reserva("CL_004", "612458920", 10012026, 13022026);
+            Reserva q = new Reserva("CL_004", "612458920", 10012026, false, 13022026, false);
             reservaRepo.insert(q);
             Log.d("TEST_RESERVA", "Insert inválido");
 
@@ -74,7 +74,7 @@ public class ReservaTests {
 
         // Insert con fecha de recogida invalida
         try {
-            Reserva q = new Reserva("CL_005", "612458920", 10002026, 13022026);
+            Reserva q = new Reserva("CL_005", "612458920", 10002026, false, 13022026, false);
             reservaRepo.insert(q);
             Log.d("TEST_RESERVA", "Insert inválido");
 
@@ -84,7 +84,7 @@ public class ReservaTests {
 
         // Insert con fecha de recogida invalida (> fecha devolucion)
         try {
-            Reserva q = new Reserva("CL_006", "612458920", 13012026, 10012026);
+            Reserva q = new Reserva("CL_006", "612458920", 13012026, false, 10012026, false );
             reservaRepo.insert(q);
             Log.d("TEST_RESERVA", "Insert inválido");
 
@@ -97,7 +97,7 @@ public class ReservaTests {
 
     public void testDeleteReserva() {
         try{
-            Reserva q = new Reserva("DELETE_001", "612458920", 01012026, 03012026);
+            Reserva q = new Reserva("DELETE_001", "612458920", 01012026, false, 03012026, false);
             reservaRepo.insert(q);
             reservaRepo.delete(q);
             Log.d("TEST_RESERVA", "Delete válido");
@@ -108,7 +108,7 @@ public class ReservaTests {
         }
 
         try{
-            Reserva q = new Reserva("DELETE_001", "612458920", 01012026, 03012026);
+            Reserva q = new Reserva("DELETE_001", "612458920", 01012026, false, 03012026, false);
             reservaRepo.delete(q);
             Log.d("TEST_RESERVA", "Delete inválido");
 
@@ -121,14 +121,14 @@ public class ReservaTests {
     public void testVolumenReserva(){
         String prefijo = "CL_";
         int sufijo = 0;
-        Reserva r = new Reserva(prefijo + sufijo, "612458920", 10012026, 13012026);
+        Reserva r = new Reserva(prefijo + sufijo, "612458920", 10012026, false, 13012026, false);
         reservaRepo.insert(r);
         sufijo ++;
         Log.d("TEST_RESERVA", "Inicio prueba de volumen con volumen ("+ sufijo +")");
 
         try {
             while (sufijo < 20001) {
-                r = new Reserva(prefijo + sufijo, "612458920", 10012026, 13012026);
+                r = new Reserva(prefijo + sufijo, "612458920", 10012026, false, 13012026, false);
                 reservaRepo.insert(r);
                 sufijo ++;
 

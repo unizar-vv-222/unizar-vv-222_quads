@@ -69,8 +69,9 @@ public class ReservaViewModel extends AndroidViewModel {
     /** Elimina un quad de la base de datos */
     public void delete(Reserva reserva) { mRepository.delete(reserva); }
 
-    public void recalcularPrecio(int reservaId, long fechaInicio, long fechaFin) {
-        mRepository.recalcularPrecioReserva(reservaId, fechaInicio, fechaFin);
+    public void recalcularPrecio(int reservaId, long fechaInicio, boolean horaInicio,
+                                 long fechaFin, boolean horaFin) {
+        mRepository.recalcularPrecioReserva(reservaId, fechaInicio, horaInicio, fechaFin, horaFin);
     }
 
     public void insertAndReturnIdAsync(Reserva reserva, es.unizar.eina.G222_quads.utils.IdCallback callback) {

@@ -373,13 +373,81 @@ public final class QuadDao_Impl implements QuadDao {
   }
 
   @Override
-  public LiveData<List<Quad>> getAvailableQuads(final long fechaInicio, final long fechaFin) {
-    final String _sql = "SELECT * FROM quad q WHERE q.matricula NOT IN (SELECT rq.matriculaQuad FROM reserva_quad_cascos rq INNER JOIN reserva r ON r.id = rq.reservaId WHERE r.fechaRecogida < ? AND r.fechaDevolucion > ? )";
+  public LiveData<List<Quad>> getAvailableQuads(final long recogidaComparable,
+      final long devolucionComparable) {
+    final String _sql = "SELECT * FROM quad q WHERE q.matricula NOT IN (SELECT rq.matriculaQuad FROM reserva_quad_cascos rq INNER JOIN reserva r ON r.id = rq.reservaId WHERE r.recogidaComparable < ? AND r.devolucionComparable > ? )";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 2);
     int _argIndex = 1;
-    _statement.bindLong(_argIndex, fechaFin);
+    _statement.bindLong(_argIndex, devolucionComparable);
     _argIndex = 2;
-    _statement.bindLong(_argIndex, fechaInicio);
+    _statement.bindLong(_argIndex, recogidaComparable);
+    return __db.getInvalidationTracker().createLiveData(new String[] {"quad", "reserva_quad_cascos",
+        "reserva"}, false, new Callable<List<Quad>>() {
+      @Override
+      @Nullable
+      public List<Quad> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfMatricula = CursorUtil.getColumnIndexOrThrow(_cursor, "matricula");
+          final int _cursorIndexOfTipo = CursorUtil.getColumnIndexOrThrow(_cursor, "tipo");
+          final int _cursorIndexOfPrecio = CursorUtil.getColumnIndexOrThrow(_cursor, "precio");
+          final int _cursorIndexOfDescripcion = CursorUtil.getColumnIndexOrThrow(_cursor, "descripcion");
+          final List<Quad> _result = new ArrayList<Quad>(_cursor.getCount());
+          while (_cursor.moveToNext()) {
+            final Quad _item;
+            final String _tmpMatricula;
+            if (_cursor.isNull(_cursorIndexOfMatricula)) {
+              _tmpMatricula = null;
+            } else {
+              _tmpMatricula = _cursor.getString(_cursorIndexOfMatricula);
+            }
+            final Boolean _tmpTipo;
+            final Integer _tmp;
+            if (_cursor.isNull(_cursorIndexOfTipo)) {
+              _tmp = null;
+            } else {
+              _tmp = _cursor.getInt(_cursorIndexOfTipo);
+            }
+            _tmpTipo = _tmp == null ? null : _tmp != 0;
+            final Double _tmpPrecio;
+            if (_cursor.isNull(_cursorIndexOfPrecio)) {
+              _tmpPrecio = null;
+            } else {
+              _tmpPrecio = _cursor.getDouble(_cursorIndexOfPrecio);
+            }
+            final String _tmpDescripcion;
+            if (_cursor.isNull(_cursorIndexOfDescripcion)) {
+              _tmpDescripcion = null;
+            } else {
+              _tmpDescripcion = _cursor.getString(_cursorIndexOfDescripcion);
+            }
+            _item = new Quad(_tmpMatricula,_tmpTipo,_tmpPrecio,_tmpDescripcion);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
+  }
+
+  @Override
+  public LiveData<List<Quad>> getAvailableQuadsExcludingReserva(final long recogidaComparable,
+      final long devolucionComparable, final int reservaId) {
+    final String _sql = "SELECT * FROM quad q WHERE q.matricula NOT IN (SELECT rq.matriculaQuad FROM reserva_quad_cascos rq INNER JOIN reserva r ON r.id = rq.reservaId WHERE r.id != ? AND r.recogidaComparable < ? AND r.devolucionComparable > ? ) ";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 3);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, reservaId);
+    _argIndex = 2;
+    _statement.bindLong(_argIndex, devolucionComparable);
+    _argIndex = 3;
+    _statement.bindLong(_argIndex, recogidaComparable);
     return __db.getInvalidationTracker().createLiveData(new String[] {"quad", "reserva_quad_cascos",
         "reserva"}, false, new Callable<List<Quad>>() {
       @Override

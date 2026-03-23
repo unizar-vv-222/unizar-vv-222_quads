@@ -34,16 +34,16 @@ public final class Quad_Reserva_RoomDataBase_Impl extends Quad_Reserva_RoomDataB
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(6) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(7) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `quad` (`matricula` TEXT NOT NULL, `tipo` INTEGER NOT NULL, `precio` REAL NOT NULL, `descripcion` TEXT NOT NULL, PRIMARY KEY(`matricula`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `reserva` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombreCliente` TEXT NOT NULL, `movilCliente` TEXT NOT NULL, `fechaRecogida` INTEGER NOT NULL, `fechaDevolucion` INTEGER NOT NULL, `precioTotal` REAL NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `reserva` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nombreCliente` TEXT NOT NULL, `movilCliente` TEXT NOT NULL, `fechaRecogida` INTEGER NOT NULL, `horaRecogida` INTEGER NOT NULL, `recogidaComparable` INTEGER NOT NULL, `fechaDevolucion` INTEGER NOT NULL, `horaDevolucion` INTEGER NOT NULL, `devolucionComparable` INTEGER NOT NULL, `precioTotal` REAL NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `reserva_quad_cascos` (`reservaId` INTEGER NOT NULL, `matriculaQuad` TEXT NOT NULL, `numCascos` INTEGER NOT NULL, `precioOriginal` REAL NOT NULL, PRIMARY KEY(`reservaId`, `matriculaQuad`), FOREIGN KEY(`reservaId`) REFERENCES `reserva`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`matriculaQuad`) REFERENCES `quad`(`matricula`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_reserva_quad_cascos_reservaId` ON `reserva_quad_cascos` (`reservaId`)");
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_reserva_quad_cascos_matriculaQuad` ON `reserva_quad_cascos` (`matriculaQuad`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '84b48e000ee30e040bee8972a0b17621')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '043dd7cd8a6ef96a4060607f3deafed7')");
       }
 
       @Override
@@ -109,12 +109,16 @@ public final class Quad_Reserva_RoomDataBase_Impl extends Quad_Reserva_RoomDataB
                   + " Expected:\n" + _infoQuad + "\n"
                   + " Found:\n" + _existingQuad);
         }
-        final HashMap<String, TableInfo.Column> _columnsReserva = new HashMap<String, TableInfo.Column>(6);
+        final HashMap<String, TableInfo.Column> _columnsReserva = new HashMap<String, TableInfo.Column>(10);
         _columnsReserva.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsReserva.put("nombreCliente", new TableInfo.Column("nombreCliente", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsReserva.put("movilCliente", new TableInfo.Column("movilCliente", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsReserva.put("fechaRecogida", new TableInfo.Column("fechaRecogida", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsReserva.put("horaRecogida", new TableInfo.Column("horaRecogida", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsReserva.put("recogidaComparable", new TableInfo.Column("recogidaComparable", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsReserva.put("fechaDevolucion", new TableInfo.Column("fechaDevolucion", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsReserva.put("horaDevolucion", new TableInfo.Column("horaDevolucion", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsReserva.put("devolucionComparable", new TableInfo.Column("devolucionComparable", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsReserva.put("precioTotal", new TableInfo.Column("precioTotal", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysReserva = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesReserva = new HashSet<TableInfo.Index>(0);
@@ -145,7 +149,7 @@ public final class Quad_Reserva_RoomDataBase_Impl extends Quad_Reserva_RoomDataB
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "84b48e000ee30e040bee8972a0b17621", "a028ee6803bb535ba7e7a90bab21eb7d");
+    }, "043dd7cd8a6ef96a4060607f3deafed7", "8e3f3f421cf2673766a629cc2e5797a8");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

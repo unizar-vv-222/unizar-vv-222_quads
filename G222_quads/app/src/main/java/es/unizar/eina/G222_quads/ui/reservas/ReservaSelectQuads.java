@@ -8,12 +8,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import es.unizar.eina.G222_quads.R;
@@ -118,7 +120,7 @@ public class ReservaSelectQuads extends AppCompatActivity {
 
     private void setupObservers() {
 
-        //️ cargar selección previa SOLO si editamos y no cambiaron fechas
+        // si editamos y NO cambiaron fechas/horarios, precargamos la selección original
         if (isEditMode && !fechasModificadas) {
             mReservaQuadViewModel
                     .getByReserva(reservaId)
@@ -130,50 +132,64 @@ public class ReservaSelectQuads extends AppCompatActivity {
                         mAdapter.setInitialData(cascosReserva);
                     });
         } else {
+            // si cambiaron fechas/horarios, NO se precarga nada
             cascosReserva.clear();
+            mAdapter.setInitialData(null);
         }
 
         // cargar quads disponibles
-        mQuadViewModel
-                .getAvailableQuads(fechaInicio, horaInicio, fechaFin, horaFin)
-                .observe(this, quads -> {
+        // - si estamos creando -> disponibilidad normal
+        // - si estamos editando -> excluir la propia reserva del cálculo
+        LiveData<List<Quad>> quadsLiveData;
 
-                    if (quads == null) {
-                        quads = new ArrayList<>();
-                    }
+        if (isEditMode) {
+            quadsLiveData = mQuadViewModel.getAvailableQuadsExcludingReserva(
+                    fechaInicio, horaInicio, fechaFin, horaFin, reservaId);
+        } else {
+            quadsLiveData = mQuadViewModel.getAvailableQuads(
+                    fechaInicio, horaInicio, fechaFin, horaFin);
+        }
 
-                    // añadir quads antiguos si editamos y no cambiaron fechas
-                    if (isEditMode && !fechasModificadas && !cascosReserva.isEmpty()) {
-                        for (String matricula : cascosReserva.keySet()) {
-                            boolean existe = false;
+        quadsLiveData.observe(this, quads -> {
+            if (quads == null) {
+                quads = new ArrayList<>();
+            }
 
-                            for (Quad q : quads) {
-                                if (q.getMatricula().equals(matricula)) {
-                                    existe = true;
-                                    break;
-                                }
-                            }
+            // si editamos y NO cambiaron fechas/horarios, también
+            // deben aparecer los quads seleccionados originalmente
+            if (isEditMode && !fechasModificadas && !cascosReserva.isEmpty()) {
+                for (String matricula : cascosReserva.keySet()) {
+                    boolean existe = false;
 
-                            if (!existe) {
-                                Quad antiguo =
-                                        mQuadViewModel.getQuadByMatriculaSync(matricula);
-                                if (antiguo != null) {
-                                    quads.add(antiguo);
-                                }
-                            }
+                    for (Quad q : quads) {
+                        if (q.getMatricula().equals(matricula)) {
+                            existe = true;
+                            break;
                         }
                     }
-
-                    if (quads.isEmpty()) {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mEmptyText.setVisibility(View.VISIBLE);
-                    } else {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mEmptyText.setVisibility(View.GONE);
-                        mAdapter.submitList(quads);
+                    if (!existe) {
+                        Quad antiguo =
+                                mQuadViewModel.getQuadByMatriculaSync(matricula);
+                        if (antiguo != null) {
+                            quads.add(antiguo);
+                        }
                     }
-                });
+                }
+            }
+
+            // mostrar lista o mensaje vacío
+            if (quads.isEmpty()) {
+                mRecyclerView.setVisibility(View.GONE);
+                mEmptyText.setVisibility(View.VISIBLE);
+            } else {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mEmptyText.setVisibility(View.GONE);
+                mAdapter.submitList(new ArrayList<>(quads));
+            }
+        });
+
     }
+
 
     /* =========================
        FLUJO

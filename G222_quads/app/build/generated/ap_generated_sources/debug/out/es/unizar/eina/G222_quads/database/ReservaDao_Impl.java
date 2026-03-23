@@ -13,7 +13,6 @@ import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import java.lang.Class;
-import java.lang.Double;
 import java.lang.Exception;
 import java.lang.Override;
 import java.lang.String;
@@ -29,8 +28,6 @@ public final class ReservaDao_Impl implements ReservaDao {
 
   private final EntityInsertionAdapter<Reserva> __insertionAdapterOfReserva;
 
-  private final EntityInsertionAdapter<Reserva> __insertionAdapterOfReserva_1;
-
   private final EntityDeletionOrUpdateAdapter<Reserva> __deletionAdapterOfReserva;
 
   private final EntityDeletionOrUpdateAdapter<Reserva> __updateAdapterOfReserva;
@@ -45,7 +42,7 @@ public final class ReservaDao_Impl implements ReservaDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR IGNORE INTO `reserva` (`id`,`nombreCliente`,`movilCliente`,`fechaRecogida`,`fechaDevolucion`,`precioTotal`) VALUES (nullif(?, 0),?,?,?,?,?)";
+        return "INSERT OR IGNORE INTO `reserva` (`id`,`nombreCliente`,`movilCliente`,`fechaRecogida`,`horaRecogida`,`recogidaComparable`,`fechaDevolucion`,`horaDevolucion`,`devolucionComparable`,`precioTotal`) VALUES (nullif(?, 0),?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -62,41 +59,14 @@ public final class ReservaDao_Impl implements ReservaDao {
           statement.bindString(3, entity.getMovilCliente());
         }
         statement.bindLong(4, entity.getFechaRecogida());
-        statement.bindLong(5, entity.getFechaDevolucion());
-        if (entity.getPrecioTotal() == null) {
-          statement.bindNull(6);
-        } else {
-          statement.bindDouble(6, entity.getPrecioTotal());
-        }
-      }
-    };
-    this.__insertionAdapterOfReserva_1 = new EntityInsertionAdapter<Reserva>(__db) {
-      @Override
-      @NonNull
-      protected String createQuery() {
-        return "INSERT OR ABORT INTO `reserva` (`id`,`nombreCliente`,`movilCliente`,`fechaRecogida`,`fechaDevolucion`,`precioTotal`) VALUES (nullif(?, 0),?,?,?,?,?)";
-      }
-
-      @Override
-      protected void bind(@NonNull final SupportSQLiteStatement statement, final Reserva entity) {
-        statement.bindLong(1, entity.getId());
-        if (entity.getNombreCliente() == null) {
-          statement.bindNull(2);
-        } else {
-          statement.bindString(2, entity.getNombreCliente());
-        }
-        if (entity.getMovilCliente() == null) {
-          statement.bindNull(3);
-        } else {
-          statement.bindString(3, entity.getMovilCliente());
-        }
-        statement.bindLong(4, entity.getFechaRecogida());
-        statement.bindLong(5, entity.getFechaDevolucion());
-        if (entity.getPrecioTotal() == null) {
-          statement.bindNull(6);
-        } else {
-          statement.bindDouble(6, entity.getPrecioTotal());
-        }
+        final int _tmp = entity.getHoraRecogida() ? 1 : 0;
+        statement.bindLong(5, _tmp);
+        statement.bindLong(6, entity.getRecogidaComparable());
+        statement.bindLong(7, entity.getFechaDevolucion());
+        final int _tmp_1 = entity.getHoraDevolucion() ? 1 : 0;
+        statement.bindLong(8, _tmp_1);
+        statement.bindLong(9, entity.getDevolucionComparable());
+        statement.bindDouble(10, entity.getPrecioTotal());
       }
     };
     this.__deletionAdapterOfReserva = new EntityDeletionOrUpdateAdapter<Reserva>(__db) {
@@ -115,7 +85,7 @@ public final class ReservaDao_Impl implements ReservaDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "UPDATE OR ABORT `reserva` SET `id` = ?,`nombreCliente` = ?,`movilCliente` = ?,`fechaRecogida` = ?,`fechaDevolucion` = ?,`precioTotal` = ? WHERE `id` = ?";
+        return "UPDATE OR ABORT `reserva` SET `id` = ?,`nombreCliente` = ?,`movilCliente` = ?,`fechaRecogida` = ?,`horaRecogida` = ?,`recogidaComparable` = ?,`fechaDevolucion` = ?,`horaDevolucion` = ?,`devolucionComparable` = ?,`precioTotal` = ? WHERE `id` = ?";
       }
 
       @Override
@@ -132,13 +102,15 @@ public final class ReservaDao_Impl implements ReservaDao {
           statement.bindString(3, entity.getMovilCliente());
         }
         statement.bindLong(4, entity.getFechaRecogida());
-        statement.bindLong(5, entity.getFechaDevolucion());
-        if (entity.getPrecioTotal() == null) {
-          statement.bindNull(6);
-        } else {
-          statement.bindDouble(6, entity.getPrecioTotal());
-        }
-        statement.bindLong(7, entity.getId());
+        final int _tmp = entity.getHoraRecogida() ? 1 : 0;
+        statement.bindLong(5, _tmp);
+        statement.bindLong(6, entity.getRecogidaComparable());
+        statement.bindLong(7, entity.getFechaDevolucion());
+        final int _tmp_1 = entity.getHoraDevolucion() ? 1 : 0;
+        statement.bindLong(8, _tmp_1);
+        statement.bindLong(9, entity.getDevolucionComparable());
+        statement.bindDouble(10, entity.getPrecioTotal());
+        statement.bindLong(11, entity.getId());
       }
     };
     this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
@@ -165,19 +137,6 @@ public final class ReservaDao_Impl implements ReservaDao {
     __db.beginTransaction();
     try {
       final long _result = __insertionAdapterOfReserva.insertAndReturnId(reserva);
-      __db.setTransactionSuccessful();
-      return _result;
-    } finally {
-      __db.endTransaction();
-    }
-  }
-
-  @Override
-  public long insertAndReturnId(final Reserva reserva) {
-    __db.assertNotSuspendingTransaction();
-    __db.beginTransaction();
-    try {
-      final long _result = __insertionAdapterOfReserva_1.insertAndReturnId(reserva);
       __db.setTransactionSuccessful();
       return _result;
     } finally {
@@ -265,7 +224,11 @@ public final class ReservaDao_Impl implements ReservaDao {
           final int _cursorIndexOfNombreCliente = CursorUtil.getColumnIndexOrThrow(_cursor, "nombreCliente");
           final int _cursorIndexOfMovilCliente = CursorUtil.getColumnIndexOrThrow(_cursor, "movilCliente");
           final int _cursorIndexOfFechaRecogida = CursorUtil.getColumnIndexOrThrow(_cursor, "fechaRecogida");
+          final int _cursorIndexOfHoraRecogida = CursorUtil.getColumnIndexOrThrow(_cursor, "horaRecogida");
+          final int _cursorIndexOfRecogidaComparable = CursorUtil.getColumnIndexOrThrow(_cursor, "recogidaComparable");
           final int _cursorIndexOfFechaDevolucion = CursorUtil.getColumnIndexOrThrow(_cursor, "fechaDevolucion");
+          final int _cursorIndexOfHoraDevolucion = CursorUtil.getColumnIndexOrThrow(_cursor, "horaDevolucion");
+          final int _cursorIndexOfDevolucionComparable = CursorUtil.getColumnIndexOrThrow(_cursor, "devolucionComparable");
           final int _cursorIndexOfPrecioTotal = CursorUtil.getColumnIndexOrThrow(_cursor, "precioTotal");
           final List<Reserva> _result = new ArrayList<Reserva>(_cursor.getCount());
           while (_cursor.moveToNext()) {
@@ -284,18 +247,28 @@ public final class ReservaDao_Impl implements ReservaDao {
             }
             final long _tmpFechaRecogida;
             _tmpFechaRecogida = _cursor.getLong(_cursorIndexOfFechaRecogida);
+            final boolean _tmpHoraRecogida;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfHoraRecogida);
+            _tmpHoraRecogida = _tmp != 0;
             final long _tmpFechaDevolucion;
             _tmpFechaDevolucion = _cursor.getLong(_cursorIndexOfFechaDevolucion);
-            _item = new Reserva(_tmpNombreCliente,_tmpMovilCliente,_tmpFechaRecogida,_tmpFechaDevolucion);
+            final boolean _tmpHoraDevolucion;
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfHoraDevolucion);
+            _tmpHoraDevolucion = _tmp_1 != 0;
+            _item = new Reserva(_tmpNombreCliente,_tmpMovilCliente,_tmpFechaRecogida,_tmpHoraRecogida,_tmpFechaDevolucion,_tmpHoraDevolucion);
             final int _tmpId;
             _tmpId = _cursor.getInt(_cursorIndexOfId);
             _item.setId(_tmpId);
-            final Double _tmpPrecioTotal;
-            if (_cursor.isNull(_cursorIndexOfPrecioTotal)) {
-              _tmpPrecioTotal = null;
-            } else {
-              _tmpPrecioTotal = _cursor.getDouble(_cursorIndexOfPrecioTotal);
-            }
+            final long _tmpRecogidaComparable;
+            _tmpRecogidaComparable = _cursor.getLong(_cursorIndexOfRecogidaComparable);
+            _item.setRecogidaComparable(_tmpRecogidaComparable);
+            final long _tmpDevolucionComparable;
+            _tmpDevolucionComparable = _cursor.getLong(_cursorIndexOfDevolucionComparable);
+            _item.setDevolucionComparable(_tmpDevolucionComparable);
+            final double _tmpPrecioTotal;
+            _tmpPrecioTotal = _cursor.getDouble(_cursorIndexOfPrecioTotal);
             _item.setPrecioTotal(_tmpPrecioTotal);
             _result.add(_item);
           }
@@ -326,7 +299,11 @@ public final class ReservaDao_Impl implements ReservaDao {
           final int _cursorIndexOfNombreCliente = CursorUtil.getColumnIndexOrThrow(_cursor, "nombreCliente");
           final int _cursorIndexOfMovilCliente = CursorUtil.getColumnIndexOrThrow(_cursor, "movilCliente");
           final int _cursorIndexOfFechaRecogida = CursorUtil.getColumnIndexOrThrow(_cursor, "fechaRecogida");
+          final int _cursorIndexOfHoraRecogida = CursorUtil.getColumnIndexOrThrow(_cursor, "horaRecogida");
+          final int _cursorIndexOfRecogidaComparable = CursorUtil.getColumnIndexOrThrow(_cursor, "recogidaComparable");
           final int _cursorIndexOfFechaDevolucion = CursorUtil.getColumnIndexOrThrow(_cursor, "fechaDevolucion");
+          final int _cursorIndexOfHoraDevolucion = CursorUtil.getColumnIndexOrThrow(_cursor, "horaDevolucion");
+          final int _cursorIndexOfDevolucionComparable = CursorUtil.getColumnIndexOrThrow(_cursor, "devolucionComparable");
           final int _cursorIndexOfPrecioTotal = CursorUtil.getColumnIndexOrThrow(_cursor, "precioTotal");
           final List<Reserva> _result = new ArrayList<Reserva>(_cursor.getCount());
           while (_cursor.moveToNext()) {
@@ -345,18 +322,28 @@ public final class ReservaDao_Impl implements ReservaDao {
             }
             final long _tmpFechaRecogida;
             _tmpFechaRecogida = _cursor.getLong(_cursorIndexOfFechaRecogida);
+            final boolean _tmpHoraRecogida;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfHoraRecogida);
+            _tmpHoraRecogida = _tmp != 0;
             final long _tmpFechaDevolucion;
             _tmpFechaDevolucion = _cursor.getLong(_cursorIndexOfFechaDevolucion);
-            _item = new Reserva(_tmpNombreCliente,_tmpMovilCliente,_tmpFechaRecogida,_tmpFechaDevolucion);
+            final boolean _tmpHoraDevolucion;
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfHoraDevolucion);
+            _tmpHoraDevolucion = _tmp_1 != 0;
+            _item = new Reserva(_tmpNombreCliente,_tmpMovilCliente,_tmpFechaRecogida,_tmpHoraRecogida,_tmpFechaDevolucion,_tmpHoraDevolucion);
             final int _tmpId;
             _tmpId = _cursor.getInt(_cursorIndexOfId);
             _item.setId(_tmpId);
-            final Double _tmpPrecioTotal;
-            if (_cursor.isNull(_cursorIndexOfPrecioTotal)) {
-              _tmpPrecioTotal = null;
-            } else {
-              _tmpPrecioTotal = _cursor.getDouble(_cursorIndexOfPrecioTotal);
-            }
+            final long _tmpRecogidaComparable;
+            _tmpRecogidaComparable = _cursor.getLong(_cursorIndexOfRecogidaComparable);
+            _item.setRecogidaComparable(_tmpRecogidaComparable);
+            final long _tmpDevolucionComparable;
+            _tmpDevolucionComparable = _cursor.getLong(_cursorIndexOfDevolucionComparable);
+            _item.setDevolucionComparable(_tmpDevolucionComparable);
+            final double _tmpPrecioTotal;
+            _tmpPrecioTotal = _cursor.getDouble(_cursorIndexOfPrecioTotal);
             _item.setPrecioTotal(_tmpPrecioTotal);
             _result.add(_item);
           }
@@ -374,8 +361,8 @@ public final class ReservaDao_Impl implements ReservaDao {
   }
 
   @Override
-  public LiveData<List<Reserva>> getReservasOrderByFechaRecogida() {
-    final String _sql = "SELECT * FROM reserva ORDER BY fechaRecogida ASC";
+  public LiveData<List<Reserva>> getReservasOrderByRecogida() {
+    final String _sql = "SELECT * FROM reserva ORDER BY recogidaComparable ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[] {"reserva"}, false, new Callable<List<Reserva>>() {
       @Override
@@ -387,7 +374,11 @@ public final class ReservaDao_Impl implements ReservaDao {
           final int _cursorIndexOfNombreCliente = CursorUtil.getColumnIndexOrThrow(_cursor, "nombreCliente");
           final int _cursorIndexOfMovilCliente = CursorUtil.getColumnIndexOrThrow(_cursor, "movilCliente");
           final int _cursorIndexOfFechaRecogida = CursorUtil.getColumnIndexOrThrow(_cursor, "fechaRecogida");
+          final int _cursorIndexOfHoraRecogida = CursorUtil.getColumnIndexOrThrow(_cursor, "horaRecogida");
+          final int _cursorIndexOfRecogidaComparable = CursorUtil.getColumnIndexOrThrow(_cursor, "recogidaComparable");
           final int _cursorIndexOfFechaDevolucion = CursorUtil.getColumnIndexOrThrow(_cursor, "fechaDevolucion");
+          final int _cursorIndexOfHoraDevolucion = CursorUtil.getColumnIndexOrThrow(_cursor, "horaDevolucion");
+          final int _cursorIndexOfDevolucionComparable = CursorUtil.getColumnIndexOrThrow(_cursor, "devolucionComparable");
           final int _cursorIndexOfPrecioTotal = CursorUtil.getColumnIndexOrThrow(_cursor, "precioTotal");
           final List<Reserva> _result = new ArrayList<Reserva>(_cursor.getCount());
           while (_cursor.moveToNext()) {
@@ -406,18 +397,28 @@ public final class ReservaDao_Impl implements ReservaDao {
             }
             final long _tmpFechaRecogida;
             _tmpFechaRecogida = _cursor.getLong(_cursorIndexOfFechaRecogida);
+            final boolean _tmpHoraRecogida;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfHoraRecogida);
+            _tmpHoraRecogida = _tmp != 0;
             final long _tmpFechaDevolucion;
             _tmpFechaDevolucion = _cursor.getLong(_cursorIndexOfFechaDevolucion);
-            _item = new Reserva(_tmpNombreCliente,_tmpMovilCliente,_tmpFechaRecogida,_tmpFechaDevolucion);
+            final boolean _tmpHoraDevolucion;
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfHoraDevolucion);
+            _tmpHoraDevolucion = _tmp_1 != 0;
+            _item = new Reserva(_tmpNombreCliente,_tmpMovilCliente,_tmpFechaRecogida,_tmpHoraRecogida,_tmpFechaDevolucion,_tmpHoraDevolucion);
             final int _tmpId;
             _tmpId = _cursor.getInt(_cursorIndexOfId);
             _item.setId(_tmpId);
-            final Double _tmpPrecioTotal;
-            if (_cursor.isNull(_cursorIndexOfPrecioTotal)) {
-              _tmpPrecioTotal = null;
-            } else {
-              _tmpPrecioTotal = _cursor.getDouble(_cursorIndexOfPrecioTotal);
-            }
+            final long _tmpRecogidaComparable;
+            _tmpRecogidaComparable = _cursor.getLong(_cursorIndexOfRecogidaComparable);
+            _item.setRecogidaComparable(_tmpRecogidaComparable);
+            final long _tmpDevolucionComparable;
+            _tmpDevolucionComparable = _cursor.getLong(_cursorIndexOfDevolucionComparable);
+            _item.setDevolucionComparable(_tmpDevolucionComparable);
+            final double _tmpPrecioTotal;
+            _tmpPrecioTotal = _cursor.getDouble(_cursorIndexOfPrecioTotal);
             _item.setPrecioTotal(_tmpPrecioTotal);
             _result.add(_item);
           }
@@ -435,8 +436,8 @@ public final class ReservaDao_Impl implements ReservaDao {
   }
 
   @Override
-  public LiveData<List<Reserva>> getReservasOrderByFechaDevolucion() {
-    final String _sql = "SELECT * FROM reserva ORDER BY fechaDevolucion ASC";
+  public LiveData<List<Reserva>> getReservasOrderByDevolucion() {
+    final String _sql = "SELECT * FROM reserva ORDER BY devolucionComparable ASC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[] {"reserva"}, false, new Callable<List<Reserva>>() {
       @Override
@@ -448,7 +449,11 @@ public final class ReservaDao_Impl implements ReservaDao {
           final int _cursorIndexOfNombreCliente = CursorUtil.getColumnIndexOrThrow(_cursor, "nombreCliente");
           final int _cursorIndexOfMovilCliente = CursorUtil.getColumnIndexOrThrow(_cursor, "movilCliente");
           final int _cursorIndexOfFechaRecogida = CursorUtil.getColumnIndexOrThrow(_cursor, "fechaRecogida");
+          final int _cursorIndexOfHoraRecogida = CursorUtil.getColumnIndexOrThrow(_cursor, "horaRecogida");
+          final int _cursorIndexOfRecogidaComparable = CursorUtil.getColumnIndexOrThrow(_cursor, "recogidaComparable");
           final int _cursorIndexOfFechaDevolucion = CursorUtil.getColumnIndexOrThrow(_cursor, "fechaDevolucion");
+          final int _cursorIndexOfHoraDevolucion = CursorUtil.getColumnIndexOrThrow(_cursor, "horaDevolucion");
+          final int _cursorIndexOfDevolucionComparable = CursorUtil.getColumnIndexOrThrow(_cursor, "devolucionComparable");
           final int _cursorIndexOfPrecioTotal = CursorUtil.getColumnIndexOrThrow(_cursor, "precioTotal");
           final List<Reserva> _result = new ArrayList<Reserva>(_cursor.getCount());
           while (_cursor.moveToNext()) {
@@ -467,18 +472,28 @@ public final class ReservaDao_Impl implements ReservaDao {
             }
             final long _tmpFechaRecogida;
             _tmpFechaRecogida = _cursor.getLong(_cursorIndexOfFechaRecogida);
+            final boolean _tmpHoraRecogida;
+            final int _tmp;
+            _tmp = _cursor.getInt(_cursorIndexOfHoraRecogida);
+            _tmpHoraRecogida = _tmp != 0;
             final long _tmpFechaDevolucion;
             _tmpFechaDevolucion = _cursor.getLong(_cursorIndexOfFechaDevolucion);
-            _item = new Reserva(_tmpNombreCliente,_tmpMovilCliente,_tmpFechaRecogida,_tmpFechaDevolucion);
+            final boolean _tmpHoraDevolucion;
+            final int _tmp_1;
+            _tmp_1 = _cursor.getInt(_cursorIndexOfHoraDevolucion);
+            _tmpHoraDevolucion = _tmp_1 != 0;
+            _item = new Reserva(_tmpNombreCliente,_tmpMovilCliente,_tmpFechaRecogida,_tmpHoraRecogida,_tmpFechaDevolucion,_tmpHoraDevolucion);
             final int _tmpId;
             _tmpId = _cursor.getInt(_cursorIndexOfId);
             _item.setId(_tmpId);
-            final Double _tmpPrecioTotal;
-            if (_cursor.isNull(_cursorIndexOfPrecioTotal)) {
-              _tmpPrecioTotal = null;
-            } else {
-              _tmpPrecioTotal = _cursor.getDouble(_cursorIndexOfPrecioTotal);
-            }
+            final long _tmpRecogidaComparable;
+            _tmpRecogidaComparable = _cursor.getLong(_cursorIndexOfRecogidaComparable);
+            _item.setRecogidaComparable(_tmpRecogidaComparable);
+            final long _tmpDevolucionComparable;
+            _tmpDevolucionComparable = _cursor.getLong(_cursorIndexOfDevolucionComparable);
+            _item.setDevolucionComparable(_tmpDevolucionComparable);
+            final double _tmpPrecioTotal;
+            _tmpPrecioTotal = _cursor.getDouble(_cursorIndexOfPrecioTotal);
             _item.setPrecioTotal(_tmpPrecioTotal);
             _result.add(_item);
           }

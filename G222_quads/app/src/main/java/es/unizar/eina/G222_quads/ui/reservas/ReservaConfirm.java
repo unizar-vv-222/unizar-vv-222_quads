@@ -85,8 +85,10 @@ public class ReservaConfirm extends AppCompatActivity {
 
         long fechaInicio = intent.getLongExtra(ReservaModify.RESERVA_FECHA_RECOGIDA, -1);
         long fechaFin = intent.getLongExtra(ReservaModify.RESERVA_FECHA_DEVOLUCION, -1);
+        boolean horaInicio = intent.getBooleanExtra(ReservaModify.RESERVA_HORA_RECOGIDA, false);
+        boolean horaFin = intent.getBooleanExtra(ReservaModify.RESERVA_HORA_DEVOLUCION, false);
 
-        reserva = new Reserva(nombre, movil, fechaInicio, fechaFin);
+        reserva = new Reserva(nombre, movil, fechaInicio, horaInicio, fechaFin, horaFin);
 
         if (intent.hasExtra(ReservaModify.RESERVA_ID)) {
             reserva.setId(intent.getIntExtra(ReservaModify.RESERVA_ID, 0));
@@ -106,7 +108,8 @@ public class ReservaConfirm extends AppCompatActivity {
         String nombre = reserva.getNombreCliente() == null ? "" : reserva.getNombreCliente();
         tvCliente.setText("Cliente: " + nombre);
 
-        tvFechas.setText(DateUtils.toHumanRange(reserva.getFechaRecogida(), reserva.getFechaDevolucion()));
+        tvFechas.setText(DateUtils.toHumanRange(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
+                reserva.getFechaDevolucion(), reserva.getHoraDevolucion()));
     }
 
     private void pintarListaSinPrecios() {
@@ -123,7 +126,8 @@ public class ReservaConfirm extends AppCompatActivity {
             return;
         }
 
-        long dias = DateUtils.daysBetween(reserva.getFechaRecogida(), reserva.getFechaDevolucion());
+        double dias = DateUtils.daysBetween(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
+                reserva.getFechaDevolucion(), reserva.getHoraDevolucion());
 
         mReservaQuadCascosViewModel.getPreciosParaReservaAsync(
                 reserva.getId(),
@@ -169,7 +173,9 @@ public class ReservaConfirm extends AppCompatActivity {
                 mReservaViewModel.recalcularPrecio(
                         reserva.getId(),
                         reserva.getFechaRecogida(),
-                        reserva.getFechaDevolucion()
+                        reserva.getHoraRecogida(),
+                        reserva.getFechaDevolucion(),
+                        reserva.getHoraDevolucion()
                 );
 
                 mostrarDialogoConfirmacion();
@@ -183,7 +189,9 @@ public class ReservaConfirm extends AppCompatActivity {
             mReservaViewModel.recalcularPrecio(
                     reserva.getId(),
                     reserva.getFechaRecogida(),
-                    reserva.getFechaDevolucion()
+                    reserva.getHoraRecogida(),
+                    reserva.getFechaDevolucion(),
+                    reserva.getHoraDevolucion()
             );
             mostrarDialogoConfirmacion();
         }

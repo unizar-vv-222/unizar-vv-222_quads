@@ -68,6 +68,14 @@ public class QuadViewModel extends AndroidViewModel {
         return mRepository.getAvailableQuads(inicio, horaInicio, fin, horaFin);
     }
 
+    public LiveData<List<Quad>> getAvailableQuadsExcludingReserva(long inicio, boolean horaInicio,
+                                                                  long fin, boolean horaFin,
+                                                                  int reservaId) {
+        return mRepository.getAvailableQuadsExcludingReserva(
+                inicio, horaInicio, fin, horaFin, reservaId
+        );
+    }
+
     public Quad getQuadByMatriculaSync(String matricula) {
         return mRepository.getQuadByMatriculaSync(matricula);
     }

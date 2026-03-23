@@ -106,11 +106,27 @@ public class QuadRepository {
         );
     }
 
-    public LiveData<List<Quad>> getAvailableQuads(long fechaInicio, boolean horaInicio, long fechaFin, boolean horaFin) {
+    public LiveData<List<Quad>> getAvailableQuads(long fechaInicio, boolean horaInicio,
+                                                  long fechaFin, boolean horaFin) {
 
         long recogidaComparable = DateUtils.slotToMillis(fechaInicio, horaInicio);
-        long devolucionComparable = DateUtils.slotToMillis(fechaFin, horaFin);
+        long devolucionComparable = DateUtils.endExclusiveMillis(fechaFin, horaFin);
+
         return mQuadDao.getAvailableQuads(recogidaComparable, devolucionComparable);
+    }
+
+    public LiveData<List<Quad>> getAvailableQuadsExcludingReserva(long fechaInicio, boolean horaInicio,
+                                                                  long fechaFin, boolean horaFin,
+                                                                  int reservaId) {
+
+        long recogidaComparable = DateUtils.slotToMillis(fechaInicio, horaInicio);
+        long devolucionComparable = DateUtils.endExclusiveMillis(fechaFin, horaFin);
+
+        return mQuadDao.getAvailableQuadsExcludingReserva(
+                recogidaComparable,
+                devolucionComparable,
+                reservaId
+        );
     }
 
     public Quad getQuadByMatriculaSync(String matricula) {
