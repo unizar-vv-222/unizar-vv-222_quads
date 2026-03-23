@@ -1,13 +1,16 @@
 package es.unizar.eina.g222_quads.ui.quads;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
 import com.google.android.material.button.MaterialButton;
 import es.unizar.eina.g222_quads.R;
+<<<<<<< HEAD
 import es.unizar.eina.g222_quads.database.QuadRepository;
+=======
+import es.unizar.eina.g222_quads.ui.BaseActivity;
+>>>>>>> a16547ba0d740417beba98142522790da2d8bd89
 import es.unizar.eina.g222_quads.ui.reservas.G222_ReservasList;
 import es.unizar.eina.g222_quads.ui.reservas.TestReservaActivity;
 
@@ -19,7 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
  * Lanza las actividades correspondientes a cada módulo mediante botones.
  */
 
-public class G222_quads extends AppCompatActivity {
+public class G222_quads extends BaseActivity {
 
 
     private QuadViewModel mQuadViewModel;
@@ -28,6 +31,7 @@ public class G222_quads extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         // Carga el diseño de los botones
         setContentView(R.layout.activity_g222_main);

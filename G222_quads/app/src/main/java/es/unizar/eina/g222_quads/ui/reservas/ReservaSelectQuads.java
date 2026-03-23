@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,10 +19,11 @@ import java.util.Map;
 
 import es.unizar.eina.g222_quads.R;
 import es.unizar.eina.g222_quads.database.Quad;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 import es.unizar.eina.g222_quads.ui.quads.QuadViewModel;
 import es.unizar.eina.g222_quads.utils.DateUtils;
 
-public class ReservaSelectQuads extends AppCompatActivity {
+public class ReservaSelectQuads extends BaseActivity {
 
     private QuadViewModel mQuadViewModel;
     private ReservaQuadCascosViewModel mReservaQuadViewModel;

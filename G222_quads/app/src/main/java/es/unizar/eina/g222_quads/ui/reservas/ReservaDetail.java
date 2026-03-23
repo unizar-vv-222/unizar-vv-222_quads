@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import es.unizar.eina.g222_quads.R;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 import es.unizar.eina.send.SendAbstraction;
 import es.unizar.eina.send.SendAbstractionImpl;
 
-public class ReservaDetail extends AppCompatActivity {
+public class ReservaDetail extends BaseActivity {
 
     private String nombre;
     private String telefono;

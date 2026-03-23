@@ -3,12 +3,12 @@ package es.unizar.eina.g222_quads.ui.reservas;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import es.unizar.eina.g222_quads.R;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 import es.unizar.eina.test.ReservaTestRunner;
 
-public class TestReservaActivity extends AppCompatActivity {
+public class TestReservaActivity extends BaseActivity {
 
     private ReservaTestRunner testRunner;
 

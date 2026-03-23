@@ -1,6 +1,5 @@
 package es.unizar.eina.g222_quads.ui.quads;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
@@ -14,12 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unizar.eina.g222_quads.R;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 
 /**
  * Activity única para CREAR o EDITAR un quad.
  * El modo (crear / editar) se decide en función de los extras del Intent.
  */
-public class QuadModify extends AppCompatActivity {
+public class QuadModify extends BaseActivity {
 
     /* =========================================================
        CLAVES DE RESULTADO (Intent)

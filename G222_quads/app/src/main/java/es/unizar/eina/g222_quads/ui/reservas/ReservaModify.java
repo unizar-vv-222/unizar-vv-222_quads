@@ -11,17 +11,16 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.Calendar;
 
 import es.unizar.eina.g222_quads.R;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 import es.unizar.eina.g222_quads.utils.DateUtils;
 
 /**
  * Activity para CREAR o EDITAR los datos básicos de una reserva.
  */
-public class ReservaModify extends AppCompatActivity {
+public class ReservaModify extends BaseActivity {
 
     /* =========================
        EXTRAS
