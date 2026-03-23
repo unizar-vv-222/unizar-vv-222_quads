@@ -4,7 +4,7 @@
             "outputFile": "es.unizar.eina.G222_quads.app-mergeDebugResources-2:/values-land/values-land.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\77ain\\.gradle\\caches\\transforms-4\\434c687a2d7b09d110732115639ce324\\transformed\\appcompat-1.7.0\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\77ain\\.gradle\\caches\\transforms-4\\b0b0f68ddf3dc8b013cf4c3f87ad7c33\\transformed\\appcompat-1.7.1\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\77ain\\.gradle\\caches\\transforms-4\\030a2e22fd6b449ac4953bc587e83630\\transformed\\material-1.13.0\\res\\values-land\\values-land.xml",
+                    "source": "C:\\Users\\77ain\\.gradle\\caches\\transforms-4\\0cfb8bf5de2bb8adb53f9a8183b58f72\\transformed\\material-1.13.0\\res\\values-land\\values-land.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,22,31,36",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
