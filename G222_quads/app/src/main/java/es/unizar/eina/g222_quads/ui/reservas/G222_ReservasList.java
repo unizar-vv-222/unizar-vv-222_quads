@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import es.unizar.eina.g222_quads.R;
 import es.unizar.eina.g222_quads.database.Reserva;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 
 import static androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 
@@ -22,7 +22,7 @@ import static androidx.activity.result.contract.ActivityResultContracts.StartAct
  * Lista de reservas.
  * Permite crear, editar y eliminar reservas.
  */
-public class G222_ReservasList extends AppCompatActivity {
+public class G222_ReservasList extends BaseActivity {
 
     private ReservaViewModel mReservaViewModel;
     private ReservaListAdapter mAdapter;

@@ -3,12 +3,12 @@ package es.unizar.eina.g222_quads.ui.quads;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import es.unizar.eina.g222_quads.R;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 import es.unizar.eina.test.QuadTestRunner;
 
-public class TestQuadActivity extends AppCompatActivity {
+public class TestQuadActivity extends BaseActivity {
 
     private QuadTestRunner testRunner;
 

@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import es.unizar.eina.g222_quads.R;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 
-public class QuadDetail extends AppCompatActivity {
+public class QuadDetail extends BaseActivity {
 
     private String matricula;
     private boolean tipo;

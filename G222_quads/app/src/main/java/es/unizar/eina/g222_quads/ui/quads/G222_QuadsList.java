@@ -1,7 +1,6 @@
 package es.unizar.eina.g222_quads.ui.quads;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import es.unizar.eina.g222_quads.R;
 import es.unizar.eina.g222_quads.database.Quad;
+import es.unizar.eina.g222_quads.ui.BaseActivity;
 
 import static androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 
@@ -21,7 +21,7 @@ import static androidx.activity.result.contract.ActivityResultContracts.StartAct
  * Actividad principal.
  * Lista los quads existentes y permite crear, editar y eliminar.
  */
-public class G222_QuadsList extends AppCompatActivity {
+public class G222_QuadsList extends BaseActivity {
 
     private QuadViewModel mQuadViewModel;
     private QuadListAdapter mAdapter;
