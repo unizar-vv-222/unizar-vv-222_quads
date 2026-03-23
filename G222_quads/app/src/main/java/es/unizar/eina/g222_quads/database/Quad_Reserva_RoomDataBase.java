@@ -7,10 +7,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import es.unizar.eina.g222_quads.utils.DateUtils;
 
 @Database(entities = {Quad.class, Reserva.class, ReservaQuadCascos.class}, version = 7, exportSchema = false)
 public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
@@ -41,6 +40,16 @@ public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
         return INSTANCE;
     }
 
+    /**
+     * Convierte una fecha en formato dd/mm/aaaa a millis
+     */
+    public static long dateToMillis(int year, int month, int day) {
+        Calendar c = Calendar.getInstance();
+        c.set(year, month - 1, day, 0, 0, 0); // mes empieza en 0
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
+
     private static final Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -55,8 +64,8 @@ public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
                 // Población inicial de Reservas
                 ReservaDao rDao = INSTANCE.reservaDao();
 
-                long fechaRecogida = DateUtils.dateToMillis(2023, 10, 1);
-                long fechaDevolucion = DateUtils.dateToMillis(2023, 10, 5);
+                long fechaRecogida = dateToMillis(2023, 10, 1);
+                long fechaDevolucion = dateToMillis(2023, 10, 5);
 
                 rDao.insert(new Reserva("Cliente Ejemplo", "600123456",
                         fechaRecogida, false, fechaDevolucion, false));

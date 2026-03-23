@@ -53,16 +53,6 @@ public class DateUtils {
        ===================================== */
 
     /**
-     * Convierte una fecha en formato dd/mm/aaaa a millis
-     */
-    public static long dateToMillis(int year, int month, int day) {
-        Calendar c = Calendar.getInstance();
-        c.set(year, month - 1, day, 0, 0, 0); // mes empieza en 0
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTimeInMillis();
-    }
-
-    /**
      * Normaliza una fecha a las 00:00:00.000
      * (para comparar días sin horas)
      */
