@@ -7,8 +7,11 @@ import android.widget.Button;
 
 import com.google.android.material.button.MaterialButton;
 import es.unizar.eina.g222_quads.R;
+import es.unizar.eina.g222_quads.database.QuadRepository;
 import es.unizar.eina.g222_quads.ui.reservas.G222_ReservasList;
 import es.unizar.eina.g222_quads.ui.reservas.TestReservaActivity;
+
+import androidx.lifecycle.ViewModelProvider;
 
 /**
  * Actividad principal de la aplicación.
@@ -17,6 +20,10 @@ import es.unizar.eina.g222_quads.ui.reservas.TestReservaActivity;
  */
 
 public class G222_quads extends AppCompatActivity {
+
+
+    private QuadViewModel mQuadViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,4 +60,12 @@ public class G222_quads extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+
+
+    public QuadRepository getQuadRespositoryMain(){
+        mQuadViewModel = new ViewModelProvider(this).get(QuadViewModel.class);
+        return mQuadViewModel.getQuadRepository();
+    }
+
 }

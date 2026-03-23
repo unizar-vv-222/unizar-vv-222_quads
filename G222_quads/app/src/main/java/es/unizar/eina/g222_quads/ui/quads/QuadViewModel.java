@@ -80,4 +80,12 @@ public class QuadViewModel extends AndroidViewModel {
         return mRepository.getQuadByMatriculaSync(matricula);
     }
 
+
+
+
+    /** Pillar numero de quads */
+    public QuadRepository getQuadRepository() {
+        return mRepository;
+    }
+
 }

@@ -432,6 +432,25 @@ public final class QuadDao_Impl implements QuadDao {
   }
 
   @Override
+  public int getNumQuad() {
+    final String _sql = "SELECT COUNT(*) FROM quad ";
+    return DBUtil.performBlocking(__db, true, false, (_connection) -> {
+      final SQLiteStatement _stmt = _connection.prepare(_sql);
+      try {
+        final int _result;
+        if (_stmt.step()) {
+          _result = (int) (_stmt.getLong(0));
+        } else {
+          _result = 0;
+        }
+        return _result;
+      } finally {
+        _stmt.close();
+      }
+    });
+  }
+
+  @Override
   public int deleteByMatricula(final String matricula) {
     final String _sql = "DELETE FROM quad WHERE matricula = ?";
     return DBUtil.performBlocking(__db, false, true, (_connection) -> {

@@ -73,5 +73,10 @@ public interface QuadDao {
     @Query("SELECT * FROM quad WHERE matricula = :matricula LIMIT 1")
     Quad getQuadByMatricula(String matricula);
 
+
+    //Pillar numero de quads
+    @Query("SELECT COUNT(*) FROM quad ")
+    int getNumQuad();
+
 }
 

@@ -7,6 +7,8 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import es.unizar.eina.g222_quads.utils.DateUtils;
 
@@ -139,5 +141,17 @@ public class QuadRepository {
         }
     }
 
+
+    /**
+     * Pillar el numero de quads.
+     */
+    public int numQuads() {
+        Future<Integer> numQuads = databaseWriteExecutor.submit(mQuadDao::getNumQuad);
+        try {
+            return numQuads.get();
+        } catch (ExecutionException | InterruptedException e) {
+            return -1;
+        }
+    }
 
 }
