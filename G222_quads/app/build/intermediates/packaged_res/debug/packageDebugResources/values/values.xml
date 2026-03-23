@@ -87,13 +87,13 @@
     <string name="test_sistema_quads">Test Quads </string>
     <string name="test_sistema_reservas">Test Reservas </string>
     <string name="tipo">Tipo</string>
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="Base.Theme.G222_quads" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Base.Theme.G222_quads" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         
         
     </style>

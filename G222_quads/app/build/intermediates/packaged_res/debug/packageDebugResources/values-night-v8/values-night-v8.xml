@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.Theme.G222_quads" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Base.Theme.G222_quads" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         
         
     </style>
