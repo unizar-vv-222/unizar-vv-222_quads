@@ -58,6 +58,14 @@ public interface ReservaDao {
     void updatePrecio(int reservaId, double precio);
 
     /**
+     * Recupera la reserva que conicida con el id pasado como parámetro.
+     * @return reserva
+     */
+    @Query("SELECT * FROM reserva WHERE id = :reservaId ")
+    Reserva getReserva(int reservaId);
+
+
+    /**
      * Recupera todos las reservas ordenadas por nombreCliente.
      * @return lista observable (LiveData) de reservas
      */

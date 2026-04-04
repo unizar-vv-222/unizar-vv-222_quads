@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import es.unizar.eina.g222_quads.database.QuadRepository;
 import es.unizar.eina.g222_quads.database.Reserva;
 import es.unizar.eina.g222_quads.database.ReservaRepository;
 
@@ -78,4 +79,7 @@ public class ReservaViewModel extends AndroidViewModel {
         mRepository.insertAndReturnIdAsync(reserva, callback);
     }
 
+    public ReservaRepository getReservaRepository() {
+        return mRepository;
+    }
 }

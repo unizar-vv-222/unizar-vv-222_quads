@@ -182,6 +182,16 @@ public class ReservaRepository {
         }
     }
 
+    /** Devuelve un objeto de tipo Reserva
+     */
+    public Reserva getReservaByIdSync( int id ){
+        try {
+            return databaseWriteExecutor.submit(() -> mReservaDao.getReserva(id)).get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     /** Devuelve un objeto de tipo LiveData con todas las reservas.
      * Room ejecuta todas las consultas en un hilo separado.
      * El objeto LiveData notifica a los observadores cuando los datos cambian.

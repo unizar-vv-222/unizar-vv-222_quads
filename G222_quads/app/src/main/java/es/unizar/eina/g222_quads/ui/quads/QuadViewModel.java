@@ -83,7 +83,7 @@ public class QuadViewModel extends AndroidViewModel {
 
 
 
-    /** Pillar numero de quads */
+
     public QuadRepository getQuadRepository() {
         return mRepository;
     }
