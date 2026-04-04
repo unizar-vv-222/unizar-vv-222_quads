@@ -21,7 +21,7 @@ public class ReservaDeleteTest {
     public ActivityScenarioRule<G222_quads> scenarioRule = new ActivityScenarioRule<>(G222_quads.class);
 
     @Test
-    public void testDeleteReservaExistente() {
+    public void testDeleteExistingReserva() {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
             Reserva r = new Reserva("A BORRAR", "612458920", 1735689600000L, true, 1735776000000L, false);
@@ -38,7 +38,7 @@ public class ReservaDeleteTest {
     }
 
     @Test
-    public void testDeleteReservaInexistente() {
+    public void testDeleteNotExistingReserva() {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
             Reserva r = new Reserva("No Existe", "612458920", 1735689600000L, false, 1735776000000L, false);

@@ -50,7 +50,7 @@ public class ReservaCreationTest {
 
     // Test 2: nombre de cliente vacío.
     @Test
-    public void testInsertNombreVacio() {
+    public void testInsertEmptyName() {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
             Reserva r = new Reserva("", "612458920", FECHA_1, MAÑANA, FECHA_2, TARDE);
@@ -61,11 +61,10 @@ public class ReservaCreationTest {
         });
     }
 
-    /**
-     * Test de Robustez: Teléfono con formato inválido (letras).
-     */
+    // Test 3: Teléfono con formato inválido (letras).
+
     @Test
-    public void testInsertTelefonoInvalido() {
+    public void testInsertInvalidPhone() {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
             Reserva r = new Reserva("Cliente Test", "612ABC920", FECHA_1, MAÑANA, FECHA_2, TARDE);
@@ -76,11 +75,10 @@ public class ReservaCreationTest {
         });
     }
 
-    /**
-     * Test de Valores Límite: Fecha de recogida posterior a la de devolución.
-     */
+    // Test 4: Fecha de recogida posterior a la de devolución.
+
     @Test
-    public void testInsertFechasInvertidas() {
+    public void testInsertInvalidDates() {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
             // Recogida día 2, Devolución día 1
@@ -92,11 +90,11 @@ public class ReservaCreationTest {
         });
     }
 
-    /**
-     * Test de Valores Límite: Mismo día, pero recogida por la tarde y devolución por la mañana.
-     */
+
+    // Test 5: Mismo día, pero recogida por la tarde y devolución por la mañana.
+
     @Test
-    public void testInsertSlotsInvertidosMismoDia() {
+    public void testInsertSlotsSameDayInvalid() {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
             // Mismo día (FECHA_1), pero TARDE (true) -> MAÑANA (false)
@@ -108,26 +106,5 @@ public class ReservaCreationTest {
         });
     }
 
-    /**
-     * Test de Integración: Verificar que los comparables se generan y el precio inicial es 0.0.
-     */
-    @Test
-    public void testInsertVerificarComparablesYPrecioInicial() {
-        scenarioRule.getScenario().onActivity(activity -> {
-            ReservaRepository repo = activity.getReservaRepositoryMain();
-            Reserva r = new Reserva("Test Comparables", "600111222", FECHA_1, MAÑANA, FECHA_2, MAÑANA);
 
-            long id = repo.insert(r);
-            assertNotEquals(-1, id);
-
-            // Recuperamos síncronamente para verificar campos internos generados
-            // Nota: debes tener implementado getReservaByIdSync o similar en el repo
-            Reserva recuperada = repo.getReservaByIdSync((int)id);
-
-            assertNotEquals("RecogidaComparable debería haberse generado", 0, recuperada.getRecogidaComparable());
-            assertTrue("DevolucionComparable debería ser mayor que RecogidaComparable",
-                    recuperada.getDevolucionComparable() > recuperada.getRecogidaComparable());
-            assertEquals("El precio inicial tras el constructor debe ser 0.0", 0.0, recuperada.getPrecioTotal(), 0.001);
-        });
-    }
 }

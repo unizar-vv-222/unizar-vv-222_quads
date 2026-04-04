@@ -1,7 +1,6 @@
 package es.unizar.eina.g222_quads;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -21,7 +20,7 @@ public class ReservaUpdateTest {
     public ActivityScenarioRule<G222_quads> scenarioRule = new ActivityScenarioRule<>(G222_quads.class);
 
     @Test
-    public void testUpdateDatosValidos() {
+    public void testUpdateValidData() {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
             Reserva r = new Reserva("Original", "612458920", 1735689600000L, false, 1735776000000L, false);
@@ -42,7 +41,7 @@ public class ReservaUpdateTest {
     }
 
     @Test
-    public void testUpdateDatosInvalidados() {
+    public void testUpdateInvalidData() {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
             Reserva r = new Reserva("Valido", "612458920", 1735689600000L, false, 1735776000000L, false);
