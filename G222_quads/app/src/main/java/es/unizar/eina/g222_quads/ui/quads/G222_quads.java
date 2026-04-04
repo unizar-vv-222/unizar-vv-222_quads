@@ -6,11 +6,9 @@ import android.widget.Button;
 
 import com.google.android.material.button.MaterialButton;
 import es.unizar.eina.g222_quads.R;
-<<<<<<< HEAD
 import es.unizar.eina.g222_quads.database.QuadRepository;
-=======
 import es.unizar.eina.g222_quads.ui.BaseActivity;
->>>>>>> a16547ba0d740417beba98142522790da2d8bd89
+
 import es.unizar.eina.g222_quads.ui.reservas.G222_ReservasList;
 import es.unizar.eina.g222_quads.ui.reservas.TestReservaActivity;
 

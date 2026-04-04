@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "es.unizar.eina.g222_quads.app-mergeDebugResources-2:/values-v35/values-v35.xml",
+            "outputFile": "es.unizar.eina.g222_quads.app-mergeDebugResources-33:/values-v35/values-v35.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\77ain\\.gradle\\caches\\8.11.1\\transforms\\2ec2c1b4624284af352aab39c1cbe9bc\\transformed\\material-1.13.0\\res\\values-v35\\values-v35.xml",
+                    "source": "/home/paula/.gradle/caches/8.11.1/transforms/2ec2c1b4624284af352aab39c1cbe9bc/transformed/material-1.13.0/res/values-v35/values-v35.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

@@ -32,14 +32,41 @@ public class ExampleInstrumentedTest {
     public void testCreationIncreasesNumberOfNotes() {
         scenarioRule.getScenario().onActivity(activity -> {
             // Acceso al repositorio a través de la actividad
-            int num = 0;
-            int num2 = 0;
             QuadRepository quadRepository = activity.getQuadRespositoryMain();
-            num = quadRepository.numQuads();
+            int cont_prev = quadRepository.numQuads();
             Quad q = new Quad("6767ABC", true, 65.0, "Rojo");
             quadRepository.insert(q);
-            num2 = quadRepository.numQuads();
-            assertEquals(num,num2);
+            int cont_post = quadRepository.numQuads();
+            assertEquals(cont_prev + 1, cont_post);
+        });
+    }
+
+    @Test
+    public void testCreationVerificationInfo() {
+        scenarioRule.getScenario().onActivity(activity -> {
+            // Acceso al repositorio a través de la actividad
+            QuadRepository quadRepository = activity.getQuadRespositoryMain();
+
+            String matricula = "1234ABC";
+            Boolean tipo = true;
+            Double precio = 55.0;
+            String descripcion = "Verde";
+            Quad quadOriginal = new Quad(matricula, tipo, precio, descripcion);
+
+            // 2. Insertamos el quad
+            quadRepository.insert(quadOriginal);
+
+            // 3. Recuperamos el quad (necesitarás un método en el repo que busque por matrícula)
+            Quad quadRecuperado = quadRepository.getQuadByMatriculaSync(matricula);
+
+            // 4. Verificación exhaustiva campo por campo [cite: 120]
+            assertNotNull("El quad no debería ser nulo", quadRecuperado);
+            assertEquals("La matrícula no coincide", matricula, quadRecuperado.getMatricula());
+            assertEquals("El tipo no coincide", tipo, quadRecuperado.getTipo());
+
+            // Usamo un delta para verificar que no haya imprecisiones a la hora de guardar, por ejemplo en formato binario
+            assertEquals("El precio no coincide", precio, quadRecuperado.getPrecio(), 0.01);
+            assertEquals("La descipción no coincide", descripcion, quadRecuperado.getDescripcion());
         });
     }
 
@@ -48,6 +75,7 @@ public class ExampleInstrumentedTest {
         scenarioRule.getScenario().onActivity(activity -> {
             QuadRepository quadRepository = activity.getQuadRespositoryMain();
             quadRepository.deleteByMatricula("6767ABC");
+            quadRepository.deleteByMatricula("1234ABC");
         });
     }
 
