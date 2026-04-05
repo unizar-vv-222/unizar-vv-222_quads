@@ -36,6 +36,7 @@ public class QuadDeleteTest {
         });
     }
 
+    // TEST DE BORRADO VÁLIDO
     @Test
     public void testDeleteExistingQuad() {
         scenarioRule.getScenario().onActivity(activity -> {
@@ -60,6 +61,7 @@ public class QuadDeleteTest {
         });
     }
 
+    // TEST DE BORRADO DE QUAD INEXISTENTE
     @Test
     public void testDeleteNonExistentQuad() {
         scenarioRule.getScenario().onActivity(activity -> {
@@ -77,6 +79,7 @@ public class QuadDeleteTest {
         });
     }
 
+    // TEST DE BORRADO COMPLETO
     @Test
     public void testDeleteAll() {
         scenarioRule.getScenario().onActivity(activity -> {
