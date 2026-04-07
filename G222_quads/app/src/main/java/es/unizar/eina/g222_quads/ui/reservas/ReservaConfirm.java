@@ -38,7 +38,7 @@ public class ReservaConfirm extends BaseActivity {
     private ConfirmQuadsAdapter adapter;
 
     private Reserva reserva;
-    private Map<String, Integer> cascosPorQuad = new HashMap<>();
+    private final Map<String, Integer> cascosPorQuad = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +88,8 @@ public class ReservaConfirm extends BaseActivity {
         boolean horaInicio = intent.getBooleanExtra(ReservaModify.RESERVA_HORA_RECOGIDA, false);
         boolean horaFin = intent.getBooleanExtra(ReservaModify.RESERVA_HORA_DEVOLUCION, false);
 
+        assert movil != null;
+        assert nombre != null;
         reserva = new Reserva(nombre, movil, fechaInicio, horaInicio, fechaFin, horaFin);
 
         if (intent.hasExtra(ReservaModify.RESERVA_ID)) {
