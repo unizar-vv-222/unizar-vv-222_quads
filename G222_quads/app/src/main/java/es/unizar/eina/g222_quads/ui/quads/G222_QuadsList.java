@@ -82,7 +82,7 @@ public class G222_QuadsList extends BaseActivity {
          ORD QUADS - FILTRO ORDENAR
         =========================== */
 
-        Button ordQuads = findViewById(R.id.ord_quads);
+        Button ordQuads = findViewById(R.id.orden_quads);
         ordQuads.setOnClickListener(v -> showSortDialog());
 
     }
