@@ -61,14 +61,6 @@ public class QuadTests {
             Log.d("TEST_QUAD", "Descripción inválida correctamente rechazada");
         }
 
-        // Tipo nulo
-        try {
-            Quad q = new Quad("3333ABC", null, 20.0, "Verde");
-            quadRepo.insert(q);
-        } catch (Throwable t) {
-            Log.d("TEST_QUAD", "Tipo inválido correctamente rechazado");
-        }
-
         // Matrícula inválida
         try {
             Quad q = new Quad("A24B", true, 65.0, "Rojo");
@@ -118,7 +110,7 @@ public class QuadTests {
         } catch (Throwable t) {
             Log.d("TEST_QUAD", ("Excepción inesperada al actualizar quad inexistente: " + t.getMessage()));
         }
-
+        /*
         // Poner null como tipo (solo si tipo es Boolean)
         try {
             q.setTipo(null);
@@ -127,6 +119,8 @@ public class QuadTests {
         } catch (Throwable t) {
             Log.d("TEST_QUAD", "Tipo null correctamente rechazado");
         }
+        */
+
 
         // Poner null como descripción
         try {

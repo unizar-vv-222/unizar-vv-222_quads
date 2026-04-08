@@ -32,8 +32,7 @@ public class QuadRepository {
     private static boolean esQuadValido(Quad q) {
         if (q.getMatricula() == null) return false;
         if (!q.getMatricula().matches("^[0-9]{4}[A-Z]{3}$")) return false;
-        if (q.getTipo() == null) return false;
-        if (q.getPrecio() == null || q.getPrecio() <= 0) return false;
+        if (q.getPrecio() <= 0) return false;
         if (q.getDescripcion() == null || q.getDescripcion().isEmpty()) return false;
         return true;
     }

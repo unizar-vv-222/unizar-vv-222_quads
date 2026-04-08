@@ -98,8 +98,8 @@ public class QuadListAdapter extends ListAdapter<Quad, QuadViewHolder> {
                                           @NonNull Quad newItem) {
 
             return oldItem.getMatricula().equals(newItem.getMatricula())
-                    && oldItem.getTipo().equals(newItem.getTipo())
-                    && oldItem.getPrecio().equals(newItem.getPrecio())
+                    && oldItem.getTipo() == newItem.getTipo()
+                    && oldItem.getPrecio() == newItem.getPrecio()
                     && oldItem.getDescripcion().equals(newItem.getDescripcion());
         }
     }

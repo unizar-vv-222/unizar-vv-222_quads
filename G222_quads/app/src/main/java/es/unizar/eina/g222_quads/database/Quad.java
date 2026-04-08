@@ -19,13 +19,12 @@ public class Quad {
     @ColumnInfo(name = "matricula")
     private String matricula;
 
-    @NonNull
-    @ColumnInfo(name = "tipo")
-    private Boolean tipo;
 
-    @NonNull
+    @ColumnInfo(name = "tipo")
+    private boolean tipo;
+
     @ColumnInfo(name = "precio")
-    private Double precio;
+    private double precio;
 
     @NonNull
     @ColumnInfo(name = "descripcion")
@@ -38,7 +37,7 @@ public class Quad {
      * @param precio Precio de alquiler del quad.
      * @param descripcion Descripción textual del quad.
      */
-    public Quad(@NonNull String matricula, @NotNull Boolean tipo, @NonNull Double precio, @NonNull String descripcion) {
+    public Quad(@NonNull String matricula,  boolean tipo, double precio, @NonNull String descripcion) {
         this.matricula = matricula;
         this.tipo = tipo;
         this.precio = precio;
@@ -56,15 +55,15 @@ public class Quad {
     }
 
     /** Devuelve el tipo del quad */
-    public Boolean getTipo(){
+    public boolean getTipo(){
         return this.tipo;
     }
 
     /** Permite actualizar el tipo del quad */
-    public void setTipo(Boolean tipo) { this.tipo = tipo; }
+    public void setTipo(boolean tipo) { this.tipo = tipo; }
 
     /** Devuelve el precio del quad */
-    public Double getPrecio(){
+    public double getPrecio(){
         return this.precio;
     }
 
