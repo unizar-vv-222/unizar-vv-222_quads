@@ -157,7 +157,7 @@ public class ReservaSelectQuadsAdapter
         public boolean areContentsTheSame(
                 @NonNull Quad oldItem, @NonNull Quad newItem
         ) {
-            return oldItem.getTipo().equals(newItem.getTipo());
+            return oldItem.getTipo() == newItem.getTipo();
         }
     }
 }

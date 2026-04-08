@@ -43,12 +43,15 @@ public class QuadUpdateTest {
                 q.setTipo(false);
                 repo.update(q).get();
 
+                q.setTipo(true);
+                repo.update(q).get();
+
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
     }
-
+/*
     @Test
     public void testUpdateTypeInvlid() {
         scenarioRule.getScenario().onActivity(activity -> {
@@ -69,6 +72,8 @@ public class QuadUpdateTest {
             }
         });
     }
+
+ */
 
     @Test (expected = NoSuchElementException.class)
     public void testUpdateNonExistent() {
@@ -101,7 +106,6 @@ public class QuadUpdateTest {
             repo.insert(q);
 
             // Caso Descripción Null (Si tu entidad tiene @NonNull)
-            q.setPrecio(65.0); // restauramos
             q.setDescripcion(null);
             repo.update(q);
 

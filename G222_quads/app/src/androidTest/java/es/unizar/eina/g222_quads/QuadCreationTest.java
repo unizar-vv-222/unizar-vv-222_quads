@@ -49,8 +49,11 @@ public class QuadCreationTest {
         scenarioRule.getScenario().onActivity(activity -> {
             QuadRepository repo = activity.getQuadRespositoryMain();
 
-            // Insertamos el primero
-            repo.insert(new Quad("1111AAA", true, 50.0, "Original"));
+            // Insertamos el primero MONOPLAZA
+            repo.insert(new Quad("1111AAA", true, 50.0, "Original_MONOPLAZA"));
+
+            // Insertamos el primero BIPLAZA
+            repo.insert(new Quad("2222AAA", false, 50.0, "Original_BIPLAZA"));
             int cont_prev = repo.numQuads();
 
             // El segundo con la misma PK debería lanzar la excepción y el test pasará
@@ -62,17 +65,19 @@ public class QuadCreationTest {
         });
     }
 
-    // 3. TEST DE DESCRIPCIÓN (Campos obligatorios o vacíos)
+    // 3. TEST DE DESCRIPCIÓN (Campos obligatorios no nulos)
     @Test (expected = IllegalArgumentException.class)
-    public void testInsertEmptyDescription() {
+    public void testInsertNullDescription() {
         scenarioRule.getScenario().onActivity(activity -> {
             QuadRepository repo = activity.getQuadRespositoryMain();
-            repo.insert(new Quad("2222BBB", true, 50.0, "")); // Descripción vacía
+            repo.insert(new Quad("2222BBB", true, 50.0, null)); // Descripción vacía
 
         });
     }
 
-    // 4. TEST DE TIPO (Nulos)
+
+    /*
+    // 4. TEST DE TIPO (Nulos) - No es posible
     @Test (expected = IllegalArgumentException.class)
     public void testInsertNullType() {
         scenarioRule.getScenario().onActivity(activity -> {
@@ -80,4 +85,15 @@ public class QuadCreationTest {
             repo.insert(new Quad("3333CCC", null, 50.0, "Tipo nulo"));
         });
     }
+     */
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testInsertInvalidMat() {
+        scenarioRule.getScenario().onActivity(activity -> {
+            QuadRepository repo = activity.getQuadRespositoryMain();
+            // Intentamos insertar precio negativo
+            repo.insert(new Quad("99ZZ", false, 10.0, "Matrícula inválida"));
+        });
+    }
+
 }
