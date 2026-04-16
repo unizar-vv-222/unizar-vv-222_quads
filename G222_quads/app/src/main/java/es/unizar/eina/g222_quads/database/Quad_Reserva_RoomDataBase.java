@@ -1,6 +1,7 @@
 package es.unizar.eina.g222_quads.database;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -15,7 +16,9 @@ import java.util.concurrent.Executors;
 public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
 
     public abstract QuadDao quadDao();
+
     public abstract ReservaDao reservaDao();
+
     public abstract ReservaQuadCascosDao reservaQuadCascosDao();
 
     private static volatile Quad_Reserva_RoomDataBase INSTANCE;

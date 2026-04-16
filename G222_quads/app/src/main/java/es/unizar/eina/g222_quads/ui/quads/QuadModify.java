@@ -25,9 +25,9 @@ public class QuadModify extends BaseActivity {
        CLAVES DE RESULTADO (Intent)
        ========================================================= */
 
-    public static final String QUAD_MATRICULA   = "matricula";
-    public static final String QUAD_TIPO        = "tipo";
-    public static final String QUAD_PRECIO      = "precio";
+    public static final String QUAD_MATRICULA = "matricula";
+    public static final String QUAD_TIPO = "tipo";
+    public static final String QUAD_PRECIO = "precio";
     public static final String QUAD_DESCRIPCION = "descripcion";
 
     /* =========================================================
@@ -134,15 +134,15 @@ public class QuadModify extends BaseActivity {
             return;
         }
 
-        String matricula   = mRowMatricula.getText().toString().trim();
+        String matricula = mRowMatricula.getText().toString().trim();
         String descripcion = mDescripcionText.getText().toString().trim();
         double precio;
         try {
-            precio      = parsePrecio(mPrecio.getText().toString().trim());
-        } catch(NumberFormatException e) {
+            precio = parsePrecio(mPrecio.getText().toString().trim());
+        } catch (NumberFormatException e) {
             return;
         }
-        boolean tipo       = (mTipo.getCheckedRadioButtonId() == R.id.tipo_monoplaza);
+        boolean tipo = (mTipo.getCheckedRadioButtonId() == R.id.tipo_monoplaza);
 
         Intent replyIntent = new Intent();
         replyIntent.putExtra(QUAD_MATRICULA, matricula);

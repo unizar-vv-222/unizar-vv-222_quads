@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.widget.Button;
 
 import android.content.Intent;
@@ -82,7 +83,7 @@ public class G222_QuadsList extends BaseActivity {
          ORD QUADS - FILTRO ORDENAR
         =========================== */
 
-        Button ordQuads = findViewById(R.id.ord_quads);
+        Button ordQuads = findViewById(R.id.orden_quads);
         ordQuads.setOnClickListener(v -> showSortDialog());
 
     }
@@ -187,7 +188,7 @@ public class G222_QuadsList extends BaseActivity {
     }
 
     private void showSortDialog() {
-        String[] options = {"Por matrícula", "Por tipo",  "Por precio"};
+        String[] options = {"Por matrícula", "Por tipo", "Por precio"};
 
         new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
                 .setTitle("Ordenar quads")

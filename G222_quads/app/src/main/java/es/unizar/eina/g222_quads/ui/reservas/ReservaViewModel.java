@@ -2,72 +2,241 @@ package es.unizar.eina.g222_quads.ui.reservas;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import es.unizar.eina.g222_quads.database.Reserva;
 import es.unizar.eina.g222_quads.database.ReservaRepository;
+import es.unizar.eina.g222_quads.utils.DateUtils;
 
 /**
- * ViewModel que expone la lista de quads y las operaciones CRUD al interfaz de usuario.
+ * ViewModel de reservas.
+ * Mantiene el estado de orden y filtro y expone una única lista
+ * observable para la UI.
  * Actúa como intermediario entre la UI y el repositorio.
  */
 public class ReservaViewModel extends AndroidViewModel {
 
-    private ReservaRepository mRepository;
+    // TIPOS DE ORDEN
+    public static final int ORDEN_NOMBRE = 0;
+    public static final int ORDEN_TELEFONO = 1;
+    public static final int ORDEN_RECOGIDA = 2;
+    public static final int ORDEN_DEVOLUCION = 3;
 
-    private final LiveData<List<Reserva>> mAllReservas;
+    // TIPOS DE FILTRO
+    public static final int FILTRO_TODAS = 0;
+    public static final int FILTRO_PREVISTAS = 1;
+    public static final int FILTRO_VIGENTES = 2;
+    public static final int FILTRO_CADUCADAS = 3;
+
+    // ATRIBUTOS
+    private final ReservaRepository mRepository;
+
+    // Lista final que observará la UI
+    private final MediatorLiveData<List<Reserva>> reservasUi = new MediatorLiveData<>();
+
+    // Fuente actual obtenida de BD según el orden
+    private LiveData<List<Reserva>> reservasOrdenadasSource;
+
+    // Última lista obtenida de BD
+    private List<Reserva> reservasBase = new ArrayList<>();
+
+    private int ordenActual = ORDEN_NOMBRE;
+    private int filtroActual = FILTRO_TODAS;
 
     /**
-     * Crea el ViewModel e inicializa el repositorio y la LiveData con todos los quads.
+     * Constructor de ReservaViewModel
+     *
      * @param application contexto de aplicación necesario para inicializar la base de datos
      */
-    public ReservaViewModel(Application application) {
+    public ReservaViewModel(@NonNull Application application) {
+
         super(application);
         mRepository = new ReservaRepository(application);
-        mAllReservas = mRepository.getAllReservas();
+        cambiarSourceOrdenada();
+
     }
 
     /* =========================
-       QUERIES
+       GETTERS DE ESTADO
+       ========================= */
+
+    public LiveData<List<Reserva>> getReservasUi() {
+        return reservasUi;
+    }
+
+    public int getOrdenActual() {
+        return ordenActual;
+    }
+
+    public int getFiltroActual() {
+        return filtroActual;
+    }
+
+    /* =========================
+       CAMBIO DE ORDEN / FILTRO
        ========================= */
 
     /**
-     * Devuelve la LiveData con todos los quads almacenados.
-     * @return lista observable de quads
+     * Cambia el orden actual y refresca la lista.
+     * El filtro se mantiene.
+     *
+     * @param nuevoOrden nuevo orden de la lista
      */
-    LiveData<List<Reserva>> getAllReservas() { return mAllReservas; }
+    public void setOrden(int nuevoOrden) {
 
-    public LiveData<List<Reserva>> getReservasOrderByNombre() {
-        return mRepository.getReservasOrderByNombre();
+        if (ordenActual != nuevoOrden) {
+            ordenActual = nuevoOrden;
+            cambiarSourceOrdenada();
+        }
+
     }
 
-    public LiveData<List<Reserva>> getReservasOrderByTelefono() {
-        return mRepository.getReservasOrderByTelefono();
+    /**
+     * Cambia el filtro actual y refresca la lista.
+     * El orden se mantiene.
+     *
+     * @param nuevoFiltro nuevo filtro de la lista
+     */
+    public void setFiltro(int nuevoFiltro) {
+
+        if (filtroActual != nuevoFiltro) {
+            filtroActual = nuevoFiltro;
+            publicarListaFiltrada();
+        }
+
     }
 
-    public LiveData<List<Reserva>> getReservasOrderByFechaRecogida() {
-        return mRepository.getReservasOrderByRecogida();
+    /* =========================
+       FUENTE ORDENADA DESDE BD
+       ========================= */
+
+    /**
+     * Cambia la fuente observada de BD según el orden actual.
+     * Cada vez que llega una nueva lista desde BD, se reaplica el filtro.
+     */
+    private void cambiarSourceOrdenada() {
+
+        if (reservasOrdenadasSource != null) {
+            reservasUi.removeSource(reservasOrdenadasSource);
+        }
+
+        reservasOrdenadasSource = getSourceByOrden(ordenActual);
+
+        reservasUi.addSource(reservasOrdenadasSource, reservas -> {
+            reservasBase = (reservas != null) ? new ArrayList<>(reservas) : new ArrayList<>();
+            publicarListaFiltrada();
+        });
+
     }
 
-    public LiveData<List<Reserva>> getReservasOrderByFechaDevolucion() {
-        return mRepository.getReservasOrderByDevolucion();
+    /**
+     * Devuelve la consulta LiveData correspondiente al orden seleccionado.
+     *
+     * @param orden Orden seleccionado
+     * @return consulta LiveData
+     */
+    private LiveData<List<Reserva>> getSourceByOrden(int orden) {
+
+        switch (orden) {
+
+            case ORDEN_TELEFONO:
+                return mRepository.getReservasOrderByTelefono();
+
+            case ORDEN_RECOGIDA:
+                return mRepository.getReservasOrderByRecogida();
+
+            case ORDEN_DEVOLUCION:
+                return mRepository.getReservasOrderByDevolucion();
+
+            case ORDEN_NOMBRE:
+            default:
+                return mRepository.getReservasOrderByNombre();
+
+        }
+
+    }
+
+    /* =========================
+       FILTRADO EN MEMORIA
+       ========================= */
+
+    /**
+     * Publica en reservasUi la lista base ordenada, tras aplicar el filtro actual.
+     */
+    private void publicarListaFiltrada() {
+
+        List<Reserva> resultado = new ArrayList<>();
+        long ahora = System.currentTimeMillis();
+
+        for (Reserva r : reservasBase) {
+
+            if (cumpleFiltro(r, ahora)) {
+                resultado.add(r);
+            }
+
+        }
+
+        reservasUi.setValue(resultado);
+
+    }
+
+    /**
+     * Comprueba
+     */
+    private boolean cumpleFiltro(Reserva reserva, long ahoraMillis) {
+
+        long ahoraComparable = DateUtils.obtenerHorarioActual(ahoraMillis);
+
+        switch (filtroActual) {
+
+            case FILTRO_PREVISTAS:
+                return reserva.getRecogidaComparable() > ahoraComparable;
+
+            case FILTRO_VIGENTES:
+                return reserva.getRecogidaComparable() <= ahoraComparable
+                        && reserva.getDevolucionComparable() > ahoraComparable;
+
+            case FILTRO_CADUCADAS:
+                return reserva.getDevolucionComparable() <= ahoraComparable;
+
+            case FILTRO_TODAS:
+            default:
+                return true;
+
+        }
+
     }
 
      /* =========================
        CRUD RESERVA
        ========================= */
 
-    /** Inserta un nuevo quad en la base de datos */
-    public void insert(Reserva reserva) { mRepository.insert(reserva); }
+    /**
+     * Inserta un nuevo quad en la base de datos
+     */
+    public void insert(Reserva reserva) {
+        mRepository.insert(reserva);
+    }
 
-    /** Actualiza un quad existente en la base de datos */
-    public void update(Reserva reserva) { mRepository.update(reserva); }
+    /**
+     * Actualiza un quad existente en la base de datos
+     */
+    public void update(Reserva reserva) {
+        mRepository.update(reserva);
+    }
 
-    /** Elimina un quad de la base de datos */
-    public void delete(Reserva reserva) { mRepository.delete(reserva); }
+    /**
+     * Elimina un quad de la base de datos
+     */
+    public void delete(Reserva reserva) {
+        mRepository.delete(reserva);
+    }
 
     public void recalcularPrecio(int reservaId, long fechaInicio, boolean horaInicio,
                                  long fechaFin, boolean horaFin) {

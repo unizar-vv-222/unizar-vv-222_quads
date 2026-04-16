@@ -66,7 +66,7 @@ public class QuadRepository {
      * Inserta un nuevo quad en la base de datos.
      */
     public void insert(Quad quad) {
-        if ( esQuadValido (quad)) {
+        if (esQuadValido(quad)) {
             databaseWriteExecutor.execute(() ->
                     mQuadDao.insert(quad)
             );
@@ -79,7 +79,7 @@ public class QuadRepository {
      * Actualiza un quad existente.
      */
     public void update(Quad quad) {
-        if ( esQuadValido (quad)) {
+        if (esQuadValido(quad)) {
             databaseWriteExecutor.execute(() ->
                     mQuadDao.update(quad)
             );
@@ -109,8 +109,8 @@ public class QuadRepository {
     public LiveData<List<Quad>> getAvailableQuads(long fechaInicio, boolean horaInicio,
                                                   long fechaFin, boolean horaFin) {
 
-        long recogidaComparable = DateUtils.slotToMillis(fechaInicio, horaInicio);
-        long devolucionComparable = DateUtils.endExclusiveMillis(fechaFin, horaFin);
+        long recogidaComparable = DateUtils.obtenerInicioHorario(fechaInicio, horaInicio);
+        long devolucionComparable = DateUtils.obtenerFinHorario(fechaFin, horaFin);
 
         return mQuadDao.getAvailableQuads(recogidaComparable, devolucionComparable);
     }
@@ -119,8 +119,8 @@ public class QuadRepository {
                                                                   long fechaFin, boolean horaFin,
                                                                   int reservaId) {
 
-        long recogidaComparable = DateUtils.slotToMillis(fechaInicio, horaInicio);
-        long devolucionComparable = DateUtils.endExclusiveMillis(fechaFin, horaFin);
+        long recogidaComparable = DateUtils.obtenerInicioHorario(fechaInicio, horaInicio);
+        long devolucionComparable = DateUtils.obtenerFinHorario(fechaFin, horaFin);
 
         return mQuadDao.getAvailableQuadsExcludingReserva(
                 recogidaComparable,

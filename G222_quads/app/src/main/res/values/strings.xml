@@ -11,6 +11,20 @@
     <string name="listado_quads">Listado de quads</string>
     <string name="listado_reservas">Listado de reservas</string>
 
+    <string-array name="orden_reservas_options">
+        <item>Por nombre de cliente</item>
+        <item>Por teléfono</item>
+        <item>Por fecha de recogida</item>
+        <item>Por fecha de devolución</item>
+    </string-array>
+
+    <string-array name="filtro_reservas_options">
+        <item>Todas las reservas</item>
+        <item>Reservas previstas</item>
+        <item>Reservas vigentes</item>
+        <item>Reservas caducadas</item>
+    </string-array>
+
     <!-- QuadModify -->
     <string name="create_quad">Crear quad</string>
     <string name="edit_quad">Editar quad</string>

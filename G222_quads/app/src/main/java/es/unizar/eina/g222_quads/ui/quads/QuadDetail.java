@@ -34,9 +34,9 @@ public class QuadDetail extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         if (extras == null) return;
 
-        matricula   = extras.getString(QuadModify.QUAD_MATRICULA);
-        tipo        = extras.getBoolean(QuadModify.QUAD_TIPO);
-        precio      = extras.getDouble(QuadModify.QUAD_PRECIO);
+        matricula = extras.getString(QuadModify.QUAD_MATRICULA);
+        tipo = extras.getBoolean(QuadModify.QUAD_TIPO);
+        precio = extras.getDouble(QuadModify.QUAD_PRECIO);
         descripcion = extras.getString(QuadModify.QUAD_DESCRIPCION);
 
         ((TextView) findViewById(R.id.detail_matricula)).setText(matricula);

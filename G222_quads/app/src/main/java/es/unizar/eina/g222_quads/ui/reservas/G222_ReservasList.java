@@ -2,6 +2,7 @@ package es.unizar.eina.g222_quads.ui.reservas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import es.unizar.eina.g222_quads.R;
 import es.unizar.eina.g222_quads.database.Reserva;
@@ -29,14 +31,31 @@ public class G222_ReservasList extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_g222_reserva);
 
-        /* =========================
-           RECYCLERVIEW
-           ========================= */
-
+        MaterialAutoCompleteTextView filtro = findViewById(R.id.filtro_reservas);
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        Button ordReservas = findViewById(R.id.orden_reservas);
+
+        setupRecyclerView(recyclerView);
+
+        mReservaViewModel = new ViewModelProvider(this).get(ReservaViewModel.class);
+        mReservaViewModel.getReservasUi().observe(this, reservas -> mAdapter.submitList(reservas));
+
+        setupFiltro(filtro);
+
+        fab.setOnClickListener(v -> createReserva());
+        ordReservas.setOnClickListener(v -> showSortReservasDialog());
+
+    }
+
+    /* =========================
+       INIT
+       ========================= */
+    private void setupRecyclerView(RecyclerView recyclerView) {
 
         mAdapter = new ReservaListAdapter(
                 new ReservaListAdapter.ReservaDiff(),
@@ -58,27 +77,38 @@ public class G222_ReservasList extends BaseActivity {
                 }
         );
 
-        recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(mAdapter);
 
-        /* =========================
-           VIEWMODEL
-           ========================= */
+    }
 
-        mReservaViewModel = new ViewModelProvider(this).get(ReservaViewModel.class);
-        mReservaViewModel.getAllReservas().observe(this,
-                reservas -> mAdapter.submitList(reservas)
+    private void setupFiltro(MaterialAutoCompleteTextView filtro) {
+
+        String[] opciones = getResources().getStringArray(R.array.filtro_reservas_options);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                R.layout.item_dropdown_reservas,
+                opciones
         );
 
-        /* =========================
-           FAB – CREAR RESERVA
-           ========================= */
+        filtro.setAdapter(adapter);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> createReserva());
+        // valor por defecto
+        filtro.setText(opciones[0], false);
 
-        Button ordReservas = findViewById(R.id.ord_reservas);
-        ordReservas.setOnClickListener(v -> showSortReservasDialog());
+        // listener
+        filtro.setOnItemClickListener((parent, view, position, id) -> {
+            mReservaViewModel.setFiltro(position);
+        });
+
+        filtro.setOnClickListener(v -> {
+            filtro.showDropDown();
+        });
+
+        // Impido escribir texto manualmente
+        filtro.setKeyListener(null);
+
     }
 
     /* =========================
@@ -93,7 +123,6 @@ public class G222_ReservasList extends BaseActivity {
             registerForActivityResult(
                     new StartActivityForResult(),
                     result -> {
-                        // No hacemos nada:
                         // ReservaModify ya guarda y LiveData refresca la lista
                     }
             );
@@ -103,6 +132,7 @@ public class G222_ReservasList extends BaseActivity {
        ========================= */
 
     private void editReserva(Reserva reserva) {
+
         Intent intent = new Intent(this, ReservaModify.class);
         intent.putExtra(ReservaModify.RESERVA_ID, reserva.getId());
         intent.putExtra(ReservaModify.RESERVA_NOMBRE, reserva.getNombreCliente());
@@ -112,10 +142,11 @@ public class G222_ReservasList extends BaseActivity {
         intent.putExtra(ReservaModify.RESERVA_FECHA_DEVOLUCION, reserva.getFechaDevolucion());
         intent.putExtra(ReservaModify.RESERVA_HORA_DEVOLUCION, reserva.getHoraDevolucion());
         mStartUpdateReserva.launch(intent);
+
     }
 
-
     private void openDetail(Reserva reserva) {
+
         Intent intent = new Intent(this, ReservaDetail.class);
         intent.putExtra(ReservaModify.RESERVA_ID, reserva.getId());
         intent.putExtra(ReservaModify.RESERVA_NOMBRE, reserva.getNombreCliente());
@@ -123,11 +154,11 @@ public class G222_ReservasList extends BaseActivity {
         startActivity(intent);
 
     }
+
     private final ActivityResultLauncher<Intent> mStartUpdateReserva =
             registerForActivityResult(
                     new StartActivityForResult(),
                     result -> {
-                        // No hacemos nada aquí
                         // La actualización ya está hecha en ReservaModify
                     }
             );
@@ -152,28 +183,27 @@ public class G222_ReservasList extends BaseActivity {
        ORDENAR RESERVAS
        ========================= */
     private void showSortReservasDialog() {
-        String[] options = {"Por nombre de cliente", "Por teléfono", "Por fecha de recogida", "Por fecha de devolución"};
 
-        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Ordenar reservas")
-                .setItems(options, (dialog, which) -> {
+                .setItems(R.array.orden_reservas_options, (dialog, which) -> {
                     switch (which) {
                         case 0: // Por nombre de cliente
-                            mReservaViewModel.getReservasOrderByNombre().observe(this, reservas -> mAdapter.submitList(reservas));
+                            mReservaViewModel.setOrden(ReservaViewModel.ORDEN_NOMBRE);
                             break;
                         case 1: // Por teléfono
-                            mReservaViewModel.getReservasOrderByTelefono().observe(this, reservas -> mAdapter.submitList(reservas));
+                            mReservaViewModel.setOrden(ReservaViewModel.ORDEN_TELEFONO);
                             break;
                         case 2: // Por fecha de recogida
-                            mReservaViewModel.getReservasOrderByFechaRecogida().observe(this, reservas -> mAdapter.submitList(reservas));
+                            mReservaViewModel.setOrden(ReservaViewModel.ORDEN_RECOGIDA);
                             break;
                         case 3: // Por fecha de devolución
-                            mReservaViewModel.getReservasOrderByFechaDevolucion().observe(this, reservas -> mAdapter.submitList(reservas));
+                            mReservaViewModel.setOrden(ReservaViewModel.ORDEN_DEVOLUCION);
                             break;
                     }
                 })
                 .show();
-    }
 
+    }
 
 }

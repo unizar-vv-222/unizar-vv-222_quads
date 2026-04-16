@@ -42,8 +42,8 @@ public class ReservaDetail extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         if (extras == null) return;
 
-        nombre   = extras.getString(ReservaModify.RESERVA_NOMBRE);
-        telefono        = extras.getString(ReservaModify.RESERVA_MOVIL);
+        nombre = extras.getString(ReservaModify.RESERVA_NOMBRE);
+        telefono = extras.getString(ReservaModify.RESERVA_MOVIL);
         id = extras.getInt(ReservaModify.RESERVA_ID);
 
 

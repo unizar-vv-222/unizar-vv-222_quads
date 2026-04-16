@@ -40,8 +40,8 @@ public class ReservaQuadCascosViewModel extends AndroidViewModel {
     }
 
     public void getPreciosParaReservaAsync(int reservaId,
-                                           Map<String,Integer> seleccion,
-                                           java.util.function.Consumer<Map<String,Double>> cb) {
+                                           Map<String, Integer> seleccion,
+                                           java.util.function.Consumer<Map<String, Double>> cb) {
         mRepository.getPreciosParaReservaAsync(reservaId, seleccion, cb);
     }
 

@@ -7,45 +7,49 @@ import java.util.Locale;
 
 public class DateUtils {
 
-    private static final long HALF_DAY_MILLIS = 12L * 60 * 60 * 1000;
+    // Duración de un bloque horario de reserva: mañana o tarde
+    private static final long MEDIO_DIA_MILLIS = 12L * 60 * 60 * 1000;
 
     /* =====================================
        FORMATO HUMANO (UI)
        ===================================== */
 
     /**
-     * Convierte millis a formato legible para el usuario
-     * @param millis fecha de una reserva en millis
-     * @return fecha en formato legible: dd/mm/aaaa
+     * Convierte una fecha en millis a formato legible para el usuario.
+     *
+     * @param millis fecha en milisegundos
+     * @return fecha en formato legible: dd/mm/yyyy
      */
-    public static String toHumanDate(long millis) {
+    public static String formatearFecha(long millis) {
         SimpleDateFormat sdf =
                 new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return sdf.format(new Date(millis));
     }
 
     /**
-     * Convierte millis y horario a formato legible para el usuario
-     * @param millis fecha de una reserva en millis
-     * @param hora horario (mañana/tarde)
-     * @return fecha en formato legible: dd/mm/aaaa (horario)
+     * Convierte una fecha + horario a formato legible para el usuario.
+     *
+     * @param millis  fecha en milisegundos
+     * @param esTarde false = mañana, true = tarde
+     * @return fecha en formato legible: dd/mm/yyyy (horario)
      */
-    public static String toHumanDateTime(long millis, boolean hora) {
-        String date = toHumanDate(millis);
-        return date + (hora ? " (tarde)" : " (mañana)");
+    public static String formatearFechaHorario(long millis, boolean esTarde) {
+        return formatearFecha(millis) + (esTarde ? " (tarde)" : " (mañana)");
     }
 
     /**
      * Convierte dos fechas a un rango legible para el usuario
-     * @param inicio fecha de inicio de una reserva en millis
-     * @param inicioHorario horario de inicio de una reserva
-     * @param fin fecha de fin de una reserva en millis
-     * @param finHorario horario de fin de una reserva
+     *
+     * @param inicioMillis  fecha de inicio de una reserva en millis
+     * @param inicioEsTarde horario (mañana/tarde) de inicio de una reserva
+     * @param finMillis     fecha de fin de una reserva en millis
+     * @param finEsTarde    horario (mañana/tarde) de fin de una reserva
      * @return rango en formato legible: Del dd/mm/aaaa (horario) al dd/mm/aaaa (horario)
      */
-    public static String toHumanRange(long inicio, boolean inicioHorario,
-                                      long fin, boolean finHorario) {
-        return "Del " + toHumanDateTime(inicio, inicioHorario) + " al " + toHumanDateTime(fin, finHorario);
+    public static String formatearRango(long inicioMillis, boolean inicioEsTarde,
+                                        long finMillis, boolean finEsTarde) {
+        return "Del " + formatearFechaHorario(inicioMillis, inicioEsTarde)
+                + " al " + formatearFechaHorario(finMillis, finEsTarde);
     }
 
     /* =====================================
@@ -53,10 +57,12 @@ public class DateUtils {
        ===================================== */
 
     /**
-     * Normaliza una fecha a las 00:00:00.000
-     * (para comparar días sin horas)
+     * Normaliza una fecha al inicio del día (00:00:00.000)
+     *
+     * @param millis fecha en millis
+     * @return fecha normalizada al inicio del día
      */
-    public static long normalizeToDay(long millis) {
+    public static long inicioDelDia(long millis) {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(millis);
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -67,52 +73,79 @@ public class DateUtils {
     }
 
     /**
-     * Calcula número de días entre dos fechas (inclusive).
+     * Convierte fecha + horario a un instante comparable en millis.
+     * false = mañana -> inicio del día
+     * true = tarde -> inicio del día + 12h
+     *
+     * @param millis  fecha de una reserva en millis
+     * @param esTarde horario (mañana/tarde) de una reserva
+     * @return instante comparable en millis
      */
-    public static double daysBetween(long fechaInicio, boolean horaInicio,
-                                   long fechaFin, boolean horaFin) {
-        long ini = slotToMillis(fechaInicio, horaInicio);
-        long fin = slotToMillis(fechaFin, horaFin);
-        long slots = (fin - ini) / HALF_DAY_MILLIS;
-        return slots / 2.0;
-    }
-
-    /**
-     * Convierte día + horario a un instante comparable en millis
-     * horario = mañana -> inicio del día
-     * horario = tarde -> +12h
-     * @param dayMillis fecha de una reserva en millis
-     * @param horario horario (mañana/tarde) de una reserva
-     * @return instante en millis
-     */
-    public static long slotToMillis(long dayMillis, boolean horario) {
-        long day = normalizeToDay(dayMillis);
-        return day + (horario ? HALF_DAY_MILLIS : 0L);
+    public static long obtenerInicioHorario(long millis, boolean esTarde) {
+        long inicioDia = inicioDelDia(millis);
+        return inicioDia + (esTarde ? MEDIO_DIA_MILLIS : 0L);
     }
 
     /**
      * Devuelve el final del horario (exclusivo)
-     * Para cálculos de solaapamiento
-     * @param dayMillis fecha de una reserva en millis
-     * @param horario horario (mañana/tarde) de una reserva
+     * Para cálculos de solapamiento.
+     *
+     * @param millis  fecha de una reserva en millis
+     * @param esTarde horario (mañana/tarde) de una reserva
      * @return instante en millis
      */
-    public static long endExclusiveMillis(long dayMillis, boolean horario) {
-        return slotToMillis(dayMillis, horario) + HALF_DAY_MILLIS;
+    public static long obtenerFinHorario(long millis, boolean esTarde) {
+        return obtenerInicioHorario(millis, esTarde) + MEDIO_DIA_MILLIS;
+    }
+
+    /**
+     * Devuelve la fecha y horario actual (mañana/tarde) en millis en función de la hora real
+     *
+     * @param ahoraMillis fecha actual en millis
+     * @return instante en millis
+     */
+    public static long obtenerHorarioActual(long ahoraMillis) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(ahoraMillis);
+
+        boolean esTarde = c.get(Calendar.HOUR_OF_DAY) >= 12;
+        return obtenerInicioHorario(ahoraMillis, esTarde);
+    }
+
+    /**
+     * Calcula número de días entre dos fechas (inclusive).
+     * mañana -> tarde = 0.5
+     * mañana -> mañana día siguiente = 1.0
+     *
+     * @param fechaInicio   fecha de inicio en millis
+     * @param inicioEsTarde horario de inicio (mañana/tarde)
+     * @param fechaFin      fecha de fin en millis
+     * @param finEsTarde    horario de fin (mañana/tarde)
+     * @return número de días entre las dos fechas
+     */
+    public static double calcularDiasReserva(long fechaInicio, boolean inicioEsTarde,
+                                             long fechaFin, boolean finEsTarde) {
+        long ini = obtenerInicioHorario(fechaInicio, inicioEsTarde);
+        long fin = obtenerInicioHorario(fechaFin, finEsTarde);
+        long slots = (fin - ini) / MEDIO_DIA_MILLIS;
+        return slots / 2.0;
     }
 
     /**
      * Comprueba si un rango de fechas es válido
-     * @param inicio fecha de inicio de una reserva en millis
-     * @param inicioHorario horario de inicio de una reserva
-     * @param fin fecha de fin de una reserva en millis
-     * @param finHorario horario de fin de una reserva
+     * (no permite mismo día y mismo horario)
+     *
+     * @param inicio        fecha de inicio de una reserva en millis
+     * @param inicioEsTarde horario de inicio de una reserva
+     * @param fin           fecha de fin de una reserva en millis
+     * @param finEsTarde    horario de fin de una reserva
      * @return true si el rango es válido, false en caso contrario
      */
-    public static boolean isRangeValid(long inicio, boolean inicioHorario,
-                                       long fin, boolean finHorario) {
-        long _ini = slotToMillis(inicio, inicioHorario);
-        long _fin = slotToMillis(fin, finHorario);
+    public static boolean rangoValido(long inicio, boolean inicioEsTarde,
+                                      long fin, boolean finEsTarde) {
+        long _ini = obtenerInicioHorario(inicio, inicioEsTarde);
+        long _fin = obtenerInicioHorario(fin, finEsTarde);
         return _fin > _ini;
     }
+
 }

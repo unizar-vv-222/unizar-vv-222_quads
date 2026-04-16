@@ -84,7 +84,7 @@ public class ReservaSelectQuads extends BaseActivity {
         horaInicio = i.getBooleanExtra(ReservaModify.RESERVA_HORA_RECOGIDA, false);
         horaFin = i.getBooleanExtra(ReservaModify.RESERVA_HORA_DEVOLUCION, false);
 
-        if (!DateUtils.isRangeValid(fechaInicio, horaInicio, fechaFin, horaFin)) {
+        if (!DateUtils.rangoValido(fechaInicio, horaInicio, fechaFin, horaFin)) {
             Toast.makeText(this, "Fechas inválidas", Toast.LENGTH_LONG).show();
             finish();
             return;
