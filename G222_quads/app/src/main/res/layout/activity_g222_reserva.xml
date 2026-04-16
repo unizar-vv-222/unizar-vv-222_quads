@@ -33,19 +33,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/filtro_reservas"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_filtro_reservas"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/bg_spinner_reservas"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@id/title_reservas"
-            app:layout_constraintStart_toStartOf="parent"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="@color/color_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/orden_reservas"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_reservas">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/filtro_reservas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:inputType="none"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
             android:id="@+id/orden_reservas"

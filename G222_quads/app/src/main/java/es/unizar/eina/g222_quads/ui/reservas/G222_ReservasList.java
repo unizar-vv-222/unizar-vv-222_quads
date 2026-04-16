@@ -2,11 +2,8 @@ package es.unizar.eina.g222_quads.ui.reservas;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import es.unizar.eina.g222_quads.R;
 import es.unizar.eina.g222_quads.database.Reserva;
@@ -37,7 +35,7 @@ public class G222_ReservasList extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_g222_reserva);
 
-        Spinner spinnerFiltro = findViewById(R.id.filtro_reservas);
+        MaterialAutoCompleteTextView filtro = findViewById(R.id.filtro_reservas);
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         FloatingActionButton fab = findViewById(R.id.fab);
         Button ordReservas = findViewById(R.id.orden_reservas);
@@ -47,7 +45,7 @@ public class G222_ReservasList extends BaseActivity {
         mReservaViewModel = new ViewModelProvider(this).get(ReservaViewModel.class);
         mReservaViewModel.getReservasUi().observe(this, reservas -> mAdapter.submitList(reservas));
 
-        setupSpinner(spinnerFiltro);
+        setupFiltro(filtro);
 
         fab.setOnClickListener(v -> createReserva());
         ordReservas.setOnClickListener(v -> showSortReservasDialog());
@@ -84,34 +82,32 @@ public class G222_ReservasList extends BaseActivity {
 
     }
 
-    private void setupSpinner(Spinner spinnerFiltro) {
+    private void setupFiltro(MaterialAutoCompleteTextView filtro) {
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        String[] opciones = getResources().getStringArray(R.array.filtro_reservas_options);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
-                R.array.filtro_reservas_options,
-                android.R.layout.simple_spinner_item
+                R.layout.item_dropdown_reservas,
+                opciones
         );
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFiltro.setAdapter(adapter);
+        filtro.setAdapter(adapter);
 
-        spinnerFiltro.setSelection(mReservaViewModel.getFiltroActual(), false);
+        // valor por defecto
+        filtro.setText(opciones[0], false);
 
-        spinnerFiltro.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                mReservaViewModel.setFiltro(position);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // no hacer nada
-            }
-
+        // listener
+        filtro.setOnItemClickListener((parent, view, position, id) -> {
+            mReservaViewModel.setFiltro(position);
         });
+
+        filtro.setOnClickListener(v -> {
+            filtro.showDropDown();
+        });
+
+        // Impido escribir texto manualmente
+        filtro.setKeyListener(null);
 
     }
 
