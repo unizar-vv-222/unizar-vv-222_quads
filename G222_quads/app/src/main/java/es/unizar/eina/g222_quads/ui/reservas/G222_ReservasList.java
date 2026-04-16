@@ -151,6 +151,11 @@ public class G222_ReservasList extends BaseActivity {
         intent.putExtra(ReservaModify.RESERVA_ID, reserva.getId());
         intent.putExtra(ReservaModify.RESERVA_NOMBRE, reserva.getNombreCliente());
         intent.putExtra(ReservaModify.RESERVA_MOVIL, reserva.getMovilCliente());
+        intent.putExtra(ReservaModify.RESERVA_FECHA_RECOGIDA, reserva.getFechaRecogida());
+        intent.putExtra(ReservaModify.RESERVA_HORA_RECOGIDA, reserva.getHoraRecogida());
+        intent.putExtra(ReservaModify.RESERVA_FECHA_DEVOLUCION, reserva.getFechaDevolucion());
+        intent.putExtra(ReservaModify.RESERVA_HORA_DEVOLUCION, reserva.getHoraDevolucion());
+        intent.putExtra("precio_total", reserva.getPrecioTotal());
         startActivity(intent);
 
     }

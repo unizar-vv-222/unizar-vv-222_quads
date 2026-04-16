@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,76 +14,173 @@
         android:layout_height="wrap_content"
         android:background="@color/reserva_dark"
         android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/title_detail_quad"
+            android:id="@+id/title_detail_reserva"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_bold"
             android:text="@string/reserva_detail"
             android:textColor="@color/color_dark"
             android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- DIVISOR -->
     <View
+        android:id="@+id/header_divider"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:background="@color/color_dark"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- CONTENIDO -->
-    <LinearLayout
+    <!-- CONTENIDO SCROLLEABLE -->
+    <ScrollView
+        android:id="@+id/detail_scroll"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/header_divider"
+        app:layout_constraintBottom_toTopOf="@id/detail_buttons"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/detail_nombre"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:paddingTop="10dp"
-            android:textSize="18sp" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/detail_telefono"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:textSize="18sp" />
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/color_dark"
+                app:strokeWidth="1dp">
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-    <!-- =========================
-     BOTONES
-     ========================= -->
+                    <TextView
+                        android:id="@+id/detail_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_dark"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/poppins_bold" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@color/reserva_dark" />
+
+                    <TextView
+                        android:id="@+id/detail_nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/detail_telefono"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/detail_recogida"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/detail_devolucion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/detail_precio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textColor="@color/color_dark"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/selected_quads"
+                        android:textColor="@color/color_dark"
+                        android:textSize="17sp"
+                        android:fontFamily="@font/poppins_bold" />
+
+                    <!-- Contenedor para añadir dinámicamente los quads -->
+                    <LinearLayout
+                        android:id="@+id/detail_quads_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        tools:ignore="UseCompoundDrawables" />
+
+                    <TextView
+                        android:id="@+id/detail_no_quads"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/selected_0_quads"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTONES -->
     <LinearLayout
         android:id="@+id/detail_buttons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="horizontal"
+        android:gravity="center"
         android:padding="16dp"
+        android:background="@color/reserva"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_delete"
@@ -99,7 +197,7 @@
             android:id="@+id/button_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_bold"
             android:text="@string/button_edit"
             android:textColor="@color/color_dark"
@@ -107,20 +205,18 @@
             app:strokeColor="@color/color_dark"
             app:strokeWidth="2dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_enviar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/reserva_dark"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/poppins_bold"
             android:text="@string/button_send"
-            android:textColor="@color/black"
-            app:strokeColor="@color/black"
-            app:strokeWidth="2sp" />
+            android:textColor="@color/color_dark"
+            app:backgroundTint="@color/reserva_dark"
+            app:strokeColor="@color/color_dark"
+            app:strokeWidth="2dp" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

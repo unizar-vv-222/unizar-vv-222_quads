@@ -74,6 +74,7 @@
     <string name="quad_not_available">No hay quads disponibles para la fecha"</string>
     <string name="select_quads">Quads disponibles</string>
     <string name="selected_quads">Quads reservados</string>
+    <string name="selected_0_quads">No hay quads asociados a esta reserva</string>
 
     <string name="button_continue">Siguiente</string>
 
@@ -93,7 +94,7 @@
     <string name="tipo">Tipo</string>
     <string name="precio">Precio</string>
     <string name="precio_total">Precio total de la reserva</string>
-    <string name="descripcion">Descripcion</string>
+    <string name="description">Descripción</string>
 
     <string name="movil">Móvil del cliente</string>
     <string name="nombre_cliente">Nombre del cliente</string>

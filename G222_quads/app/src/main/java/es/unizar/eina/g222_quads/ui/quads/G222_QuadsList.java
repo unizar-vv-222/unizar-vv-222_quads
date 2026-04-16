@@ -93,25 +93,8 @@ public class G222_QuadsList extends BaseActivity {
        ========================= */
 
     private void createQuad() {
-        mStartCreateQuad.launch(new Intent(this, QuadModify.class));
+        startActivity(new Intent(this, QuadModify.class));
     }
-
-    private final ActivityResultLauncher<Intent> mStartCreateQuad =
-            registerForActivityResult(
-                    new StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                            Bundle extras = result.getData().getExtras();
-                            Quad quad = new Quad(
-                                    extras.getString(QuadModify.QUAD_MATRICULA),
-                                    extras.getBoolean(QuadModify.QUAD_TIPO),
-                                    extras.getDouble(QuadModify.QUAD_PRECIO),
-                                    extras.getString(QuadModify.QUAD_DESCRIPCION)
-                            );
-                            mQuadViewModel.insert(quad);
-                        }
-                    }
-            );
 
     /* =========================
        EDITAR QUAD
@@ -123,26 +106,8 @@ public class G222_QuadsList extends BaseActivity {
         intent.putExtra(QuadModify.QUAD_TIPO, quad.getTipo());
         intent.putExtra(QuadModify.QUAD_PRECIO, quad.getPrecio());
         intent.putExtra(QuadModify.QUAD_DESCRIPCION, quad.getDescripcion());
-        mStartUpdateQuad.launch(intent);
+        startActivity(intent);
     }
-
-    private final ActivityResultLauncher<Intent> mStartUpdateQuad =
-            registerForActivityResult(
-                    new StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                            Bundle extras = result.getData().getExtras();
-                            Quad updated = new Quad(
-                                    extras.getString(QuadModify.QUAD_MATRICULA),
-                                    extras.getBoolean(QuadModify.QUAD_TIPO),
-                                    extras.getDouble(QuadModify.QUAD_PRECIO),
-                                    extras.getString(QuadModify.QUAD_DESCRIPCION)
-                            );
-                            mQuadViewModel.update(updated);
-                        }
-                    }
-            );
-
 
     /* =========================
        DIÁLOGO DELETE QUAD
