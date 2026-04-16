@@ -12,7 +12,8 @@ import org.jetbrains.annotations.NotNull;
  * Un quad tiene una matrícula (clave primaria), un tipo, un precio y una descripción.
  *
  * @author G222
- */@Entity(tableName = "quad")
+ */
+@Entity(tableName = "quad")
 public class Quad {
     @NonNull
     @PrimaryKey
@@ -33,9 +34,10 @@ public class Quad {
 
     /**
      * Crea un quad con todos sus campos.
-     * @param matricula Matrícula del quad. Es la clave primaria.
-     * @param tipo Tipo del quad (true/false según criterio del modelo).
-     * @param precio Precio de alquiler del quad.
+     *
+     * @param matricula   Matrícula del quad. Es la clave primaria.
+     * @param tipo        Tipo del quad (true/false según criterio del modelo).
+     * @param precio      Precio de alquiler del quad.
      * @param descripcion Descripción textual del quad.
      */
     public Quad(@NonNull String matricula, @NotNull Boolean tipo, @NonNull Double precio, @NonNull String descripcion) {
@@ -45,36 +47,60 @@ public class Quad {
         this.descripcion = descripcion;
     }
 
-    /** Devuelve la matrícula del quad */
-    public String getMatricula(){
+    /**
+     * Devuelve la matrícula del quad
+     */
+    public String getMatricula() {
         return this.matricula;
     }
 
-    /** Permite actualizar la matrícula del quad */
+    /**
+     * Permite actualizar la matrícula del quad
+     */
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
 
-    /** Devuelve el tipo del quad */
-    public Boolean getTipo(){
+    /**
+     * Devuelve el tipo del quad
+     */
+    public Boolean getTipo() {
         return this.tipo;
     }
 
-    /** Permite actualizar el tipo del quad */
-    public void setTipo(Boolean tipo) { this.tipo = tipo; }
+    /**
+     * Permite actualizar el tipo del quad
+     */
+    public void setTipo(Boolean tipo) {
+        this.tipo = tipo;
+    }
 
-    /** Devuelve el precio del quad */
-    public Double getPrecio(){
+    /**
+     * Devuelve el precio del quad
+     */
+    public Double getPrecio() {
         return this.precio;
     }
 
-    /** Permite actualizar el precio del quad */
-    public void setPrecio(Double precio) { this.precio = precio; }
+    /**
+     * Permite actualizar el precio del quad
+     */
+    public void setPrecio(Double precio) {
+        this.precio = precio;
+    }
 
-    /** Devuelve la descripción del quad */
-    public String getDescripcion() { return this.descripcion; }
+    /**
+     * Devuelve la descripción del quad
+     */
+    public String getDescripcion() {
+        return this.descripcion;
+    }
 
-    /** Permite actualizar la descripción del quad */
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    /**
+     * Permite actualizar la descripción del quad
+     */
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
 }

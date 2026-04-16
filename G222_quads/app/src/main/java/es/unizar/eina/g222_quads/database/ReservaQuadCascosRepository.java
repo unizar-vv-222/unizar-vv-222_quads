@@ -49,8 +49,9 @@ public class ReservaQuadCascosRepository {
 
     /**
      * Actualiza los cascos de los quads de una reserva.
+     *
      * @param reservaId id de la reserva
-     * @param nuevos nuevos cascos por quad
+     * @param nuevos    nuevos cascos por quad
      * @return true si se han realizado cambios, false en caso contrario
      */
     public boolean updateCascos(int reservaId, Map<String, Integer> nuevos) {
@@ -110,6 +111,7 @@ public class ReservaQuadCascosRepository {
 
     /**
      * Devuelve el precio actual de un quad.
+     *
      * @param matricula
      * @return
      */
@@ -124,6 +126,7 @@ public class ReservaQuadCascosRepository {
 
     /**
      * Devuelve los precios para la reserva.
+     *
      * @param reservaId id de la reserva
      * @param seleccion seleccion de quads
      * @return precios para la reserva
@@ -162,13 +165,14 @@ public class ReservaQuadCascosRepository {
 
     /**
      * Devuelve los precios para la reserva.
+     *
      * @param reservaId id de la reserva
      * @param seleccion seleccion de quads
-     * @param cb callback que se ejecuta cuando se han obtenido los precios
+     * @param cb        callback que se ejecuta cuando se han obtenido los precios
      */
     public void getPreciosParaReservaAsync(int reservaId,
-                                           Map<String,Integer> seleccion,
-                                           java.util.function.Consumer<Map<String,Double>> cb) {
+                                           Map<String, Integer> seleccion,
+                                           java.util.function.Consumer<Map<String, Double>> cb) {
 
         databaseWriteExecutor.execute(() -> {
             Map<String, Double> precios = getPreciosParaReserva(reservaId, seleccion);

@@ -110,7 +110,7 @@ public class ReservaConfirm extends BaseActivity {
         String nombre = reserva.getNombreCliente() == null ? "" : reserva.getNombreCliente();
         tvCliente.setText("Cliente: " + nombre);
 
-        tvFechas.setText(DateUtils.toHumanRange(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
+        tvFechas.setText(DateUtils.formatearRango(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
                 reserva.getFechaDevolucion(), reserva.getHoraDevolucion()));
     }
 
@@ -128,7 +128,7 @@ public class ReservaConfirm extends BaseActivity {
             return;
         }
 
-        double dias = DateUtils.daysBetween(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
+        double dias = DateUtils.calcularDiasReserva(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
                 reserva.getFechaDevolucion(), reserva.getHoraDevolucion());
 
         mReservaQuadCascosViewModel.getPreciosParaReservaAsync(

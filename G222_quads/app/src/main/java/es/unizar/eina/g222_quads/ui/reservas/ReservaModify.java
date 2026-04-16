@@ -144,8 +144,8 @@ public class ReservaModify extends BaseActivity {
         fechaInicioOriginal = fechaInicioMillis;
         fechaFinOriginal = fechaFinMillis;
 
-        mFechaRecogida.setText(DateUtils.toHumanDate(fechaInicioMillis));
-        mFechaDevolucion.setText(DateUtils.toHumanDate(fechaFinMillis));
+        mFechaRecogida.setText(DateUtils.formatearFecha(fechaInicioMillis));
+        mFechaDevolucion.setText(DateUtils.formatearFecha(fechaFinMillis));
 
         horaInicio = extras.getBoolean(RESERVA_HORA_RECOGIDA, false);
         horaFin = extras.getBoolean(RESERVA_HORA_DEVOLUCION, false);
@@ -180,14 +180,14 @@ public class ReservaModify extends BaseActivity {
                     c.set(year, month, day, 0, 0, 0);
                     c.set(Calendar.MILLISECOND, 0);
 
-                    long selectedDay = DateUtils.normalizeToDay(c.getTimeInMillis());
+                    long selectedDay = DateUtils.inicioDelDia(c.getTimeInMillis());
 
                     if (inicio) {
                         fechaInicioMillis = selectedDay;
-                        mFechaRecogida.setText(DateUtils.toHumanDate(fechaInicioMillis));
+                        mFechaRecogida.setText(DateUtils.formatearFecha(fechaInicioMillis));
                     } else {
                         fechaFinMillis = selectedDay;
-                        mFechaDevolucion.setText(DateUtils.toHumanDate(fechaFinMillis));
+                        mFechaDevolucion.setText(DateUtils.formatearFecha(fechaFinMillis));
                     }
                 },
                 cal.get(Calendar.YEAR),
@@ -210,7 +210,7 @@ public class ReservaModify extends BaseActivity {
 
         boolean fechasModificadas =
                 fechaInicioOriginal != -1 &&
-                        ( fechaInicioMillis != fechaInicioOriginal ||
+                        (fechaInicioMillis != fechaInicioOriginal ||
                                 fechaFinMillis != fechaFinOriginal ||
                                 horaInicio != horaInicioOriginal ||
                                 horaFin != horaFinOriginal);
@@ -273,6 +273,6 @@ public class ReservaModify extends BaseActivity {
         boolean inicioHorario = mHoraRecogida.getCheckedRadioButtonId() == R.id.horario_recogida_tarde;
         boolean finHorario = mHoraDevolucion.getCheckedRadioButtonId() == R.id.horario_devolucion_tarde;
 
-        return DateUtils.isRangeValid(fechaInicioMillis, inicioHorario, fechaFinMillis, finHorario);
+        return DateUtils.rangoValido(fechaInicioMillis, inicioHorario, fechaFinMillis, finHorario);
     }
 }

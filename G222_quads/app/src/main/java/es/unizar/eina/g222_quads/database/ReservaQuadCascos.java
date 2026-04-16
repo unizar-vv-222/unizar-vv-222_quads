@@ -37,18 +37,19 @@ public class ReservaQuadCascos {
     @ColumnInfo(name = "matriculaQuad")
     private String matriculaQuad;
 
-    @ColumnInfo(name="numCascos")
+    @ColumnInfo(name = "numCascos")
     private int numCascos;
 
     @NonNull
-    @ColumnInfo(name="precioOriginal")
+    @ColumnInfo(name = "precioOriginal")
     private double precioOriginal;
 
     /**
      * Constructor de la clase ReservaQuadCascos
-     * @param reservaId id de la reserva
-     * @param matriculaQuad matricula del quad
-     * @param numCascos numero de cascos
+     *
+     * @param reservaId      id de la reserva
+     * @param matriculaQuad  matricula del quad
+     * @param numCascos      numero de cascos
      * @param precioOriginal precio original del quad
      */
     public ReservaQuadCascos(int reservaId, @NonNull String matriculaQuad, int numCascos, @NonNull double precioOriginal) {
@@ -60,6 +61,7 @@ public class ReservaQuadCascos {
 
     /**
      * Getter del id de la reserva
+     *
      * @return id de la reserva
      */
     public int getReservaId() {
@@ -68,6 +70,7 @@ public class ReservaQuadCascos {
 
     /**
      * Getter de la matricula del quad
+     *
      * @return matricula del quad
      */
     @NonNull
@@ -77,15 +80,21 @@ public class ReservaQuadCascos {
 
     /**
      * Getter del numero de cascos
+     *
      * @return numero de cascos
      */
-    public int getNumCascos() { return numCascos; }
+    public int getNumCascos() {
+        return numCascos;
+    }
 
     /**
      * Getter del precio original del quad
+     *
      * @return precio original del quad
      */
     @NonNull
-    public double getPrecioOriginal() { return precioOriginal; }
+    public double getPrecioOriginal() {
+        return precioOriginal;
+    }
 
 }

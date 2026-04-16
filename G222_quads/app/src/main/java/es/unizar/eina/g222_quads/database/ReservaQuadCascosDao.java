@@ -17,6 +17,7 @@ public interface ReservaQuadCascosDao {
 
     /**
      * Inserta una relación de quad-reserva en la base de datos.
+     *
      * @param reservaQuadCascos relación de quad-reserva a insertar
      */
     @Insert()
@@ -24,6 +25,7 @@ public interface ReservaQuadCascosDao {
 
     /**
      * Inserta una lista de relaciones de quad-reserva en la base de datos.
+     *
      * @param reservaQuadCascos lista de relaciones de quad-reserva a insertar
      */
     @Insert()
@@ -31,6 +33,7 @@ public interface ReservaQuadCascosDao {
 
     /**
      * Elimina las relaciones quad-reserva asociadas a una reserva de la base de datos.
+     *
      * @param reservaId id de la reserva
      */
     @Query("DELETE FROM reserva_quad_cascos WHERE reservaId = :reservaId")
@@ -38,6 +41,7 @@ public interface ReservaQuadCascosDao {
 
     /**
      * Elimina una relación de quad-reserva de la base de datos.
+     *
      * @param reservaId id de la reserva
      * @param matricula matrícula del quad
      */
@@ -47,6 +51,7 @@ public interface ReservaQuadCascosDao {
     /**
      * Recupera todas las relaciones quad-reserva asociadas a una reserva.
      * Para observar (UI).
+     *
      * @param reservaId id de la reserva
      * @return lista observable (LiveData) de relaciones quad-reserva
      */
@@ -56,6 +61,7 @@ public interface ReservaQuadCascosDao {
     /**
      * Recupera todas las relaciones quad-reserva asociadas a una reserva.
      * Para lógica interna (background).
+     *
      * @param reservaId id de la reserva
      * @return lista de relaciones quad-reserva
      */
@@ -64,6 +70,7 @@ public interface ReservaQuadCascosDao {
 
     /**
      * Actualiza el número de cascos de un quad en una reserva.
+     *
      * @param reservaId id de la reserva
      * @param matricula matrícula del quad
      * @param numCascos número de cascos a actualizar
@@ -73,6 +80,7 @@ public interface ReservaQuadCascosDao {
 
     /**
      * Calcula el precio diario de una reserva.
+     *
      * @param reservaId id de la reserva
      * @return precio diario de la reserva
      */
