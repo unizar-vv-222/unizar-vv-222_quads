@@ -34,10 +34,14 @@ public class ExampleInstrumentedTest {
             // Acceso al repositorio a través de la actividad
             QuadRepository quadRepository = activity.getQuadRespositoryMain();
             int cont_prev = quadRepository.numQuads();
-            Quad q = new Quad("6767ABC", true, 65.0, "Rojo");
-            quadRepository.insert(q);
-            int cont_post = quadRepository.numQuads();
-            assertEquals(cont_prev + 1, cont_post);
+            try {
+                Quad q = new Quad("6767ABC", true, 65.0, "Rojo");
+                quadRepository.insert(q).get();
+                int cont_post = quadRepository.numQuads();
+                assertEquals(cont_prev + 1, cont_post);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

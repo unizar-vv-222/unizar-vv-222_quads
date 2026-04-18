@@ -30,7 +30,7 @@ public class QuadUpdateTest {
         });
     }
 
-    @Test (expected = RuntimeException.class)
+    @Test
     public void testUpdateTypeValid() {
         scenarioRule.getScenario().onActivity(activity -> {
             QuadRepository repo = activity.getQuadRespositoryMain();

@@ -48,20 +48,24 @@ public class QuadCreationTest {
     public void testInsertDuplicateMatricula() {
         scenarioRule.getScenario().onActivity(activity -> {
             QuadRepository repo = activity.getQuadRespositoryMain();
+            Quad q = new Quad("1111AAA", true, 50.0, "Original_MONOPLAZA");
+            try {
+                // Insertamos el primero MONOPLAZA
+                repo.insert(q).get();
 
-            // Insertamos el primero MONOPLAZA
-            repo.insert(new Quad("1111AAA", true, 50.0, "Original_MONOPLAZA"));
+                // Insertamos el primero BIPLAZA
+                repo.insert(new Quad("2222AAA", false, 50.0, "Original_BIPLAZA")).get();
+                int cont_prev = repo.numQuads();
 
-            // Insertamos el primero BIPLAZA
-            repo.insert(new Quad("2222AAA", false, 50.0, "Original_BIPLAZA"));
-            int cont_prev = repo.numQuads();
+                // El segundo con la misma PK debería lanzar la excepción y el test pasará
+                repo.insert(q).get();
+                int cont_post = repo.numQuads();
 
-            // El segundo con la misma PK debería lanzar la excepción y el test pasará
-            repo.insert(new Quad("1111AAA", false, 60.0, "Duplicado"));
-            int cont_post = repo.numQuads();
-
-            //La segunda inserción no se ha ejecutado debido a que la matricula está duplicada
-            assertEquals(cont_prev , cont_post);
+                //La segunda inserción no se ha ejecutado debido a que la matricula está duplicada
+                assertEquals(cont_prev, cont_post);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

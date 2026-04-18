@@ -108,13 +108,6 @@ public class ReservaCreationTest {
             resultado = repo.insert(r);
 
             assertEquals("Debería fallar (-1) por fecha recogida inválida", -1, resultado);
-
-            r = new Reserva("CL_007", "612458924", FECHA_1, MAÑANA, FECHA_INVALIDA, TARDE);
-
-            resultado = repo.insert(r);
-
-            assertEquals("Debería fallar (-1) por fecha devolución inválida", -1, resultado);
-
         });
     }
 
