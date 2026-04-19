@@ -115,4 +115,10 @@ public class DateUtils {
         long _fin = slotToMillis(fin, finHorario);
         return _fin > _ini;
     }
+
+    //Para no poder reservar en el pasado
+    public static long getTodayStart() {
+        return normalizeToDay(System.currentTimeMillis());
+    }
+
 }

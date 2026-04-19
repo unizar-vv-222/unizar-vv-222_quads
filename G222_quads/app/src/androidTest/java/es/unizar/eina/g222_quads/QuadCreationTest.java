@@ -27,9 +27,12 @@ public class QuadCreationTest {
 
     @Before
     public void setup() {
-        // Limpiamos antes de cada test para tener un entorno controlado
         scenarioRule.getScenario().onActivity(activity -> {
-            activity.getQuadRespositoryMain().deleteAll();
+            try {
+                activity.getQuadRespositoryMain().deleteAll().get();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

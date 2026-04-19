@@ -58,7 +58,11 @@ public class ExampleInstrumentedTest {
             Quad quadOriginal = new Quad(matricula, tipo, precio, descripcion);
 
             // 2. Insertamos el quad
-            quadRepository.insert(quadOriginal);
+            try {
+                quadRepository.insert(quadOriginal).get();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
             // 3. Recuperamos el quad (necesitarás un método en el repo que busque por matrícula)
             Quad quadRecuperado = quadRepository.getQuadByMatriculaSync(matricula);
@@ -78,8 +82,12 @@ public class ExampleInstrumentedTest {
     public void tearDown(){
         scenarioRule.getScenario().onActivity(activity -> {
             QuadRepository quadRepository = activity.getQuadRespositoryMain();
-            quadRepository.deleteByMatricula("6767ABC");
-            quadRepository.deleteByMatricula("1234ABC");
+            try {
+                quadRepository.deleteByMatricula("6767ABC").get();  // Esperar
+                quadRepository.deleteByMatricula("1234ABC").get();  // Esperar
+            } catch (Exception e) {
+                // Ignorar si no existen
+            }
         });
     }
 

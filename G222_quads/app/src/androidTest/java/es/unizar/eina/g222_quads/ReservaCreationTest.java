@@ -22,17 +22,29 @@ public class ReservaCreationTest {
     @Rule
     public ActivityScenarioRule<G222_quads> scenarioRule = new ActivityScenarioRule<>(G222_quads.class);
 
-    private final long FECHA_1 = 1746057600000L; // 01/05/2026
-    private final long FECHA_2 = 1746144000000L; // 02/05/2026
+    private long dateToMillis(int year, int month, int day) {
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        c.set(year, month - 1, day, 0, 0, 0);
+        c.set(java.util.Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis();
+    }
 
-    private final long FECHA_INVALIDA = 1746144000000L; // 02/05/2025
-    private final boolean MAÑANA = true;
-    private final boolean TARDE = false;
+    // Luego modifica las constantes:
+    private final long FECHA_1 = dateToMillis(2030, 5, 1);  // 1 mayo 2030
+    private final long FECHA_2 = dateToMillis(2030, 5, 2);  // 2 mayo 2030
+    private final long FECHA_INVALIDA = dateToMillis(2025, 5, 2); // 2 mayo 2025
+    private final boolean MAÑANA = false;
+    private final boolean TARDE = true;
 
     @Before
     public void setup() {
         scenarioRule.getScenario().onActivity(activity -> {
-            activity.getReservaRepositoryMain().deleteAll();
+            ReservaRepository repo = activity.getReservaRepositoryMain();
+            try {
+                repo.deleteAll().get();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

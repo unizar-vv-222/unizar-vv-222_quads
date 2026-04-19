@@ -83,6 +83,7 @@ public class QuadRepository {
         return databaseWriteExecutor.submit(mQuadDao::deleteAll);
     }
 
+
     // --- MÉTODOS SÍNCRONOS (Útiles para Tests y Lógica interna) ---
 
     public Quad getQuadByMatriculaSync(String matricula) {

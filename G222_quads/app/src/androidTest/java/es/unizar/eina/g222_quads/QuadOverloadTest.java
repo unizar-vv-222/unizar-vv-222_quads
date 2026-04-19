@@ -24,7 +24,12 @@ public class QuadOverloadTest {
     @Before
     public void setup() {
         scenarioRule.getScenario().onActivity(activity -> {
-            activity.getQuadRespositoryMain().deleteAll();
+            QuadRepository repo = activity.getQuadRespositoryMain();
+            try {
+                repo.deleteAll().get();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

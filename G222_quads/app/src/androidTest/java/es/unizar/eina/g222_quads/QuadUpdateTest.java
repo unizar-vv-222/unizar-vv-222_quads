@@ -26,7 +26,11 @@ public class QuadUpdateTest {
     @Before
     public void setup() {
         scenarioRule.getScenario().onActivity(activity -> {
-            activity.getQuadRespositoryMain().deleteAll();
+            try {
+                activity.getQuadRespositoryMain().deleteAll().get();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

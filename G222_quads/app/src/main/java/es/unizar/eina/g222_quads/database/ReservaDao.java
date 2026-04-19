@@ -47,7 +47,7 @@ public interface ReservaDao {
      * Elimina todos las reservas de la tabla.
      */
     @Query("DELETE FROM reserva")
-    void deleteAll();
+    int deleteAll();
 
     /**
      * Actualiza el precio de una reserva.

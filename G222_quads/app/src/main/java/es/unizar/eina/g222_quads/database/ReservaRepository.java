@@ -57,6 +57,10 @@ public class ReservaRepository {
             return false;
         }
 
+        // No se puede reservar en el pasado por lo que sea
+        long hoy = DateUtils.getTodayStart();
+        if (fechaIni < hoy) return false;
+
         return DateUtils.isRangeValid(fechaIni, horaIni, fechaFin, horaFin);
     }
 
@@ -200,12 +204,18 @@ public class ReservaRepository {
         return mAllReservas;
     }
 
+
+
+
     /**
      * Elimina todas las reservas de la base de datos.
      */
-    public void deleteAll(){
-        databaseWriteExecutor.execute(()-> mReservaDao.deleteAll());
+    public Future<Integer> deleteAll() {
+        return databaseWriteExecutor.submit(mReservaDao::deleteAll);
     }
+
+
+
 
     /**
      * Devuelve un objeto de tipo LiveData con todas las reservas
