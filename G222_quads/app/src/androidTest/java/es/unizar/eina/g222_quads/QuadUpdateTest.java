@@ -105,7 +105,7 @@ public class QuadUpdateTest {
             Quad q = new Quad("1234ABC", true, 65.0, "Rojo");
             repo.insert(q);
 
-            // Caso Descripción Null (Si tu entidad tiene @NonNull)
+            // Caso Descripción Null
             q.setDescripcion(null);
             repo.update(q);
 
