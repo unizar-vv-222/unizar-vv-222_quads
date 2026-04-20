@@ -48,7 +48,6 @@ public class Reserva {
     @ColumnInfo(name = "devolucionComparable")
     private long devolucionComparable;
 
-    @NonNull
     @ColumnInfo(name = "precioTotal")
     private double precioTotal;
 
