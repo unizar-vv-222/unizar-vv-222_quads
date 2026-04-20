@@ -16,10 +16,10 @@ import es.unizar.eina.g222_quads.database.Reserva;
  * ViewHolder que representa una cajita del RecyclerView para reservas.
  * Cada instancia corresponde a una fila del listado de reservas
  * (recyclerview_item.xml).
- *
+ * <p>
  * Se encarga de:
- *  - Mostrar información resumida de la reserva
- *  - Exponer los botones de editar y eliminar
+ * - Mostrar información resumida de la reserva
+ * - Exponer los botones de editar y eliminar
  */
 public class ReservaViewHolder extends RecyclerView.ViewHolder {
 
@@ -36,13 +36,14 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
     private ReservaViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        txtMain   = itemView.findViewById(R.id.textView);
-        btnEdit   = itemView.findViewById(R.id.btn_edit);
+        txtMain = itemView.findViewById(R.id.textView);
+        btnEdit = itemView.findViewById(R.id.btn_edit);
         btnDelete = itemView.findViewById(R.id.btn_delete);
     }
 
     /**
      * Asocia el id de una Reserva con la vista.
+     *
      * @param reserva objeto Reserva a representar
      */
     public void bind(@NonNull Reserva reserva) {

@@ -11,8 +11,8 @@ import es.unizar.eina.g222_quads.database.Quad;
 /**
  * Adaptador para mostrar la lista de quads en un RecyclerView.
  * Se encarga únicamente de:
- *  - mostrar los datos del quad
- *  - notificar acciones de usuario (editar / eliminar)
+ * - mostrar los datos del quad
+ * - notificar acciones de usuario (editar / eliminar)
  * La lógica de negocio se delega a la Activity mediante un listener.
  */
 public class QuadListAdapter extends ListAdapter<Quad, QuadViewHolder> {
@@ -23,7 +23,9 @@ public class QuadListAdapter extends ListAdapter<Quad, QuadViewHolder> {
      */
     public interface OnQuadActionListener {
         void onEdit(Quad quad);
+
         void onDelete(Quad quad);
+
         void onClick(Quad quad);
     }
 
@@ -33,7 +35,7 @@ public class QuadListAdapter extends ListAdapter<Quad, QuadViewHolder> {
      * Constructor del adaptador.
      *
      * @param diffCallback estrategia para comparar quads
-     * @param listener receptor de eventos de edición y borrado
+     * @param listener     receptor de eventos de edición y borrado
      */
     public QuadListAdapter(@NonNull DiffUtil.ItemCallback<Quad> diffCallback,
                            @NonNull OnQuadActionListener listener) {

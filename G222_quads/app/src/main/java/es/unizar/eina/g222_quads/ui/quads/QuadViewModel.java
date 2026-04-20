@@ -49,17 +49,23 @@ public class QuadViewModel extends AndroidViewModel {
         return mAllQuads;
     }
 
-    /** Inserta un nuevo quad */
+    /**
+     * Inserta un nuevo quad
+     */
     public void insert(Quad quad) {
         mRepository.insert(quad);
     }
 
-    /** Actualiza un quad existente */
+    /**
+     * Actualiza un quad existente
+     */
     public void update(Quad quad) {
         mRepository.update(quad);
     }
 
-    /** Elimina el quad con matrícula "matricula" */
+    /**
+     * Elimina el quad con matrícula "matricula"
+     */
     public void deleteByMatricula(String matricula) {
         mRepository.deleteByMatricula(matricula);
     }

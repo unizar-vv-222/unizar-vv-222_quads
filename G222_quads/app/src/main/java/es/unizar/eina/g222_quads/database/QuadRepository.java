@@ -9,11 +9,19 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import es.unizar.eina.g222_quads.utils.DateUtils;
 
+/**
+ * Repositorio que gestiona el acceso a los datos de Quad.
+ * Actúa como única puerta de entrada a Room desde la UI/ViewModel.
+ */
 public class QuadRepository {
 
     private final QuadDao mQuadDao;
     private final LiveData<List<Quad>> mAllQuads;
 
+    /**
+     * Constructor del repositorio.
+     * Inicializa la base de datos y el DAO.
+     */
     public QuadRepository(Application application) {
         Quad_Reserva_RoomDataBase db = Quad_Reserva_RoomDataBase.getDatabase(application);
         mQuadDao = db.quadDao();
@@ -34,6 +42,7 @@ public class QuadRepository {
         if (!q.getMatricula().matches("^[0-9]{4}[A-Z]{3}$")) return false;
         if (q.getPrecio() <= 0) return false;
         if (q.getDescripcion() == null || q.getDescripcion().isEmpty()) return false;
+
         return true;
     }
 
@@ -105,14 +114,15 @@ public class QuadRepository {
     // --- OTROS MÉTODOS ---
 
     public LiveData<List<Quad>> getAvailableQuads(long fechaInicio, boolean horaInicio, long fechaFin, boolean horaFin) {
-        long recogidaComparable = DateUtils.slotToMillis(fechaInicio, horaInicio);
-        long devolucionComparable = DateUtils.endExclusiveMillis(fechaFin, horaFin);
+        long recogidaComparable = DateUtils.obtenerInicioHorario(fechaInicio, horaInicio);
+        long devolucionComparable = DateUtils.obtenerFinHorario(fechaFin, horaFin);
         return mQuadDao.getAvailableQuads(recogidaComparable, devolucionComparable);
     }
 
     public LiveData<List<Quad>> getAvailableQuadsExcludingReserva(long fechaInicio, boolean horaInicio, long fechaFin, boolean horaFin, int reservaId) {
-        long recogidaComparable = DateUtils.slotToMillis(fechaInicio, horaInicio);
-        long devolucionComparable = DateUtils.endExclusiveMillis(fechaFin, horaFin);
+        long recogidaComparable = DateUtils.obtenerInicioHorario(fechaInicio, horaInicio);
+        long devolucionComparable = DateUtils.obtenerFinHorario(fechaFin, horaFin);
         return mQuadDao.getAvailableQuadsExcludingReserva(recogidaComparable, devolucionComparable, reservaId);
     }
+
 }

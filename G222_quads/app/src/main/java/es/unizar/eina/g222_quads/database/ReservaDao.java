@@ -21,6 +21,7 @@ public interface ReservaDao {
     /**
      * Inserta una reserva en la base de datos.
      * Si ya existe la misma reserva se ignora y no se inserta.
+     *
      * @param reserva reserva a insertar
      * @return id de fila insertada o -1 si se ha ignorado por conflicto
      */
@@ -29,6 +30,7 @@ public interface ReservaDao {
 
     /**
      * Actualiza los datos de una reserva existente.
+     *
      * @param reserva reserva modificada
      * @return número de filas afectadas
      */
@@ -37,6 +39,7 @@ public interface ReservaDao {
 
     /**
      * Elimina un reserva de la base de datos.
+     *
      * @param reserva reserva a eliminar
      * @return número de filas afectadas
      */
@@ -51,8 +54,9 @@ public interface ReservaDao {
 
     /**
      * Actualiza el precio de una reserva.
+     *
      * @param reservaId id de la reserva
-     * @param precio precio a actualizar
+     * @param precio    precio a actualizar
      */
     @Query("UPDATE reserva SET precioTotal = :precio WHERE id = :reservaId ")
     void updatePrecio(int reservaId, double precio);
@@ -67,6 +71,7 @@ public interface ReservaDao {
 
     /**
      * Recupera todos las reservas ordenadas por nombreCliente.
+     *
      * @return lista observable (LiveData) de reservas
      */
     @Query("SELECT * FROM reserva ORDER BY nombreCliente ASC")
@@ -74,6 +79,7 @@ public interface ReservaDao {
 
     /**
      * Recupera todos las reservas ordenadas por telefono.
+     *
      * @return lista observable (LiveData) de reservas
      */
     @Query("SELECT * FROM reserva ORDER BY movilCliente ASC")
@@ -82,6 +88,7 @@ public interface ReservaDao {
     /**
      * Recupera todos las reservas ordenadas por fecha de recogida,
      * teniendo en cuenta el horario.
+     *
      * @return lista observable (LiveData) de reservas
      */
     @Query("SELECT * FROM reserva ORDER BY recogidaComparable ASC")
@@ -90,6 +97,7 @@ public interface ReservaDao {
     /**
      * Recupera todos las reservas ordenadas por fecha de devolucion,
      * teniendo en cuenta el horario.
+     *
      * @return lista observable (LiveData) de reservas
      */
     @Query("SELECT * FROM reserva ORDER BY devolucionComparable ASC")

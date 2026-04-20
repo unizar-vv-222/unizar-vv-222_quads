@@ -11,8 +11,8 @@ import es.unizar.eina.g222_quads.database.Reserva;
 /**
  * Adaptador para mostrar la lista de reservas en un RecyclerView.
  * Se encarga únicamente de:
- *  - mostrar los datos de la reserva
- *  - notificar acciones de usuario (editar / eliminar)
+ * - mostrar los datos de la reserva
+ * - notificar acciones de usuario (editar / eliminar)
  * La lógica de negocio se delega a la Activity mediante un listener.
  */
 public class ReservaListAdapter
@@ -24,6 +24,7 @@ public class ReservaListAdapter
      */
     public interface OnReservaActionListener {
         void onEdit(Reserva reserva);
+
         void onDelete(Reserva reserva);
 
         void onClick(Reserva reserva);
@@ -35,7 +36,7 @@ public class ReservaListAdapter
      * Constructor del adaptador.
      *
      * @param diffCallback estrategia para comparar reservas
-     * @param listener receptor de eventos de edición y borrado
+     * @param listener     receptor de eventos de edición y borrado
      */
     public ReservaListAdapter(
             @NonNull DiffUtil.ItemCallback<Reserva> diffCallback,

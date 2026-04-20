@@ -22,7 +22,9 @@ import es.unizar.eina.g222_quads.database.Quad;
 public class ReservaSelectQuadsAdapter
         extends ListAdapter<Quad, ReservaSelectQuadsAdapter.QuadViewHolder> {
 
-    /** Mapa: matrícula → nº de cascos */
+    /**
+     * Mapa: matrícula → nº de cascos
+     */
     private final Map<String, Integer> cascosPorQuad = new HashMap<>();
 
     public ReservaSelectQuadsAdapter() {

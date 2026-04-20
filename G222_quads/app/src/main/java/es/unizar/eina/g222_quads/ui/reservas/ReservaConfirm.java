@@ -38,7 +38,7 @@ public class ReservaConfirm extends BaseActivity {
     private ConfirmQuadsAdapter adapter;
 
     private Reserva reserva;
-    private Map<String, Integer> cascosPorQuad = new HashMap<>();
+    private final Map<String, Integer> cascosPorQuad = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +88,8 @@ public class ReservaConfirm extends BaseActivity {
         boolean horaInicio = intent.getBooleanExtra(ReservaModify.RESERVA_HORA_RECOGIDA, false);
         boolean horaFin = intent.getBooleanExtra(ReservaModify.RESERVA_HORA_DEVOLUCION, false);
 
+        assert movil != null;
+        assert nombre != null;
         reserva = new Reserva(nombre, movil, fechaInicio, horaInicio, fechaFin, horaFin);
 
         if (intent.hasExtra(ReservaModify.RESERVA_ID)) {
@@ -108,7 +110,7 @@ public class ReservaConfirm extends BaseActivity {
         String nombre = reserva.getNombreCliente() == null ? "" : reserva.getNombreCliente();
         tvCliente.setText("Cliente: " + nombre);
 
-        tvFechas.setText(DateUtils.toHumanRange(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
+        tvFechas.setText(DateUtils.formatearRango(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
                 reserva.getFechaDevolucion(), reserva.getHoraDevolucion()));
     }
 
@@ -126,7 +128,7 @@ public class ReservaConfirm extends BaseActivity {
             return;
         }
 
-        double dias = DateUtils.daysBetween(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
+        double dias = DateUtils.calcularDiasReserva(reserva.getFechaRecogida(), reserva.getHoraRecogida(),
                 reserva.getFechaDevolucion(), reserva.getHoraDevolucion());
 
         mReservaQuadCascosViewModel.getPreciosParaReservaAsync(

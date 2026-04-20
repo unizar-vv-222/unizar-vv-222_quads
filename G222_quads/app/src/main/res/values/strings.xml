@@ -11,6 +11,20 @@
     <string name="listado_quads">Listado de quads</string>
     <string name="listado_reservas">Listado de reservas</string>
 
+    <string-array name="orden_reservas_options">
+        <item>Por nombre de cliente</item>
+        <item>Por teléfono</item>
+        <item>Por fecha de recogida</item>
+        <item>Por fecha de devolución</item>
+    </string-array>
+
+    <string-array name="filtro_reservas_options">
+        <item>Todas las reservas</item>
+        <item>Reservas previstas</item>
+        <item>Reservas vigentes</item>
+        <item>Reservas caducadas</item>
+    </string-array>
+
     <!-- QuadModify -->
     <string name="create_quad">Crear quad</string>
     <string name="edit_quad">Editar quad</string>
@@ -60,6 +74,7 @@
     <string name="quad_not_available">No hay quads disponibles para la fecha"</string>
     <string name="select_quads">Quads disponibles</string>
     <string name="selected_quads">Quads reservados</string>
+    <string name="selected_0_quads">No hay quads asociados a esta reserva</string>
 
     <string name="button_continue">Siguiente</string>
 
@@ -79,7 +94,7 @@
     <string name="tipo">Tipo</string>
     <string name="precio">Precio</string>
     <string name="precio_total">Precio total de la reserva</string>
-    <string name="descripcion">Descripcion</string>
+    <string name="description">Descripción</string>
 
     <string name="movil">Móvil del cliente</string>
     <string name="nombre_cliente">Nombre del cliente</string>

@@ -1,6 +1,7 @@
 package es.unizar.eina.g222_quads.ui.quads;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unizar.eina.g222_quads.R;
+import es.unizar.eina.g222_quads.database.Quad;
 import es.unizar.eina.g222_quads.ui.BaseActivity;
 
 /**
@@ -25,9 +27,9 @@ public class QuadModify extends BaseActivity {
        CLAVES DE RESULTADO (Intent)
        ========================================================= */
 
-    public static final String QUAD_MATRICULA   = "matricula";
-    public static final String QUAD_TIPO        = "tipo";
-    public static final String QUAD_PRECIO      = "precio";
+    public static final String QUAD_MATRICULA = "matricula";
+    public static final String QUAD_TIPO = "tipo";
+    public static final String QUAD_PRECIO = "precio";
     public static final String QUAD_DESCRIPCION = "descripcion";
 
     /* =========================================================
@@ -48,6 +50,8 @@ public class QuadModify extends BaseActivity {
 
     private boolean isEditMode;
 
+    private QuadViewModel mQuadViewModel;
+
     /* =========================================================
        CICLO DE VIDA
        ========================================================= */
@@ -56,6 +60,8 @@ public class QuadModify extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quad_form);
+
+        mQuadViewModel = new ViewModelProvider(this).get(QuadViewModel.class);
 
         bindViews();
 
@@ -97,6 +103,8 @@ public class QuadModify extends BaseActivity {
             mTitle.setText(R.string.edit_quad);
             mSaveButton.setText(R.string.button_save);
             mRowMatricula.setEnabled(false); // PK no editable
+            mRowMatricula.setFocusable(false);
+            mRowMatricula.setClickable(false);
             Typeface bold = ResourcesCompat.getFont(this, R.font.poppins_bold);
             mRowMatricula.setTypeface(bold);
         } else {
@@ -117,7 +125,7 @@ public class QuadModify extends BaseActivity {
         mRowMatricula.setText(extras.getString(QUAD_MATRICULA));
 
         boolean tipo = extras.getBoolean(QUAD_TIPO);
-        mTipo.check(tipo ? R.id.tipo_monoplaza : R.id.tipo_biplaza);
+        mTipo.check(tipo ? R.id.tipo_biplaza : R.id.tipo_monoplaza);
 
         mPrecio.setText(String.valueOf(extras.getDouble(QUAD_PRECIO)));
         mDescripcionText.setText(extras.getString(QUAD_DESCRIPCION));
@@ -134,24 +142,34 @@ public class QuadModify extends BaseActivity {
             return;
         }
 
-        String matricula   = mRowMatricula.getText().toString().trim();
+        String matricula = mRowMatricula.getText().toString().trim();
         String descripcion = mDescripcionText.getText().toString().trim();
         double precio;
         try {
-            precio      = parsePrecio(mPrecio.getText().toString().trim());
-        } catch(NumberFormatException e) {
+            precio = parsePrecio(mPrecio.getText().toString().trim());
+        } catch (NumberFormatException e) {
             return;
         }
-        boolean tipo       = (mTipo.getCheckedRadioButtonId() == R.id.tipo_monoplaza);
 
-        Intent replyIntent = new Intent();
-        replyIntent.putExtra(QUAD_MATRICULA, matricula);
-        replyIntent.putExtra(QUAD_TIPO, tipo);
-        replyIntent.putExtra(QUAD_PRECIO, precio);
-        replyIntent.putExtra(QUAD_DESCRIPCION, descripcion);
+        // tipo = true → monoplaza, false → biplaza
+        boolean tipo = (mTipo.getCheckedRadioButtonId() == R.id.tipo_biplaza);
 
-        setResult(RESULT_OK, replyIntent);
-        finish();
+        Quad quad = new Quad(matricula, tipo, precio, descripcion);
+
+        if (isEditMode) {
+            mQuadViewModel.update(quad);
+
+            Toast.makeText(this, "Quad modificado correctamente", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
+            finish();
+
+        } else {
+            mQuadViewModel.insert(quad);
+
+            Toast.makeText(this, "Quad creado correctamente", Toast.LENGTH_SHORT).show();
+            setResult(RESULT_OK);
+            finish();
+        }
     }
 
     /* =========================================================

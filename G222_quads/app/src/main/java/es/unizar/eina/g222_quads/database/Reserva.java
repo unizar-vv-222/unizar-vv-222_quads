@@ -14,7 +14,8 @@ import es.unizar.eina.g222_quads.utils.DateUtils;
  * de devolución y un precio total.
  *
  * @author G222
- */@Entity(tableName = "reserva")
+ */
+@Entity(tableName = "reserva")
 public class Reserva {
 
     @PrimaryKey(autoGenerate = true)
@@ -209,8 +210,8 @@ public class Reserva {
      * Actualiza los comparables de la reserva
      */
     public void actualizarComparables() {
-        this.recogidaComparable = DateUtils.slotToMillis(fechaRecogida, horaRecogida);
-        this.devolucionComparable = DateUtils.endExclusiveMillis(fechaDevolucion, horaDevolucion);
+        this.recogidaComparable = DateUtils.obtenerInicioHorario(fechaRecogida, horaRecogida);
+        this.devolucionComparable = DateUtils.obtenerFinHorario(fechaDevolucion, horaDevolucion);
     }
 
     /**

@@ -45,11 +45,12 @@ public class ReservaRepository {
 
     /**
      * Comprueba si un rango de fechas es válido
+     *
      * @param fechaIni fecha de inicio de la reserva en millis
-     * @param horaIni horario de inicio de la reserva
+     * @param horaIni  horario de inicio de la reserva
      * @param fechaFin fecha de fin de la reserva en millis
-     * @param horaFin horario de fin de la reserva
-     * @return
+     * @param horaFin  horario de fin de la reserva
+     * @return true si el rango es válido, false en caso contrario
      */
     private static boolean fechasValidas(long fechaIni, boolean horaIni,
                                          long fechaFin, boolean horaFin) {
@@ -58,10 +59,10 @@ public class ReservaRepository {
         }
 
         // No se puede reservar en el pasado por lo que sea
-        long hoy = DateUtils.getTodayStart();
+        long hoy = DateUtils.inicioDelDia(System.currentTimeMillis());
         if (fechaIni < hoy) return false;
 
-        return DateUtils.isRangeValid(fechaIni, horaIni, fechaFin, horaFin);
+        return DateUtils.rangoValido(fechaIni, horaIni, fechaFin, horaFin);
     }
 
     /**
@@ -70,7 +71,9 @@ public class ReservaRepository {
      * @return true si la reserva es válida, false en caso contrario
      */
     private static boolean reservaValida(Reserva r) {
-        if (r == null) { return false; }
+        if (r == null) {
+            return false;
+        }
 
         if (r.getNombreCliente() == null || r.getNombreCliente().trim().isEmpty()) {
             return false;
@@ -89,7 +92,9 @@ public class ReservaRepository {
         return fechasValidas(fr, hr, fd, hd);
     }
 
-    /** Inserta una reserva nueva en la base de datos
+    /**
+     * Inserta una reserva nueva en la base de datos
+     *
      * @param reserva La reserva consta de: un nombre de cliente (reserva.getNombreCliente()) no nulo
      *                (reserva.getNombreCliente()!=null) y no vacío (reserva.getNombreCliente().length()>0);
      *                un móvil del cliente (reserva.getMovilCliente()) no nulo; una fecha de recogida
@@ -99,7 +104,7 @@ public class ReservaRepository {
      *                (reserva.getHoraRecogida()) no nula; y un precio de la reserva (reserva.getPrecio())
      *                no nulo y no vacío.
      * @return Si la reserva se ha insertado correctamente, devuelve el id de la reserva que se ha creado. En caso
-     *         contrario, devuelve -1 para indicar el fallo.
+     * contrario, devuelve -1 para indicar el fallo.
      */
     public long insert(Reserva reserva) {
         /* Para que la App funcione correctamente y no lance una excepción, la modificación de la
@@ -123,7 +128,8 @@ public class ReservaRepository {
 
     /**
      * Inserta una reserva en la base de datos y devuelve su id a través de un callback.
-     * @param reserva Reserva que se desea insertar
+     *
+     * @param reserva  Reserva que se desea insertar
      * @param callback Callback que se ejecuta cuando se ha insertado la reserva
      */
     public void insertAndReturnIdAsync(Reserva reserva, IdCallback callback) {
@@ -136,7 +142,9 @@ public class ReservaRepository {
         }
     }
 
-    /** Actualiza una reserva en la base de datos
+    /**
+     * Actualiza una reserva en la base de datos
+     *
      * @param reserva La reserva consta de: un nombre de cliente (reserva.getNombreCliente()) no nulo
      *                (reserva.getNombreCliente()!=null) y no vacío (reserva.getNombreCliente().length()>0);
      *                un móvil del cliente (reserva.getMovilCliente()) no nulo; una fecha de recogida
@@ -146,8 +154,8 @@ public class ReservaRepository {
      *                (reserva.getHoraRecogida()) no nula; y un precio de la reserva (reserva.getPrecio())
      *                no nulo y no vacío.
      * @return Un valor entero con el número de filas modificadas: 1 si el id se corresponde con una reserva
-     *         previamente insertada; 0 si no existe previamente una reserva con ese id, o hay algún problema
-     *         con los atributos.
+     * previamente insertada; 0 si no existe previamente una reserva con ese id, o hay algún problema
+     * con los atributos.
      */
     public int update(Reserva reserva) {
         if (reservaValida(reserva)) {
@@ -165,12 +173,14 @@ public class ReservaRepository {
     }
 
 
-    /** Elimina una reserva en la base de datos.
+    /**
+     * Elimina una reserva en la base de datos.
+     *
      * @param reserva Objeto reserva cuyo atributo id (reserva.getId()) contiene la clave primaria de la reserva que se
-     *             va a eliminar de la base de datos. Se debe cumplir: reserva.getId() > 0.
+     *                va a eliminar de la base de datos. Se debe cumplir: reserva.getId() > 0.
      * @return Un valor entero con el número de filas eliminadas: 1 si el id se corresponde con una reserva
-     *         previamente insertada; 0 si no existe previamente una reserva con ese id o el id no es
-     *         un valor aceptable.
+     * previamente insertada; 0 si no existe previamente una reserva con ese id o el id no es
+     * un valor aceptable.
      */
     public int delete(Reserva reserva) {
         if (reserva == null || reserva.getId() <= 0) {
@@ -236,7 +246,7 @@ public class ReservaRepository {
     /**
      * Devuelve un objeto de tipo LiveData con todas las reservas
      * ordenadas por fecha y horario de recogida.
-     * */
+     */
     public LiveData<List<Reserva>> getReservasOrderByRecogida() {
         return mReservaDao.getReservasOrderByRecogida();
     }
@@ -251,18 +261,19 @@ public class ReservaRepository {
 
     /**
      * Recalcula el precio de una reserva
-     * @param reservaId id de la reserva
+     *
+     * @param reservaId   id de la reserva
      * @param fechaInicio fecha de inicio de la reserva
-     * @param horaInicio horario de inicio de la reserva
-     * @param fechaFin fecha de fin de la reserva
-     * @param horaFin horario de fin de la reserva
+     * @param horaInicio  horario de inicio de la reserva
+     * @param fechaFin    fecha de fin de la reserva
+     * @param horaFin     horario de fin de la reserva
      */
     public void recalcularPrecioReserva(int reservaId, long fechaInicio, boolean horaInicio,
                                         long fechaFin, boolean horaFin) {
 
         databaseWriteExecutor.execute(() -> {
 
-            double dias = DateUtils.daysBetween(fechaInicio, horaInicio, fechaFin, horaFin);
+            double dias = DateUtils.calcularDiasReserva(fechaInicio, horaInicio, fechaFin, horaFin);
             double precioDiario = mReservaQuadCascosDao.getPrecioDiarioReserva(reservaId);
             double total = dias * precioDiario;
 

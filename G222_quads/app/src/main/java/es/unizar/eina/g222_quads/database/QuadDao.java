@@ -20,6 +20,7 @@ public interface QuadDao {
     /**
      * Inserta un quad en la base de datos.
      * Si ya existe la misma matrícula se ignora.
+     *
      * @param quad quad a insertar
      * @return id de fila insertada o -1 si se ha ignorado por conflicto
      */
@@ -28,6 +29,7 @@ public interface QuadDao {
 
     /**
      * Actualiza los datos de un quad existente.
+     *
      * @param quad quad modificado
      * @return número de filas afectadas
      */
@@ -36,6 +38,7 @@ public interface QuadDao {
 
     /**
      * Elimina un quad por su matrícula de la base de datos.
+     *
      * @param matricula del quad a eliminar
      * @return número de filas afectadas
      */
@@ -46,9 +49,9 @@ public interface QuadDao {
     int deleteAll();
 
 
-
     /**
      * Recupera todos los quads ordenados por matrícula.
+     *
      * @return lista observable (LiveData) de quads
      */
     @Query("SELECT * FROM quad ORDER BY matricula ASC")
@@ -61,7 +64,6 @@ public interface QuadDao {
     // Ordenar por precio
     @Query("SELECT * FROM quad ORDER BY precio ASC")
     LiveData<List<Quad>> getQuadsOrderByPrecio();
-
 
 
     @Query("SELECT * FROM quad q WHERE q.matricula NOT IN (SELECT rq.matriculaQuad FROM reserva_quad_cascos rq INNER JOIN reserva r ON r.id = rq.reservaId WHERE r.recogidaComparable < :devolucionComparable AND r.devolucionComparable > :recogidaComparable )")

@@ -17,8 +17,8 @@ import es.unizar.eina.g222_quads.database.Quad;
  * Cada instancia de esta clase corresponde a una fila del listado de quads
  * (recyclerview_item.xml).
  * Se encarga de:
- *  - Mostrar la matrícula del quad
- *  - Exponer los botones de editar y eliminar
+ * - Mostrar la matrícula del quad
+ * - Exponer los botones de editar y eliminar
  */
 public class QuadViewHolder extends RecyclerView.ViewHolder {
 
@@ -36,8 +36,8 @@ public class QuadViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         txtMatricula = itemView.findViewById(R.id.textView);
-        btnEdit      = itemView.findViewById(R.id.btn_edit);
-        btnDelete    = itemView.findViewById(R.id.btn_delete);
+        btnEdit = itemView.findViewById(R.id.btn_edit);
+        btnDelete = itemView.findViewById(R.id.btn_delete);
     }
 
     /**
