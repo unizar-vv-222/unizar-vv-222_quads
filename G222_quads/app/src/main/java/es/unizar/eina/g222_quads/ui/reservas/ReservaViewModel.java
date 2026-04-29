@@ -161,10 +161,9 @@ public class ReservaViewModel extends AndroidViewModel {
     /**
      * Publica en reservasUi la lista base ordenada, tras aplicar el filtro actual.
      */
-    private void publicarListaFiltrada() {
+    private List<Reserva> obtenerListaFiltrada(long ahora) {
 
         List<Reserva> resultado = new ArrayList<>();
-        long ahora = System.currentTimeMillis();
 
         for (Reserva r : reservasBase) {
 
@@ -174,7 +173,12 @@ public class ReservaViewModel extends AndroidViewModel {
 
         }
 
-        reservasUi.setValue(resultado);
+        return resultado;
+
+    }
+    private void publicarListaFiltrada() {
+
+        reservasUi.setValue(obtenerListaFiltrada(System.currentTimeMillis()));
 
     }
 
