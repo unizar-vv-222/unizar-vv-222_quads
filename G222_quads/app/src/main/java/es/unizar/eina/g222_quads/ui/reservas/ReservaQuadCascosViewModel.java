@@ -46,4 +46,3 @@ public class ReservaQuadCascosViewModel extends AndroidViewModel {
     }
 
 }
-

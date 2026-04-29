@@ -3,18 +3,14 @@ package es.unizar.eina.g222_quads.ui.quads;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-
 import com.google.android.material.button.MaterialButton;
-
 import es.unizar.eina.g222_quads.R;
 import es.unizar.eina.g222_quads.database.QuadRepository;
 import es.unizar.eina.g222_quads.database.ReservaRepository;
 import es.unizar.eina.g222_quads.ui.BaseActivity;
-
 import es.unizar.eina.g222_quads.ui.reservas.G222_ReservasList;
 import es.unizar.eina.g222_quads.ui.reservas.ReservaViewModel;
 import es.unizar.eina.g222_quads.ui.reservas.TestReservaActivity;
-
 import androidx.lifecycle.ViewModelProvider;
 
 /**
@@ -25,15 +21,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 public class G222_quads extends BaseActivity {
 
-
     private QuadViewModel mQuadViewModel;
     private ReservaViewModel mReservaViewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         // Carga el diseño de los botones
         setContentView(R.layout.activity_g222_main);
@@ -67,14 +60,12 @@ public class G222_quads extends BaseActivity {
         });
     }
 
-
-
-    public QuadRepository getQuadRespositoryMain(){
+    public QuadRepository getQuadRespositoryMain() {
         mQuadViewModel = new ViewModelProvider(this).get(QuadViewModel.class);
         return mQuadViewModel.getQuadRepository();
     }
 
-    public ReservaRepository getReservaRepositoryMain(){
+    public ReservaRepository getReservaRepositoryMain() {
         mReservaViewModel = new ViewModelProvider(this).get(ReservaViewModel.class);
         return mReservaViewModel.getReservaRepository();
     }

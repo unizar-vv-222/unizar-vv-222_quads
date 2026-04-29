@@ -75,7 +75,6 @@ public class ReservaDetail extends BaseActivity {
 
     }
 
-
     private void setupViewModels() {
 
         mReservaViewModel = new ViewModelProvider(this).get(ReservaViewModel.class);
@@ -255,4 +254,3 @@ public class ReservaDetail extends BaseActivity {
     }
 
 }
-

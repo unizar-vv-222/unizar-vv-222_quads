@@ -10,7 +10,6 @@ import androidx.lifecycle.MediatorLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.unizar.eina.g222_quads.database.QuadRepository;
 import es.unizar.eina.g222_quads.database.Reserva;
 import es.unizar.eina.g222_quads.database.ReservaRepository;
 import es.unizar.eina.g222_quads.utils.DateUtils;
@@ -64,19 +63,11 @@ public class ReservaViewModel extends AndroidViewModel {
     }
 
     /* =========================
-       GETTERS DE ESTADO
+       GETTER
        ========================= */
 
     public LiveData<List<Reserva>> getReservasUi() {
         return reservasUi;
-    }
-
-    public int getOrdenActual() {
-        return ordenActual;
-    }
-
-    public int getFiltroActual() {
-        return filtroActual;
     }
 
     /* =========================
@@ -251,4 +242,5 @@ public class ReservaViewModel extends AndroidViewModel {
     public ReservaRepository getReservaRepository() {
         return mRepository;
     }
+
 }

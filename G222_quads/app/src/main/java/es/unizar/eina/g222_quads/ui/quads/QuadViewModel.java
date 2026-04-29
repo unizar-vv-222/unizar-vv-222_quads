@@ -86,10 +86,6 @@ public class QuadViewModel extends AndroidViewModel {
         return mRepository.getQuadByMatriculaSync(matricula);
     }
 
-
-
-
-
     public QuadRepository getQuadRepository() {
         return mRepository;
     }

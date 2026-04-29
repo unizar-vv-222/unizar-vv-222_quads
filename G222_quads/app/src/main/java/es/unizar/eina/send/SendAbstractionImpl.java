@@ -26,4 +26,5 @@ public class SendAbstractionImpl implements SendAbstraction {
 	public void send(String phone, String message) {
 		implementor.send(phone, message);
 	}
+
 }

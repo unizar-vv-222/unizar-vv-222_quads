@@ -162,4 +162,5 @@ public class ReservaSelectQuadsAdapter
             return oldItem.getTipo() == newItem.getTipo();
         }
     }
+
 }

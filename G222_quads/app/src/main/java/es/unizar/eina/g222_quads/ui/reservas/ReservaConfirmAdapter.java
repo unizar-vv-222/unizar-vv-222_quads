@@ -77,4 +77,5 @@ public class ReservaConfirmAdapter extends RecyclerView.Adapter<ReservaConfirmAd
             cascos = itemView.findViewById(R.id.text_cascos);
         }
     }
+
 }

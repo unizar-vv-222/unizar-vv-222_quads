@@ -18,7 +18,6 @@ public class Quad {
     @ColumnInfo(name = "matricula")
     private String matricula;
 
-
     @ColumnInfo(name = "tipo")
     private boolean tipo;
 

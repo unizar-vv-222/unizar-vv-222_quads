@@ -214,18 +214,12 @@ public class ReservaRepository {
         return mAllReservas;
     }
 
-
-
-
     /**
      * Elimina todas las reservas de la base de datos.
      */
     public Future<Integer> deleteAll() {
         return databaseWriteExecutor.submit(mReservaDao::deleteAll);
     }
-
-
-
 
     /**
      * Devuelve un objeto de tipo LiveData con todas las reservas
@@ -280,6 +274,5 @@ public class ReservaRepository {
             mReservaDao.updatePrecio(reservaId, total);
         });
     }
-
 
 }

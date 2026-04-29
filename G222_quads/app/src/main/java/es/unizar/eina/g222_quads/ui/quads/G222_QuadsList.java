@@ -35,7 +35,6 @@ public class G222_QuadsList extends BaseActivity {
         /* =========================
            RECYCLERVIEW
            ========================= */
-
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
 
         mAdapter = new QuadListAdapter(
@@ -66,7 +65,6 @@ public class G222_QuadsList extends BaseActivity {
         /* =========================
            VIEWMODEL
            ========================= */
-
         mQuadViewModel = new ViewModelProvider(this).get(QuadViewModel.class);
         mQuadViewModel.getAllQuads().observe(this, quads ->
                 mAdapter.submitList(quads)
@@ -75,14 +73,12 @@ public class G222_QuadsList extends BaseActivity {
         /* =========================
            FAB – CREAR QUAD
            ========================= */
-
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> createQuad());
 
         /* =========================
          ORD QUADS - FILTRO ORDENAR
         =========================== */
-
         Button ordQuads = findViewById(R.id.orden_quads);
         ordQuads.setOnClickListener(v -> showSortDialog());
 
@@ -91,7 +87,6 @@ public class G222_QuadsList extends BaseActivity {
     /* =========================
        CREAR QUAD
        ========================= */
-
     private void createQuad() {
         startActivity(new Intent(this, QuadModify.class));
     }
@@ -99,7 +94,6 @@ public class G222_QuadsList extends BaseActivity {
     /* =========================
        EDITAR QUAD
        ========================= */
-
     private void editQuad(Quad quad) {
         Intent intent = new Intent(this, QuadModify.class);
         intent.putExtra(QuadModify.QUAD_MATRICULA, quad.getMatricula());
@@ -112,7 +106,6 @@ public class G222_QuadsList extends BaseActivity {
     /* =========================
        DIÁLOGO DELETE QUAD
        ========================= */
-
     private void showDeleteDialog(String quad) {
 
         new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
@@ -125,6 +118,7 @@ public class G222_QuadsList extends BaseActivity {
                 })
                 .setNegativeButton(R.string.button_cancel, null)
                 .show();
+
     }
 
     private final ActivityResultLauncher<Intent> mStartDetail =
@@ -172,6 +166,5 @@ public class G222_QuadsList extends BaseActivity {
                 })
                 .show();
     }
-
 
 }

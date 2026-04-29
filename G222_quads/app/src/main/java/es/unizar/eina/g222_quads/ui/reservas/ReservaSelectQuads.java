@@ -217,6 +217,7 @@ public class ReservaSelectQuads extends BaseActivity {
                 ReservaModify.RESERVA_FECHA_RECOGIDA,
                 fechaInicio
         );
+
         intent.putExtra(
                 ReservaModify.RESERVA_FECHA_DEVOLUCION,
                 fechaFin
@@ -245,7 +246,6 @@ public class ReservaSelectQuads extends BaseActivity {
                 getIntent().getStringExtra(ReservaModify.RESERVA_MOVIL)
         );
 
-
         if (isEditMode) {
             intent.putExtra(ReservaModify.RESERVA_ID, reservaId);
         }
@@ -253,4 +253,5 @@ public class ReservaSelectQuads extends BaseActivity {
         startActivity(intent);
         finish();
     }
+
 }
