@@ -61,11 +61,18 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation "androidx.test.ext:junit:$rootProject.androidxJunitVersion"
+    
 
-    // Assertions
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     // UI testing with Espresso
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+    androidTestImplementation ("androidx.test.espresso:espresso-core:$rootProject.espressoVersion")
+
+    // UiAutomator
+    androidTestImplementation ("androidx.test.uiautomator:uiautomator:$rootProject.uiAutomatorVersion")
+
+    // Cucumber
+    androidTestImplementation ("io.cucumber:cucumber-android:$rootProject.cucumberVersion")
+    androidTestImplementation ("io.cucumber:cucumber-picocontainer:$rootProject.cucumberPicoContainerVersion")
+
 }
 java {
     toolchain {
