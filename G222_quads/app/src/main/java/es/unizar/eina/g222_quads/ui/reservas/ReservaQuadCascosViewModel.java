@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import java.util.Map;
 
 import es.unizar.eina.g222_quads.database.ReservaQuadCascosRepository;
+import es.unizar.eina.g222_quads.database.ReservaRepository;
 
 /**
  * ViewModel para gestionar la relación Reserva–Quad.
@@ -43,6 +44,10 @@ public class ReservaQuadCascosViewModel extends AndroidViewModel {
                                            Map<String, Integer> seleccion,
                                            java.util.function.Consumer<Map<String, Double>> cb) {
         mRepository.getPreciosParaReservaAsync(reservaId, seleccion, cb);
+    }
+
+    public ReservaQuadCascosRepository getReservaQuadCascosRepository() {
+        return mRepository;
     }
 
 }

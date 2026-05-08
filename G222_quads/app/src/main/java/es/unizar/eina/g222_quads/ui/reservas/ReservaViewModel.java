@@ -3,6 +3,7 @@ package es.unizar.eina.g222_quads.ui.reservas;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -161,11 +162,12 @@ public class ReservaViewModel extends AndroidViewModel {
     /**
      * Publica en reservasUi la lista base ordenada, tras aplicar el filtro actual.
      */
-    private List<Reserva> obtenerListaFiltrada(long ahora) {
+    @VisibleForTesting
+    public List<Reserva> obtenerListaFiltrada(List<Reserva> reservas, long ahora) {
 
         List<Reserva> resultado = new ArrayList<>();
 
-        for (Reserva r : reservasBase) {
+        for (Reserva r : reservas) {
 
             if (cumpleFiltro(r, ahora)) {
                 resultado.add(r);
@@ -178,7 +180,7 @@ public class ReservaViewModel extends AndroidViewModel {
     }
     private void publicarListaFiltrada() {
 
-        reservasUi.setValue(obtenerListaFiltrada(System.currentTimeMillis()));
+        reservasUi.setValue(obtenerListaFiltrada(reservasBase, System.currentTimeMillis()));
 
     }
 

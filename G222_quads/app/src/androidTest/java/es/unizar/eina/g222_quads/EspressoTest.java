@@ -27,10 +27,6 @@ import org.junit.Test;
 
 import es.unizar.eina.g222_quads.database.Quad;
 
-//import es.unizar.eina.notepad.ui.Notepad;
-
-// Importo varios UI porque no tengo claro cual voy a necesitar
-import es.unizar.eina.g222_quads.ui.quads.G222_QuadsList;
 import es.unizar.eina.g222_quads.ui.quads.G222_quads;
 
 

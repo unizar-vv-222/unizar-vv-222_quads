@@ -6,9 +6,12 @@ import android.widget.Button;
 import com.google.android.material.button.MaterialButton;
 import es.unizar.eina.g222_quads.R;
 import es.unizar.eina.g222_quads.database.QuadRepository;
+import es.unizar.eina.g222_quads.database.ReservaQuadCascos;
+import es.unizar.eina.g222_quads.database.ReservaQuadCascosRepository;
 import es.unizar.eina.g222_quads.database.ReservaRepository;
 import es.unizar.eina.g222_quads.ui.BaseActivity;
 import es.unizar.eina.g222_quads.ui.reservas.G222_ReservasList;
+import es.unizar.eina.g222_quads.ui.reservas.ReservaQuadCascosViewModel;
 import es.unizar.eina.g222_quads.ui.reservas.ReservaViewModel;
 import es.unizar.eina.g222_quads.ui.reservas.TestReservaActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,6 +26,8 @@ public class G222_quads extends BaseActivity {
 
     private QuadViewModel mQuadViewModel;
     private ReservaViewModel mReservaViewModel;
+
+    private ReservaQuadCascosViewModel mReservaQuadCascosViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,11 @@ public class G222_quads extends BaseActivity {
     public ReservaRepository getReservaRepositoryMain() {
         mReservaViewModel = new ViewModelProvider(this).get(ReservaViewModel.class);
         return mReservaViewModel.getReservaRepository();
+    }
+
+    public ReservaQuadCascosRepository getReservaQuadCascosRepositoryMain() {
+        mReservaQuadCascosViewModel = new ViewModelProvider(this).get(ReservaQuadCascosViewModel.class);
+        return mReservaQuadCascosViewModel.getReservaQuadCascosRepository();
     }
 
 }

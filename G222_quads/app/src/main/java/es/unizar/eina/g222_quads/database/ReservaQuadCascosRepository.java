@@ -10,6 +10,7 @@ import androidx.lifecycle.Transformations;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -178,6 +179,10 @@ public class ReservaQuadCascosRepository {
             Map<String, Double> precios = getPreciosParaReserva(reservaId, seleccion);
             new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> cb.accept(precios));
         });
+    }
+
+    public Future<Integer> deleteAll() {
+        return databaseWriteExecutor.submit(mReservaQuadCascosDao::deleteAll);
     }
 
 }

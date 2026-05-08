@@ -48,6 +48,10 @@ public interface ReservaQuadCascosDao {
     @Query("DELETE FROM reserva_quad_cascos WHERE reservaId = :reservaId AND matriculaQuad = :matricula")
     void delete(int reservaId, String matricula);
 
+
+    @Query("DELETE FROM reserva_quad_cascos")
+    int deleteAll();
+
     /**
      * Recupera todas las relaciones quad-reserva asociadas a una reserva.
      * Para observar (UI).
