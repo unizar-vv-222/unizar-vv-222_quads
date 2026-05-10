@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Repositorio para gestionar la relación Reserva–Quad.
@@ -22,9 +21,6 @@ public class ReservaQuadCascosRepository {
     private final ReservaQuadCascosDao mReservaQuadCascosDao;
     private final QuadDao mQuadDao;
 
-    /**
-     * Constructor de ReservaQuadCascosRepository.
-     */
     public ReservaQuadCascosRepository(Application application) {
         Quad_Reserva_RoomDataBase db =
                 Quad_Reserva_RoomDataBase.getDatabase(application);
@@ -32,9 +28,6 @@ public class ReservaQuadCascosRepository {
         mQuadDao = db.quadDao();
     }
 
-    /* =========================================================
-       CONSULTAS
-       =========================================================*/
     public LiveData<Map<String, Integer>> getByReserva(int reservaId) {
         return Transformations.map(
                 mReservaQuadCascosDao.getByReservaLive(reservaId),
@@ -50,94 +43,68 @@ public class ReservaQuadCascosRepository {
 
     /**
      * Actualiza los cascos de los quads de una reserva.
+     * Usa submit().get() internamente para bloquear hasta que la BD termine,
+     * garantizando que el resultado es correcto cuando se devuelve.
      *
      * @param reservaId id de la reserva
      * @param nuevos    nuevos cascos por quad
      * @return true si se han realizado cambios, false en caso contrario
      */
     public boolean updateCascos(int reservaId, Map<String, Integer> nuevos) {
+        try {
+            return databaseWriteExecutor.submit(() -> {
 
-        AtomicBoolean cambios = new AtomicBoolean(false);
-        databaseWriteExecutor.execute(() -> {
+                boolean cambios = false;
 
-            // obtengo actuales
-            List<ReservaQuadCascos> actualesList =
-                    mReservaQuadCascosDao.getByReservaSync(reservaId);
+                List<ReservaQuadCascos> actualesList =
+                        mReservaQuadCascosDao.getByReservaSync(reservaId);
 
-            Map<String, ReservaQuadCascos> actuales = new HashMap<>();
-            for (ReservaQuadCascos rqc : actualesList) {
-                actuales.put(rqc.getMatriculaQuad(), rqc);
-            }
+                Map<String, ReservaQuadCascos> actuales = new HashMap<>();
+                for (ReservaQuadCascos rqc : actualesList) {
+                    actuales.put(rqc.getMatriculaQuad(), rqc);
+                }
 
-            // insertar o actualizar
-            for (Map.Entry<String, Integer> entry : nuevos.entrySet()) {
+                for (Map.Entry<String, Integer> entry : nuevos.entrySet()) {
+                    String matricula = entry.getKey();
+                    int nuevosCascos = entry.getValue();
 
-                String matricula = entry.getKey();
-                int nuevosCascos = entry.getValue();
-
-                if (!actuales.containsKey(matricula)) {
-
-                    // NO EXISTE -> insertar con precio actual
-                    mReservaQuadCascosDao.insert(
-                            new ReservaQuadCascos(reservaId, matricula,
-                                    nuevosCascos, getPrecioActual(matricula)));
-                    cambios.set(true);
-
-                } else {
-
-                    // EXISTE -> comprobar si cambian los cascos
-                    ReservaQuadCascos actual = actuales.get(matricula);
-
-                    if (actual.getNumCascos() != nuevosCascos) {
-                        // actualizar SOLO el número de cascos
-                        mReservaQuadCascosDao.updateNumCascos(reservaId, matricula, nuevosCascos);
+                    if (!actuales.containsKey(matricula)) {
+                        mReservaQuadCascosDao.insert(
+                                new ReservaQuadCascos(reservaId, matricula,
+                                        nuevosCascos, getPrecioActual(matricula)));
+                        cambios = true;
+                    } else {
+                        ReservaQuadCascos actual = actuales.get(matricula);
+                        if (actual.getNumCascos() != nuevosCascos) {
+                            mReservaQuadCascosDao.updateNumCascos(reservaId, matricula, nuevosCascos);
+                        }
                     }
-                    // si son iguales -> NO SE TOCA NADA
-
                 }
 
-            }
-
-            // eliminar los que ya no están
-            for (String matricula : actuales.keySet()) {
-                if (!nuevos.containsKey(matricula)) {
-                    mReservaQuadCascosDao.delete(reservaId, matricula);
-                    cambios.set(true);
+                for (String matricula : actuales.keySet()) {
+                    if (!nuevos.containsKey(matricula)) {
+                        mReservaQuadCascosDao.delete(reservaId, matricula);
+                        cambios = true;
+                    }
                 }
-            }
-        });
 
-        return cambios.get();
-    }
+                return cambios;
 
-    /**
-     * Devuelve el precio actual de un quad.
-     *
-     * @param matricula
-     * @return
-     */
-    private double getPrecioActual(String matricula) {
-        Quad q = mQuadDao.getQuadByMatricula(matricula);
-        if (q == null) {
-            return -1;
-        } else {
-            return q.getPrecio();
+            }).get(); // bloquea hasta que la operación de BD termina
+
+        } catch (Exception e) {
+            return false;
         }
     }
 
-    /**
-     * Devuelve los precios para la reserva.
-     *
-     * @param reservaId id de la reserva
-     * @param seleccion seleccion de quads
-     * @return precios para la reserva
-     */
+    private double getPrecioActual(String matricula) {
+        Quad q = mQuadDao.getQuadByMatricula(matricula);
+        return q == null ? -1 : q.getPrecio();
+    }
+
     public Map<String, Double> getPreciosParaReserva(int reservaId, Map<String, Integer> seleccion) {
-
         Map<String, Double> precios = new HashMap<>();
-
-        List<ReservaQuadCascos> existentes =
-                mReservaQuadCascosDao.getByReservaSync(reservaId);
+        List<ReservaQuadCascos> existentes = mReservaQuadCascosDao.getByReservaSync(reservaId);
 
         Map<String, ReservaQuadCascos> congelados = new HashMap<>();
         for (ReservaQuadCascos rqc : existentes) {
@@ -145,36 +112,18 @@ public class ReservaQuadCascosRepository {
         }
 
         for (String matricula : seleccion.keySet()) {
-
             if (congelados.containsKey(matricula)) {
-                // precio congelado
-                precios.put(
-                        matricula,
-                        congelados.get(matricula).getPrecioOriginal()
-                );
+                precios.put(matricula, congelados.get(matricula).getPrecioOriginal());
             } else {
-                // quad nuevo -> precio actual
-                precios.put(
-                        matricula,
-                        mQuadDao.getQuadByMatricula(matricula).getPrecio()
-                );
+                precios.put(matricula, mQuadDao.getQuadByMatricula(matricula).getPrecio());
             }
         }
-
         return precios;
     }
 
-    /**
-     * Devuelve los precios para la reserva.
-     *
-     * @param reservaId id de la reserva
-     * @param seleccion seleccion de quads
-     * @param cb        callback que se ejecuta cuando se han obtenido los precios
-     */
     public void getPreciosParaReservaAsync(int reservaId,
                                            Map<String, Integer> seleccion,
                                            java.util.function.Consumer<Map<String, Double>> cb) {
-
         databaseWriteExecutor.execute(() -> {
             Map<String, Double> precios = getPreciosParaReserva(reservaId, seleccion);
             new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> cb.accept(precios));

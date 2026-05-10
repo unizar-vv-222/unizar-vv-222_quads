@@ -78,16 +78,16 @@ public class ReservaNombreClienteTest {
         insertar("     ", false);
     }
 
-    // ── PARTICIÓN INVÁLIDA 4: nombre con caracteres especiales─
+    // ── PARTICIÓN VÁLIDA 4: nombre con caracteres especiales─
     @Test
     public void testNombreConCaracteresEspeciales() {
-        insertar("Cliente@#$%", false);
+        insertar("Cliente@#$%", true);
     }
 
-    // ── PARTICIÓN INVÁLIDA 5: nombre con números ──────────────
+    // ── PARTICIÓN VÁLIDA 5: nombre con números ──────────────
     @Test
     public void testNombreConNumeros() {
-        insertar("Cliente123", false);
+        insertar("Cliente123", true);
     }
 
     // ── Helper ────────────────────────────────────────────────

@@ -1,11 +1,13 @@
 package es.unizar.eina.g222_quads;
 
-import androidx.test.espresso.Espresso;
+import androidx.test.espresso.contrib.PickerActions;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,17 +17,18 @@ import es.unizar.eina.g222_quads.database.QuadRepository;
 import es.unizar.eina.g222_quads.database.Reserva;
 import es.unizar.eina.g222_quads.database.ReservaRepository;
 import es.unizar.eina.g222_quads.ui.quads.G222_quads;
-import es.unizar.eina.g222_quads.ui.quads.*;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-import android.app.Activity;
+import android.widget.DatePicker;
 
 import java.util.Calendar;
 
@@ -56,7 +59,6 @@ public class NavigationPathTest {
     public ActivityScenarioRule<G222_quads> activityRule =
             new ActivityScenarioRule<>(G222_quads.class);
 
-
     @Before
     public void setup() {
         activityRule.getScenario().onActivity(activity -> {
@@ -80,9 +82,100 @@ public class NavigationPathTest {
             } catch (Exception e) { throw new RuntimeException(e); }
         });
     }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    //  HELPERS
+    // ─────────────────────────────────────────────────────────────────────────
+
     /**
-     * Ejecuta la acción Espresso de cada arista.
-     * Ajusta los R.id.* a los nombres reales de tus vistas.
+     * Rellena el formulario de quad con datos válidos.
+     * En modo edición la matrícula está deshabilitada: replaceText no hace nada
+     * sobre ella, lo cual es correcto.
+     */
+    private void fillQuadForm() {
+        onView(withId(R.id.matricula))
+                .perform(clearText(), replaceText("TSTFILL"), closeSoftKeyboard());
+        onView(withId(R.id.tipo_monoplaza)).perform(click());
+        onView(withId(R.id.precio))
+                .perform(clearText(), replaceText("15.0"), closeSoftKeyboard());
+        onView(withId(R.id.descripcion))
+                .perform(clearText(), replaceText("Quad de prueba"), closeSoftKeyboard());
+    }
+
+    /**
+     * Rellena el formulario básico de reserva con datos válidos.
+     * Las fechas se seleccionan mediante DatePickerDialog nativo.
+     */
+    private void fillReservaForm() {
+        onView(withId(R.id.nombre_cliente))
+                .perform(clearText(), replaceText("Cliente Test"), closeSoftKeyboard());
+        onView(withId(R.id.movil_cliente))
+                .perform(clearText(), replaceText("600000099"), closeSoftKeyboard());
+
+        // Fecha recogida (un año en el futuro)
+        onView(withId(R.id.fecha_recogida)).perform(click());
+        Calendar recogida = Calendar.getInstance();
+        recogida.add(Calendar.YEAR, 1);
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
+                .perform(PickerActions.setDate(
+                        recogida.get(Calendar.YEAR),
+                        recogida.get(Calendar.MONTH) + 1,
+                        recogida.get(Calendar.DAY_OF_MONTH)));
+        onView(withText("OK")).perform(click());
+
+        // Horario recogida: mañana
+        onView(withId(R.id.horario_recogida_manana)).perform(click());
+
+        // Fecha devolución (un año + 2 días en el futuro)
+        onView(withId(R.id.fecha_devolucion)).perform(click());
+        Calendar devolucion = Calendar.getInstance();
+        devolucion.add(Calendar.YEAR, 1);
+        devolucion.add(Calendar.DAY_OF_YEAR, 2);
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
+                .perform(PickerActions.setDate(
+                        devolucion.get(Calendar.YEAR),
+                        devolucion.get(Calendar.MONTH) + 1,
+                        devolucion.get(Calendar.DAY_OF_MONTH)));
+        onView(withText("OK")).perform(click());
+
+        // Horario devolución: tarde
+        onView(withId(R.id.horario_devolucion_tarde)).perform(click());
+    }
+
+    /**
+     * Selecciona el primer quad disponible en ReservaSelectQuads marcando su checkbox.
+     */
+    private void selectFirstQuad() {
+        onView(withId(R.id.recyclerview_quads))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(
+                        0,
+                        new androidx.test.espresso.ViewAction() {
+                            @Override
+                            public org.hamcrest.Matcher<android.view.View> getConstraints() {
+                                return androidx.test.espresso.matcher.ViewMatchers.isEnabled();
+                            }
+                            @Override
+                            public String getDescription() {
+                                return "Marcar checkbox del primer quad";
+                            }
+                            @Override
+                            public void perform(androidx.test.espresso.UiController uiController,
+                                                android.view.View view) {
+                                view.findViewById(R.id.quad_checkbox).performClick();
+                            }
+                        }
+                ));
+    }
+
+    /**
+     * Confirma el AlertDialog "Reserva confirmada" que aparece tras guardar.
+     */
+    private void confirmReservaSavedDialog() {
+        onView(withText("Aceptar")).perform(click());
+    }
+
+    /**
+     * Ejecuta la acción Espresso correspondiente a la arista indicada.
      */
     private void executeEdge(int edgeId) {
         switch (edgeId) {
@@ -97,8 +190,7 @@ public class NavigationPathTest {
             // ── quad ─────────────────────────────────────────────
             case 3:  // quad --quadDetail--> quad_detail
                 onView(withId(R.id.recyclerview)).perform(
-                        androidx.test.espresso.contrib.RecyclerViewActions
-                                .actionOnItemAtPosition(0, click()));
+                        RecyclerViewActions.actionOnItemAtPosition(0, click()));
                 break;
             case 4:  // quad --createQuad--> quad_form
                 onView(withId(R.id.fab)).perform(click());
@@ -108,15 +200,24 @@ public class NavigationPathTest {
                 break;
             case 6:  // quad --ordenarPorMatricula--> quad
                 onView(withId(R.id.orden_quads)).perform(click());
-                onView(withText("Por matrícula")).perform(click());
+
+                onView(withText("Por matrícula"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
             case 7:  // quad --ordenarPorPrecio--> quad
                 onView(withId(R.id.orden_quads)).perform(click());
-                onView(withText("Por precio")).perform(click());
+
+                onView(withText("Por precio"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
             case 8:  // quad --ordenarPorTipo--> quad
                 onView(withId(R.id.orden_quads)).perform(click());
-                onView(withText("Por tipo")).perform(click());
+
+                onView(withText("Por tipo"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
 
             // ── quad_detail ──────────────────────────────────────
@@ -124,15 +225,19 @@ public class NavigationPathTest {
                 pressBack();
                 break;
             case 10: // quad_detail --deleteQuad--> quad
-                onView(withId(R.id.btn_delete)).perform(click());
+                // button_delete abre MaterialAlertDialog; botón positivo = R.string.delete
+                onView(withId(R.id.button_delete)).perform(click());
                 onView(withText("Eliminar")).perform(click());
                 break;
             case 11: // quad_detail --editQuad--> quad_form
-                onView(withId(R.id.btn_edit)).perform(click());
+                onView(withId(R.id.button_edit)).perform(click());
                 break;
 
             // ── quad_form ────────────────────────────────────────
             case 12: // quad_form --quadSaved--> quad  (crear o editar)
+                // Rellenamos todos los campos; en edición la matrícula está
+                // deshabilitada y el clearText/replaceText no tiene efecto sobre ella.
+                fillQuadForm();
                 onView(withId(R.id.button_save)).perform(click());
                 break;
             case 13: // quad_form --goBack--> quad
@@ -144,9 +249,8 @@ public class NavigationPathTest {
 
             // ── reserva ──────────────────────────────────────────
             case 15: // reserva --reservaDetail--> reserva_detail
-                onView(withId(R.id.recyclerview)).perform(  // ← el ID real tuyo
-                        androidx.test.espresso.contrib.RecyclerViewActions
-                                .actionOnItemAtPosition(0, click()));
+                onView(withId(R.id.recyclerview)).perform(
+                        RecyclerViewActions.actionOnItemAtPosition(0, click()));
                 break;
             case 16: // reserva --createReserva--> reserva_form
                 onView(withId(R.id.fab)).perform(click());
@@ -156,31 +260,53 @@ public class NavigationPathTest {
                 break;
             case 18: // reserva --filtrarVigentes--> reserva
                 onView(withId(R.id.filtro_reservas)).perform(click());
-                onView(withText("Reservas vigentes")).perform(click());
+
+                onView(withText("Reservas vigentes"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
             case 19: // reserva --filtrarFuturas--> reserva
                 onView(withId(R.id.filtro_reservas)).perform(click());
-                onView(withText("Reservas previstas")).perform(click());
+
+                onView(withText("Reservas previstas"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
             case 20: // reserva --filtrarCaducadas--> reserva
                 onView(withId(R.id.filtro_reservas)).perform(click());
-                onView(withText("Reservas caducadas")).perform(click());
+
+                onView(withText("Reservas caducadas"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
             case 21: // reserva --ordenarPorNombre--> reserva
                 onView(withId(R.id.orden_reservas)).perform(click());
-                onView(withText("Por nombre de cliente")).perform(click());
+
+                onView(withText("Por nombre de cliente"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
+
                 break;
             case 22: // reserva --ordenarPorTelefono--> reserva
                 onView(withId(R.id.orden_reservas)).perform(click());
-                onView(withText("Por teléfono")).perform(click());
+
+                onView(withText("Por teléfono"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
             case 23: // reserva --ordenarPorFechaRecogida--> reserva
                 onView(withId(R.id.orden_reservas)).perform(click());
-                onView(withText("Por fecha de recogida")).perform(click());
+
+                onView(withText("Por fecha de recogida"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
             case 24: // reserva --ordenarPorFechaDevolucion--> reserva
                 onView(withId(R.id.orden_reservas)).perform(click());
-                onView(withText("Por fecha de devolución")).perform(click());
+
+                onView(withText("Por fecha de devolución"))
+                        .inRoot(isPlatformPopup())
+                        .perform(click());
                 break;
 
             // ── reserva_detail ───────────────────────────────────
@@ -188,15 +314,15 @@ public class NavigationPathTest {
                 pressBack();
                 break;
             case 26: // reserva_detail --deleteReserva--> reserva
-                onView(withId(R.id.btn_delete)).perform(click());
-                // onView(withText("Aceptar")).perform(click());
+                // button_delete abre MaterialAlertDialog; botón positivo = R.string.delete
+                onView(withId(R.id.button_delete)).perform(click());
+                onView(withText("Eliminar")).perform(click());
                 break;
             case 27: // reserva_detail --editReserva--> reserva_form
-                onView(withId(R.id.btn_edit)).perform(click());
+                onView(withId(R.id.button_edit)).perform(click());
                 break;
-            case 28: // reserva_detail --sendDetails--> external
+            case 28: // reserva_detail --sendDetails--> external (SMS)
                 onView(withId(R.id.btn_enviar)).perform(click());
-                // Intents.intended(hasAction(Intent.ACTION_SEND));
                 break;
 
             // ── reserva_form ─────────────────────────────────────
@@ -207,25 +333,33 @@ public class NavigationPathTest {
                 onView(withId(R.id.button_cancel)).perform(click());
                 break;
             case 31: // reserva_form --next--> select_quads
+                // ReservaModify requiere todos los campos y fechas válidas
+                fillReservaForm();
                 onView(withId(R.id.button_continue)).perform(click());
                 break;
 
             // ── select_quads ─────────────────────────────────────
             case 32: // select_quads --goBack--> reserva
+                // ReservaModify llama a finish() antes de lanzar SelectQuads,
+                // así que pressBack() nos devuelve directamente a la lista de reservas.
                 pressBack();
                 break;
             case 33: // select_quads --next--> confirm
-                onView(withId(R.id.button_continue)).perform(click());
+                // Hay que seleccionar al menos un quad; si no, goToConfirm() muestra Toast
+                selectFirstQuad();
+                onView(withId(R.id.button_confirm)).perform(click());
                 break;
 
             // ── confirm ──────────────────────────────────────────
-            case 34: // confirm --reservaSaved--> reserva  (crear o editar)
+            case 34: // confirm --reservaSaved--> reserva
+                // Tras guardar aparece AlertDialog "Reserva confirmada" con botón "Aceptar"
                 onView(withId(R.id.button_confirm)).perform(click());
+                confirmReservaSavedDialog();
                 break;
-            case 35: // confirm --cancel--> reserva
+            case 35: // confirm --cancel--> reserva (ReservaConfirm.finish())
                 onView(withId(R.id.button_cancel)).perform(click());
                 break;
-            case 36: // confirm --goBack--> reserva
+            case 36: // confirm --goBack--> reserva (ReservaConfirm.finish())
                 pressBack();
                 break;
 
