@@ -37,6 +37,7 @@
 
     <!-- Línea divisoria -->
     <View
+        android:id="@+id/header_divider"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:background="@color/color_dark"
@@ -45,281 +46,272 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- =========================
-         FORMULARIO
+         FORMULARIO SCROLLEABLE
          ========================= -->
 
-    <LinearLayout
-        android:id="@+id/form_container"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_form"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/header_divider"
+        app:layout_constraintBottom_toTopOf="@id/button_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- ===== ID (solo lectura) ===== -->
         <LinearLayout
-            android:id="@+id/layout_reserva_id"
+            android:id="@+id/form_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <TextView
-                android:layout_width="0dp"
+            <!-- ===== ID ===== -->
+
+            <LinearLayout
+                android:id="@+id/layout_reserva_id"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/id"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:fontFamily="@font/poppins_bold"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/text_reserva_id"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="#----"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:fontFamily="@font/poppins_bold"
-                android:padding="12dp"/>
-        </LinearLayout>
-
-        <!-- ===== NOMBRE CLIENTE ===== -->
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/nombre_cliente"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:fontFamily="@font/poppins_bold"/>
-
-            <EditText
-                android:id="@+id/nombre_cliente"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:hint="@string/hint_name"
-                android:inputType="textPersonName"
-                android:autofillHints="name"
-                android:background="@drawable/item_background"
-                android:padding="12dp"
-                android:textSize="16sp"
-                android:minHeight="48dp"
-                android:importantForAutofill="no"/>
-
-        </LinearLayout>
-
-        <!-- ===== MOVIL CLIENTE ===== -->
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/movil"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:fontFamily="@font/poppins_bold"/>
-
-            <EditText
-                android:id="@+id/movil_cliente"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:hint="@string/hint_movil"
-                android:inputType="phone"
-                android:autofillHints="phone"
-                android:background="@drawable/item_background"
-                android:padding="12dp"
-                android:textSize="16sp"
-                android:minHeight="48dp"
-                android:importantForAutofill="no"/>
-
-        </LinearLayout>
-
-        <!-- ===== FECHA DE RECOGIDA ===== -->
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/fecha_recogida"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:fontFamily="@font/poppins_bold"/>
-
-            <TextView
-                android:id="@+id/fecha_recogida"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:padding="12dp"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:background="@drawable/item_background"
-                android:hint="@string/hint_fecha"
-                android:focusable="false"
-                android:clickable="true"
-                android:drawableEnd="@drawable/ic_calendar"
-                android:drawablePadding="8dp"/>
-
-        </LinearLayout>
-
-        <!-- ===== HORARIO DE RECOGIDA ===== -->
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/horario_recogida"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:fontFamily="@font/poppins_bold"/>
-
-            <RadioGroup
-                android:id="@+id/horario_recogida"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="horizontal">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/horario_recogida_manana"
-                    android:layout_width="125dp"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/manana"
-                    android:fontFamily="@font/poppins_regular"
-                    android:button="@drawable/radio_button_orange"
-                    app:useMaterialThemeColors="false"
-                    android:paddingHorizontal="8dp"/>
+                    android:layout_weight="1"
+                    android:text="@string/id"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:fontFamily="@font/poppins_bold"/>
 
-                <RadioButton
-                    android:id="@+id/horario_recogida_tarde"
-                    android:layout_width="125dp"
+                <TextView
+                    android:id="@+id/text_reserva_id"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/tarde"
-                    android:fontFamily="@font/poppins_regular"
-                    android:button="@drawable/radio_button_orange"
-                    app:useMaterialThemeColors="false"
-                    android:paddingHorizontal="8dp"/>
-            </RadioGroup>
+                    android:layout_weight="2"
+                    android:text="#----"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="12dp"/>
+            </LinearLayout>
+
+            <!-- ===== NOMBRE CLIENTE ===== -->
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/nombre_cliente"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <EditText
+                    android:id="@+id/nombre_cliente"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="@string/hint_name"
+                    android:inputType="textPersonName"
+                    android:background="@drawable/item_background"
+                    android:padding="12dp"
+                    android:textSize="16sp"
+                    android:minHeight="48dp"/>
+            </LinearLayout>
+
+            <!-- ===== MOVIL ===== -->
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/movil"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <EditText
+                    android:id="@+id/movil_cliente"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="@string/hint_movil"
+                    android:inputType="phone"
+                    android:background="@drawable/item_background"
+                    android:padding="12dp"
+                    android:textSize="16sp"
+                    android:minHeight="48dp"/>
+            </LinearLayout>
+
+            <!-- ===== FECHA RECOGIDA ===== -->
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/fecha_recogida"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/fecha_recogida"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:padding="12dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:background="@drawable/item_background"
+                    android:hint="@string/hint_fecha"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_calendar"/>
+            </LinearLayout>
+
+            <!-- ===== HORARIO RECOGIDA ===== -->
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/horario_recogida"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <RadioGroup
+                    android:id="@+id/horario_recogida"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/horario_recogida_manana"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manana"/>
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/horario_recogida_tarde"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tarde"/>
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- ===== FECHA DEVOLUCION ===== -->
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/fecha_devolucion"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <TextView
+                    android:id="@+id/fecha_devolucion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:padding="12dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:background="@drawable/item_background"
+                    android:hint="@string/hint_fecha"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_calendar"/>
+            </LinearLayout>
+
+            <!-- ===== HORARIO DEVOLUCION ===== -->
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/horario_devolucion"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_dark"
+                    android:fontFamily="@font/poppins_bold"/>
+
+                <RadioGroup
+                    android:id="@+id/horario_devolucion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/horario_devolucion_manana"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manana"/>
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/horario_devolucion_tarde"
+                        android:layout_width="125dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tarde"/>
+                </RadioGroup>
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!-- ===== FECHA DE DEVOLUCIÓN ===== -->
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/fecha_devolucion"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:fontFamily="@font/poppins_bold"/>
-
-            <TextView
-                android:id="@+id/fecha_devolucion"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:padding="12dp"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:background="@drawable/item_background"
-                android:hint="@string/hint_fecha"
-                android:focusable="false"
-                android:clickable="true"
-                android:drawableEnd="@drawable/ic_calendar"
-                android:drawablePadding="8dp"/>
-
-        </LinearLayout>
-
-        <!-- ===== HORARIO DE DEVOLUCIÓN ===== -->
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/horario_devolucion"
-                android:textSize="16sp"
-                android:textColor="@color/color_dark"
-                android:fontFamily="@font/poppins_bold"/>
-
-            <RadioGroup
-                android:id="@+id/horario_devolucion"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="horizontal">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/horario_devolucion_manana"
-                    android:layout_width="125dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/manana"
-                    android:fontFamily="@font/poppins_regular"
-                    android:button="@drawable/radio_button_orange"
-                    app:useMaterialThemeColors="false"
-                    android:paddingHorizontal="8dp"/>
-
-                <RadioButton
-                    android:id="@+id/horario_devolucion_tarde"
-                    android:layout_width="125dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/tarde"
-                    android:fontFamily="@font/poppins_regular"
-                    android:button="@drawable/radio_button_orange"
-                    app:useMaterialThemeColors="false"
-                    android:paddingHorizontal="8dp"/>
-            </RadioGroup>
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- =========================
          BOTONES
          ========================= -->
 
     <LinearLayout
+        android:id="@+id/button_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -333,24 +325,14 @@
             android:id="@+id/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_cancel"
-            android:textColor="@color/color_dark"
-            android:fontFamily="@font/poppins_bold"
-            app:backgroundTint="@color/colorCancel"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/color_dark"/>
+            android:text="@string/button_cancel"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_continue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="@string/button_continue"
-            android:textColor="@color/color_dark"
-            android:fontFamily="@font/poppins_bold"
-            app:backgroundTint="@color/colorSave"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/color_dark"/>
+            android:text="@string/button_continue"/>
 
     </LinearLayout>
 
