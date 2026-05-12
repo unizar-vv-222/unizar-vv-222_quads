@@ -78,4 +78,11 @@ public abstract class Quad_Reserva_RoomDataBase extends RoomDatabase {
         }
     };
 
+    public static void resetInstance() {
+        if (INSTANCE != null && INSTANCE.isOpen()) {
+            INSTANCE.close();
+        }
+        INSTANCE = null;
+    }
+
 }

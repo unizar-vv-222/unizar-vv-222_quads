@@ -1,6 +1,5 @@
 package es.unizar.eina.g222_quads;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -13,7 +12,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Calendar;
+import java.util.concurrent.Future;
 
+import es.unizar.eina.g222_quads.database.Quad;
+import es.unizar.eina.g222_quads.database.QuadRepository;
+import es.unizar.eina.g222_quads.database.Quad_Reserva_RoomDataBase;
 import es.unizar.eina.g222_quads.database.Reserva;
 import es.unizar.eina.g222_quads.database.ReservaRepository;
 import es.unizar.eina.g222_quads.ui.quads.G222_quads;
@@ -35,24 +38,56 @@ public class ReservaVolumeTest {
     private final long FECHA_1 = dateToMillis(2030, 5, 1);
     private final long FECHA_2 = dateToMillis(2030, 5, 2);
 
+    // Helper para obtener el ReservaRepository fuera del hilo de UI
+    private ReservaRepository getReservaRepo() {
+        ReservaRepository[] holder = new ReservaRepository[1];
+        scenarioRule.getScenario().onActivity(activity -> {
+            holder[0] = activity.getReservaRepositoryMain();
+        });
+        return holder[0];
+    }
+
+    // Helper para obtener el QuadRepository fuera del hilo de UI
+    private QuadRepository getQuadRepo() {
+        QuadRepository[] holder = new QuadRepository[1];
+        scenarioRule.getScenario().onActivity(activity -> {
+            holder[0] = activity.getQuadRespositoryMain();
+        });
+        return holder[0];
+    }
+
     @Before
     public void setup() {
+        // Resetea la instancia estática de Room en el hilo de UI
         scenarioRule.getScenario().onActivity(activity -> {
-            try {
-                activity.getReservaRepositoryMain().deleteAll().get();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            Quad_Reserva_RoomDataBase db = Quad_Reserva_RoomDataBase.getDatabase(activity);
+            if (db.isOpen()) {
+                db.close();
             }
+            Quad_Reserva_RoomDataBase.resetInstance();
         });
+
+        // Limpia la BD — el bucle corre en el hilo del test, no en UI
+        try {
+            getReservaRepo().deleteAll().get();
+            getQuadRepo().deleteAll().get();
+        } catch (Exception e) {
+            throw new RuntimeException("Setup falló al limpiar reservas: " + e.getMessage(), e);
+        }
     }
+
+    // =========================================================
+    // TESTS DE RESERVAS
+    // =========================================================
 
     @Test
     public void testInsertManyReservas() {
-        scenarioRule.getScenario().onActivity(activity -> {
-            ReservaRepository repo = activity.getReservaRepositoryMain();
+        ReservaRepository repo = getReservaRepo();
 
-            int total = 100;
+        int total = 20000;
+        int lastSuccessful = -1;
 
+        try {
             for (int i = 0; i < total; i++) {
                 Reserva r = new Reserva(
                         "Cliente " + i,
@@ -64,12 +99,143 @@ public class ReservaVolumeTest {
                 );
 
                 long id = repo.insert(r);
-
-                assertNotEquals(-1, id);
+                assertNotEquals("Fallo en inserción en índice " + i, -1, id);
 
                 Reserva inserted = repo.getReservaByIdSync((int) id);
-                assertNotNull(inserted);
+                assertNotNull("Registro nulo en índice " + i, inserted);
+
+                lastSuccessful = i;
             }
-        });
+        } catch (Exception e) {
+            android.util.Log.e("VOLUME_TEST", "Excepción en índice: " + (lastSuccessful + 1));
+            android.util.Log.e("VOLUME_TEST", "Último índice exitoso: " + lastSuccessful);
+            android.util.Log.e("VOLUME_TEST", "Causa: " + e.getMessage(), e);
+            throw new RuntimeException(
+                    "Fallo en índice " + (lastSuccessful + 1) +
+                            " (último OK: " + lastSuccessful + "): " + e.getMessage(), e
+            );
+        }
+    }
+
+    @Test
+    public void testExtremeReservaVolume() {
+        ReservaRepository repo = getReservaRepo();
+
+        int total = 200000;
+        int lastSuccessful = -1;
+        long startTime = System.currentTimeMillis();
+
+        try {
+            for (int i = 0; i < total; i++) {
+                Reserva r = new Reserva(
+                        "Cliente Masivo Num " + i,
+                        "6" + String.format("%08d", i),
+                        FECHA_1 + (i * 1000L),
+                        (i % 2 == 0),
+                        FECHA_2 + (i * 1000L),
+                        (i % 2 != 0)
+                );
+
+                long id = repo.insert(r);
+
+                if (i % 100 == 0) {
+                    assertNotEquals("Fallo en inserción crítica " + i, -1, id);
+                }
+
+                lastSuccessful = i;
+            }
+        } catch (Exception e) {
+            long failTime = System.currentTimeMillis() - startTime;
+            android.util.Log.e("STRESS_TEST", "=======================================");
+            android.util.Log.e("STRESS_TEST", "EXCEPCIÓN EN ÍNDICE: " + (lastSuccessful + 1));
+            android.util.Log.e("STRESS_TEST", "Último índice exitoso: " + lastSuccessful);
+            android.util.Log.e("STRESS_TEST", "Tiempo hasta el fallo: " + failTime + " ms");
+            android.util.Log.e("STRESS_TEST", "Causa: " + e.getMessage(), e);
+            android.util.Log.e("STRESS_TEST", "=======================================");
+            throw new RuntimeException(
+                    "Fallo en índice " + (lastSuccessful + 1) +
+                            " tras " + failTime + " ms: " + e.getMessage(), e
+            );
+        }
+
+        long totalTime = System.currentTimeMillis() - startTime;
+        android.util.Log.i("STRESS_TEST", "Total: " + total + " | Tiempo: " + totalTime + " ms");
+    }
+
+    // =========================================================
+    // TESTS DE QUADS
+    // =========================================================
+
+    @Test
+    public void testInsertManyQuads() {
+        QuadRepository repo = getQuadRepo();
+
+        int total = 100;
+        int lastSuccessful = -1;
+
+        try {
+            for (int i = 0; i < total; i++) {
+                Quad q = new Quad(
+                        String.format("%04dAAA", i),
+                        true,
+                        25.0,
+                        "Quad " + i
+                );
+
+                repo.insert(q).get();
+                lastSuccessful = i;
+            }
+        } catch (Exception e) {
+            android.util.Log.e("VOLUME_TEST", "Excepción en índice: " + (lastSuccessful + 1));
+            android.util.Log.e("VOLUME_TEST", "Último índice exitoso: " + lastSuccessful);
+            android.util.Log.e("VOLUME_TEST", "Causa: " + e.getMessage(), e);
+            throw new RuntimeException(
+                    "Fallo en índice " + (lastSuccessful + 1) +
+                            " (último OK: " + lastSuccessful + "): " + e.getMessage(), e
+            );
+        }
+    }
+
+    @Test
+    public void testExtremeQuadVolume() {
+        QuadRepository repo = getQuadRepo();
+
+        int total = 100000;
+        int lastSuccessful = -1;
+        long startTime = System.currentTimeMillis();
+
+        try {
+            for (int i = 0; i < total; i++) {
+                char l1 = (char) ('A' + (i / 676) % 26);
+                char l2 = (char) ('A' + (i / 26) % 26);
+                char l3 = (char) ('A' + i % 26);
+                String matricula = String.format("%04d", i % 10000) + "" + l1 + l2 + l3;
+
+                Quad q = new Quad(
+                        matricula,
+                        true,
+                        25.0,
+                        "Quad " + i
+                );
+
+                repo.insert(q).get();
+                lastSuccessful = i;
+            }
+        } catch (Exception e) {
+            long failTime = System.currentTimeMillis() - startTime;
+            android.util.Log.e("STRESS_TEST", "=======================================");
+            android.util.Log.e("STRESS_TEST", "EXCEPCIÓN EN ÍNDICE: " + (lastSuccessful + 1));
+            android.util.Log.e("STRESS_TEST", "Último índice exitoso: " + lastSuccessful);
+            android.util.Log.e("STRESS_TEST", "Tiempo hasta el fallo: " + failTime + " ms");
+            android.util.Log.e("STRESS_TEST", "Causa: " + e.getMessage(), e);
+            android.util.Log.e("STRESS_TEST", "=======================================");
+            throw new RuntimeException(
+                    "Fallo en índice " + (lastSuccessful + 1) +
+                            " tras " + failTime + " ms: " + e.getMessage(), e
+            );
+        }
+
+        long totalTime = System.currentTimeMillis() - startTime;
+        android.util.Log.i("STRESS_TEST", "Total: " + total + " | Tiempo: " + totalTime + " ms");
     }
 }
