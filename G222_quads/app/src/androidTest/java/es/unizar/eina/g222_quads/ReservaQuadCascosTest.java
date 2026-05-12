@@ -281,7 +281,7 @@ public class ReservaQuadCascosTest {
 
                 long id1 = insertarReserva(
                         reservaRepo,
-                        "Luis Pérez",
+                        "Cliente 1",
                         "698765432",
                         hoy + 2 * 86400000L,
                         true,
@@ -294,7 +294,7 @@ public class ReservaQuadCascosTest {
                 reservaQuadCascosRepo.updateCascos((int) id1, cascos);
                 long id2 = insertarReserva(
                         reservaRepo,
-                        "Marta Ruiz",
+                        "Cliente 2",
                         "611111111",
                         hoy + 2 * 86400000L,
                         true,
@@ -348,7 +348,7 @@ public class ReservaQuadCascosTest {
                 ).get();
                 long id1 = insertarReserva(
                         reservaRepo,
-                        "Carlos Gil",
+                        "Cliente 3",
                         "677777777",
                         hoy + 2 * 86400000L,
                         true,
@@ -361,7 +361,7 @@ public class ReservaQuadCascosTest {
                 reservaQuadCascosRepo.updateCascos((int) id1, cascos);
                 long id2 = insertarReserva(
                         reservaRepo,
-                        "Elena Mora",
+                        "Cliente 4",
                         "633333333",
                         hoy + 5 * 86400000L,
                         true,
@@ -414,7 +414,7 @@ public class ReservaQuadCascosTest {
                 ).get();
                 long id1 = insertarReserva(
                         reservaRepo,
-                        "Pedro Sanz",
+                        "Cliente 5",
                         "644444444",
                         hoy + 2 * 86400000L,
                         true,
@@ -427,7 +427,7 @@ public class ReservaQuadCascosTest {
                 reservaQuadCascosRepo.updateCascos((int) id1, cascos);
                 long id2 = insertarReserva(
                         reservaRepo,
-                        "Sara Vega",
+                        "Cliente 6",
                         "655555555",
                         hoy + 2 * 86400000L,
                         false,
@@ -481,7 +481,7 @@ public class ReservaQuadCascosTest {
 
                 long id1 = insertarReserva(
                         reservaRepo,
-                        "Irene Roca",
+                        "Cliente 7",
                         "666666666",
                         hoy + 2 * 86400000L,
                         true,
