@@ -5,6 +5,7 @@ package es.unizar.eina.g222_quads;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -125,5 +126,24 @@ public class QuadVolumeTest {
 
         long totalTime = System.currentTimeMillis() - startTime;
         android.util.Log.i("STRESS_TEST", "Total: " + total + " | Tiempo: " + totalTime + " ms");
+    }
+
+    @After
+    public void clean() {
+        // Resetea la instancia estática de Room en el hilo de UI
+        scenarioRule.getScenario().onActivity(activity -> {
+            Quad_Reserva_RoomDataBase db = Quad_Reserva_RoomDataBase.getDatabase(activity);
+            if (db.isOpen()) {
+                db.close();
+            }
+            Quad_Reserva_RoomDataBase.resetInstance();
+        });
+
+        // Limpia la BD — el bucle corre en el hilo del test, no en UI
+        try {
+            getQuadRepo().deleteAll().get();
+        } catch (Exception e) {
+            throw new RuntimeException("Clean falló al limpiar reservas: " + e.getMessage(), e);
+        }
     }
 }
