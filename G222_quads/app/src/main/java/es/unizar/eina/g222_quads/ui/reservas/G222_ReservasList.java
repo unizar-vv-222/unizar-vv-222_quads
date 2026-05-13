@@ -2,8 +2,10 @@ package es.unizar.eina.g222_quads.ui.reservas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,11 +41,19 @@ public class G222_ReservasList extends BaseActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         FloatingActionButton fab = findViewById(R.id.fab);
         Button ordReservas = findViewById(R.id.orden_reservas);
+        TextView emptyReservas = findViewById(R.id.text_empty_reservas);
 
         setupRecyclerView(recyclerView);
 
         mReservaViewModel = new ViewModelProvider(this).get(ReservaViewModel.class);
-        mReservaViewModel.getReservasUi().observe(this, reservas -> mAdapter.submitList(reservas));
+        mReservaViewModel.getReservasUi().observe(this, reservas -> {
+            boolean empty = reservas == null || reservas.isEmpty();
+
+            emptyReservas.setVisibility(empty ? View.VISIBLE : View.GONE);
+            recyclerView.setVisibility(empty ? View.GONE : View.VISIBLE);
+
+            mAdapter.submitList(reservas);
+        });
 
         setupFiltro(filtro);
 
