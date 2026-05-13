@@ -246,6 +246,10 @@ public class ReservaModify extends BaseActivity {
             mMovil.setError("Introduce el móvil del cliente");
             return false;
         }
+        if (!mMovil.getText().toString().trim().matches("\\d+")) {
+            mMovil.setError("Introduce un número de móvil válido");
+            return false;
+        }
         if (fechaInicioMillis == -1) {
             mFechaRecogida.setError("Selecciona una fecha de recogida");
             return false;

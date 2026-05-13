@@ -65,6 +65,8 @@
     <string name="manana">Mañana</string>
     <string name="tarde">Tarde</string>
 
+    <string name="empty_list_reservas">No existen reservas para el filtro seleccionado.</string>
+
     <string name="hint_fecha">Selecciona una fecha</string>
 
     <string name="reserva_cliente">Cliente</string>
