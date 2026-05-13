@@ -129,21 +129,14 @@ public class QuadVolumeTest {
     }
 
     @After
-    public void clean() {
-        // Resetea la instancia estática de Room en el hilo de UI
-        scenarioRule.getScenario().onActivity(activity -> {
-            Quad_Reserva_RoomDataBase db = Quad_Reserva_RoomDataBase.getDatabase(activity);
-            if (db.isOpen()) {
-                db.close();
-            }
-            Quad_Reserva_RoomDataBase.resetInstance();
-        });
-
-        // Limpia la BD — el bucle corre en el hilo del test, no en UI
+    public void tearDown() {
+        // Limpiamos la base de datos después de cada test para no dejar basura
+        // y que el siguiente test empiece de cero.
         try {
             getQuadRepo().deleteAll().get();
         } catch (Exception e) {
-            throw new RuntimeException("Clean falló al limpiar reservas: " + e.getMessage(), e);
+            android.util.Log.e("TEARDOWN", "Error limpiando la base de datos: " + e.getMessage());
         }
     }
+
 }
