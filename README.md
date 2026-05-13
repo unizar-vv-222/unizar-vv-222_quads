@@ -13,11 +13,11 @@ La aplicación consiste en un sistema Android para la gestión de quads y reserv
 Contiene el proyecto completo de Android Studio.
 
 Incluye:
-
 * Código fuente de la aplicación
+* Activities y Fragments para la interfaz gráfica
 * Base de datos y repositorios
-* ViewModels
-* Recursos XML de la interfaz gráfica
+* ViewModels para la gestión del estado
+* Recursos XML para layouts y estilos
 * Pruebas unitarias e instrumentadas
 * Configuración Gradle del proyecto
 
