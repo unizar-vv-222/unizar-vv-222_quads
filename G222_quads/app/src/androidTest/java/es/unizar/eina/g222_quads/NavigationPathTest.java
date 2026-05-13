@@ -48,9 +48,7 @@ public class NavigationPathTest {
     // contador para matrículas únicas
     private int quadCounter = 1000;
 
-    // ─────────────────────────────────────────────
-    // EDGE DEFINITION
-    // ─────────────────────────────────────────────
+    // EDGE DEF
     private static class Edge {
         int id;
         String from;
@@ -65,7 +63,7 @@ public class NavigationPathTest {
 
     // Clase auxiliar para que el BFS pueda rastrear el camino
     private static class State {
-        String node;      // El nombre del nodo actual (ej. "quad")
+        String node;      // El nombre del nodo actual
         int lastEdge;     // El ID de la última arista que pulsamos
         List<Integer> path; // La lista de IDs de aristas que llevamos en este "vuelo"
 
@@ -152,7 +150,7 @@ public class NavigationPathTest {
         int lastId = 0;
 
 
-        // Continuamos mientras falten pares por cubrir o no superemos un límite de seguridad (control de bucles infinitos).
+        // Continuamos mientras falten pares por cubrir o no superemos un límite (control de bucles infinitos).
         while (!remainingPairs.isEmpty() && finalPath.size() < 800) {
             List<Edge> options = outgoing.getOrDefault(currentLoc, new ArrayList<>());
 
@@ -222,7 +220,7 @@ public class NavigationPathTest {
                 if (remaining.contains(current.lastEdge + "->" + e.id)) {
                     List<Integer> found = new ArrayList<>(current.path);
                     found.add(e.id);
-                    return found; // ¡Éxito! Hemos encontrado el camino más corto al siguiente objetivo.
+                    return found;
                 }
 
                 // Si no es un objetivo inmediato, seguimos explorando desde el nuevo nodo.
@@ -239,9 +237,7 @@ public class NavigationPathTest {
         return new ArrayList<>(); // No se encontraron más pares alcanzables.
     }
 
-    // ─────────────────────────────────────────────
-    // SETUP (igual que el tuyo)
-    // ─────────────────────────────────────────────
+    // SETUP
     @Before
     public void setup() throws Exception {
         final Throwable[] error = new Throwable[1];
@@ -302,9 +298,7 @@ public class NavigationPathTest {
         if (error[0] != null) throw new RuntimeException(error[0]);
     }
 
-    // ─────────────────────────────────────────────
     // HELPERS
-    // ─────────────────────────────────────────────
     private void fillQuadForm() {
         onView(withId(R.id.matricula))
                 .check((view, noViewFoundException) -> {
@@ -463,14 +457,13 @@ public class NavigationPathTest {
         }
     }
 
-    // ─────────────────────────────────────────────
-    // EXECUTOR (TU CÓDIGO ORIGINAL INTACTO)
-    // ─────────────────────────────────────────────
+
+
     private void executeEdge(int edgeId) throws InterruptedException {
         Log.d(TAG, "executeEdge: " + edgeId + "  (nodo=" + currentNode + ")");
         switch (edgeId) {
 
-            // ── main ─────────────────────────────────────────────
+            //  main
             case 1:  // main → quad
                 onView(withId(R.id.quad)).perform(click());
                 currentNode = "quad";
@@ -480,7 +473,7 @@ public class NavigationPathTest {
                 currentNode = "reserva";
                 break;
 
-            // ── quad ─────────────────────────────────────────────
+            // quad
             case 3:  // quad → quad_detail
                 onView(withId(R.id.recyclerview)).perform(
                         RecyclerViewActions.actionOnItemAtPosition(0, click()));
@@ -526,7 +519,7 @@ public class NavigationPathTest {
                                 clickChildViewWithId(R.id.btn_edit)
                         ));
                 break;
-            // ── quad_detail ──────────────────────────────────────
+            //  quad_detail
             case 11:  // quad_detail → quad (goBack)
                 pressBack();
                 currentNode = "quad";
@@ -541,7 +534,7 @@ public class NavigationPathTest {
                 currentNode = "quad_form";
                 break;
 
-            // ── quad_form ────────────────────────────────────────
+            // quad_form
             case 14:  // quad_form → quad (save)
                 fillQuadForm();
                 onView(withId(R.id.button_save)).perform(click());
@@ -556,7 +549,7 @@ public class NavigationPathTest {
                 currentNode = "quad";
                 break;
 
-            // ── reserva ──────────────────────────────────────────
+            //  reserva
             case 17:  // reserva → reserva_detail
                 ensureSafeReservationState();
                 onView(withId(R.id.recyclerview)).perform(
@@ -636,7 +629,7 @@ public class NavigationPathTest {
                         ));
                 break;
 
-            // ── reserva_detail ───────────────────────────────────
+            // reserva_detail
             case 30:  // reserva_detail → reserva (goBack)
                 pressBack();
                 currentNode = "reserva";
@@ -651,7 +644,7 @@ public class NavigationPathTest {
                 currentNode = "reserva_form";
                 break;
 
-            // ── reserva_form ─────────────────────────────────────
+            // reserva_form
             case 34:  // reserva_form → reserva (goBack)
                 pressBack();
                 currentNode = "reserva";
@@ -666,7 +659,7 @@ public class NavigationPathTest {
                 currentNode = "select_quads";
                 break;
 
-            // ── select_quads ─────────────────────────────────────
+            // select_quads
             case 37:  // select_quads → reserva (goBack)
                 pressBack();
                 currentNode = "reserva";
@@ -677,7 +670,7 @@ public class NavigationPathTest {
                 currentNode = "confirm";
                 break;
 
-            // ── confirm ──────────────────────────────────────────
+            // confirm
             case 39:  // confirm → reserva (save)
                 onView(withId(R.id.button_confirm)).perform(click());
                 onView(withText("Aceptar")).inRoot(isDialog()).perform(click());
@@ -697,9 +690,7 @@ public class NavigationPathTest {
         }
     }
 
-    // ─────────────────────────────────────────────
-    // TEST
-    // ─────────────────────────────────────────────
+
     @Test
     public void testContinuousCoverage() throws InterruptedException {
 

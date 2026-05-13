@@ -35,9 +35,8 @@ public class ReservaQuadCascosTest {
     public ActivityScenarioRule<G222_quads> scenarioRule =
             new ActivityScenarioRule<>(G222_quads.class);
 
-    // -----------------------------------------------------------------------
+
     // Setup
-    // -----------------------------------------------------------------------
     @Before
     public void setup() {
         scenarioRule.getScenario().onActivity(activity -> {
@@ -51,9 +50,7 @@ public class ReservaQuadCascosTest {
         });
     }
 
-    // -----------------------------------------------------------------------
     // LiveData helper
-    // -----------------------------------------------------------------------
     private <T> T waitForLiveData(LiveData<T> liveData)
             throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
@@ -76,9 +73,7 @@ public class ReservaQuadCascosTest {
         return (T) data[0];
     }
 
-    // -----------------------------------------------------------------------
     // Helpers
-    // -----------------------------------------------------------------------
     private long inicioHoy() {
         long ahora = System.currentTimeMillis();
         return ahora - (ahora % (24 * 60 * 60 * 1000L));
@@ -111,9 +106,7 @@ public class ReservaQuadCascosTest {
                                 matricula.equals(q.getMatricula()));
     }
 
-    // -----------------------------------------------------------------------
     // Validación cascos
-    // -----------------------------------------------------------------------
     private boolean esCascoValido(
             boolean esMonoplaza,
             int numCascos) {
@@ -125,9 +118,7 @@ public class ReservaQuadCascosTest {
                 : numCascos <= 2;
     }
 
-    // =======================================================================
-    // FCÉ24 + RF12
-    // =======================================================================
+
 
     @Test
     public void testCascos_Monoplaza_Cero_Valido() {
@@ -169,9 +160,6 @@ public class ReservaQuadCascosTest {
         assertFalse(esCascoValido(false, 3));
     }
 
-    // =======================================================================
-    // RF12
-    // =======================================================================
 
     @Test
     public void updateCascos_CascosValidos_Aceptado() {
@@ -252,10 +240,6 @@ public class ReservaQuadCascosTest {
         });
         assertFalse(valido[0]);
     }
-
-    // =======================================================================
-    // RF11
-    // =======================================================================
 
     @Test
     public void quadOcupado_NoDisponibleEnFechasSolapadas()

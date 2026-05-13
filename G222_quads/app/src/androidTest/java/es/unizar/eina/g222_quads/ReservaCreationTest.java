@@ -131,22 +131,6 @@ public class ReservaCreationTest {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
 
-            /*
-            -- JAVA no permite asignar null a un Boolean --
-
-            Reserva r = new Reserva("CL_010", "612458925", FECHA_1, null, FECHA_1, TARDE);
-
-            long resultado = repo.insert(r);
-
-            assertEquals("Debería fallar (-1) por slot de recogida nulo", -1, resultado);
-
-             r = new Reserva("CL_011", "612458925", FECHA_1, MAÑANA, FECHA_1, null);
-
-             resultado = repo.insert(r);
-
-            assertEquals("Debería fallar (-1) por slot de devolución nulo", -1, resultado);
-            */
-
             // Mismo día (FECHA_1), pero TARDE (true) -> MAÑANA (false)
             Reserva r = new Reserva("CL_012", "612458925", FECHA_1, TARDE, FECHA_1, MAÑANA);
             long resultado = repo.insert(r);

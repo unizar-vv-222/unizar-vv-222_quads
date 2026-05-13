@@ -17,13 +17,8 @@ import es.unizar.eina.g222_quads.database.Quad;
 import es.unizar.eina.g222_quads.database.QuadRepository;
 import es.unizar.eina.g222_quads.ui.quads.G222_quads;
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class QuadPersistenceTest {
 
     @Rule
     public ActivityScenarioRule<G222_quads> scenarioRule = new ActivityScenarioRule<>(G222_quads.class);

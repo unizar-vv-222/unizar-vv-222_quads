@@ -55,29 +55,7 @@ public class QuadUpdateTest {
             }
         });
     }
-/*
-    @Test
-    public void testUpdateTypeInvlid() {
-        scenarioRule.getScenario().onActivity(activity -> {
-            QuadRepository repo = activity.getQuadRespositoryMain();
-            Quad q = new Quad("1234ABC", true, 65.0, "Rojo");
 
-            try {
-                // Usamos get para forzar la espera de la inserción
-                repo.insert(q).get();
-
-                q.setTipo(null);
-                repo.update(q).get();
-
-                Quad recuperado = repo.getQuadByMatriculaSync("1234ABC");
-                assertEquals(false, recuperado.getTipo());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
- */
 
     @Test (expected = NoSuchElementException.class)
     public void testUpdateNonExistent() {

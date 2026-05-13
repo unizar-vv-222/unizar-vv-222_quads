@@ -5,7 +5,6 @@
 # Reglas probadas:
 #   R1 – Validez de las reservas (fechas, campos obligatorios)
 #   R2 – El precio total de la reserva no cambia si se modifica el precio del quad
-# Herramienta: Cucumber + Espresso
 
 Feature: Validez y precio de las reservas de quads
   Como propietario de la empresa
@@ -32,10 +31,10 @@ Feature: Validez y precio de las reservas de quads
 
     Examples:
       | nombre      | telefono  | diasRecogida | diasDevolucion | resultado  |
-      | Ana García  | 612345678 | 1            | 3              | funciona   |
+      | Client 1    | 612345678 | 1            | 3              | funciona   |
       |             | 612345678 | 1            | 3              | no funciona|
-      | Ana García  |           | 1            | 3              | no funciona|
-      | Ana García  | 612345678 | 3            | 1              | no funciona|
+      | Client 1    |           | 1            | 3              | no funciona|
+      | Client 1    | 612345678 | 3            | 1              | no funciona|
 
   # ──────────────────────────────────────────────
   # R2 – Precio de la reserva se mantiene aunque cambie el precio del quad
@@ -47,14 +46,14 @@ Feature: Validez y precio de las reservas de quads
 
   Scenario: El precio de la reserva no cambia cuando sube el precio del quad
     Given Abro la aplicación de gestión de quads
-    And Existe un quad con matrícula "TEST1AA" y precio "50.0" euros por día
+    And Existe un quad con matrícula "1010ABC" y precio "50.0" euros por día
     And Existe una reserva para ese quad con precio total calculado
-    When Modifico el precio del quad "TEST1AA" a "200.0" euros por día
+    When Modifico el precio del quad "1010ABC" a "200.0" euros por día
     Then El precio total de la reserva sigue siendo el mismo que al crearla
 
   Scenario: El precio de la reserva no cambia cuando baja el precio del quad
     Given Abro la aplicación de gestión de quads
-    And Existe un quad con matrícula "TEST2BB" y precio "100.0" euros por día
+    And Existe un quad con matrícula "2020ABC" y precio "100.0" euros por día
     And Existe una reserva para ese quad con precio total calculado
-    When Modifico el precio del quad "TEST2BB" a "10.0" euros por día
+    When Modifico el precio del quad "2020ABC" a "10.0" euros por día
     Then El precio total de la reserva sigue siendo el mismo que al crearla

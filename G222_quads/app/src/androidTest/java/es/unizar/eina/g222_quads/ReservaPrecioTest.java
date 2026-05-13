@@ -89,9 +89,8 @@ public class ReservaPrecioTest {
         });
     }
 
-    // =========================================================
     // precio NO cambia al modificar quad
-    // =========================================================
+
 
     @Test
     public void precioReservaSeMantieneTrasModificarPrecioQuad() {
@@ -144,11 +143,7 @@ public class ReservaPrecioTest {
         });
     }
 
-    // =========================================================
     // precio se calcula correctamente al crear
-    // =========================================================
-
-
     @Test
     public void precioInicialCalculadoCorrectamente() {
         scenarioRule.getScenario().onActivity(activity -> {
@@ -184,11 +179,7 @@ public class ReservaPrecioTest {
         });
     }
 
-    // =========================================================
     // varios quads: precio no cambia si se modifica uno
-    // =========================================================
-
-
     @Test
     public void precioConVariosQuadsSeMantieneTrasModificacion() {
         scenarioRule.getScenario().onActivity(activity -> {

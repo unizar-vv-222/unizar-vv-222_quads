@@ -2,7 +2,6 @@
 #
 # BLOQUE 1 – Pruebas de aceptación funcionales (Scenario Testing)
 # Técnica: scenario testing (flujos reales de usuario sobre la UI)
-# Herramienta: Cucumber + Espresso
 
 Feature: Gestión de reservas de quads
   Como propietario de una empresa de alquiler de quads
@@ -17,7 +16,7 @@ Feature: Gestión de reservas de quads
     Given Abro la aplicación de gestión de quads
     And Accedo a la sección de reservas
     When Pulso el botón de nueva reserva
-    And Relleno el formulario con nombre "Ana García" y teléfono "612345678"
+    And Relleno el formulario con nombre "Client 1" y teléfono "612345678"
     And Selecciono una fecha de recogida futura
     And Selecciono una fecha de devolución posterior a la recogida
     And Pulso continuar para seleccionar quads
@@ -34,6 +33,7 @@ Feature: Gestión de reservas de quads
     Given Abro la aplicación de gestión de quads
     And Accedo a la sección de reservas
     When Pulso el botón de nueva reserva
+    And Relleno el formulario con nombre "Client 1" y teléfono "612345678"
     And Pulso el botón cancelar en el formulario de reserva
     Then Vuelvo al listado de reservas sin crear ninguna nueva
 

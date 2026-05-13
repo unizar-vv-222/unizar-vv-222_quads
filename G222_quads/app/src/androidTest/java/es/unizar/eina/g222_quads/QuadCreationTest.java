@@ -15,11 +15,7 @@ import es.unizar.eina.g222_quads.database.Quad;
 import es.unizar.eina.g222_quads.database.QuadRepository;
 import es.unizar.eina.g222_quads.ui.quads.G222_quads;
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
+
 @RunWith(AndroidJUnit4.class)
 public class QuadCreationTest {
     @Rule
@@ -83,16 +79,6 @@ public class QuadCreationTest {
     }
 
 
-    /*
-    // 4. TEST DE TIPO (Nulos) - No es posible
-    @Test (expected = IllegalArgumentException.class)
-    public void testInsertNullType() {
-        scenarioRule.getScenario().onActivity(activity -> {
-            QuadRepository repo = activity.getQuadRespositoryMain();
-            repo.insert(new Quad("3333CCC", null, 50.0, "Tipo nulo"));
-        });
-    }
-     */
 
     @Test (expected = IllegalArgumentException.class)
     public void testInsertInvalidMat() {

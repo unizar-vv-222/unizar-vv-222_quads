@@ -37,31 +37,31 @@ public class ReservaNombreClienteTest {
         });
     }
 
-    // ── PARTICIÓN VÁLIDA 1: nombre alfabético simple ──────────
+    //  PARTICIÓN VÁLIDA 1: nombre alfabético simple
     @Test
     public void testNombreAlfabeticoSimple() {
         insertar("Juan", true);
     }
 
-    // ── PARTICIÓN VÁLIDA 2: nombre con tildes y espacios ──────
+    // PARTICIÓN VÁLIDA 2: nombre con tildes y espacios
     @Test
     public void testNombreConTildesYEspacios() {
         insertar("María José García", true);
     }
 
-    // ── PARTICIÓN VÁLIDA 3: nombre con guión ──────────────────
+    // PARTICIÓN VÁLIDA 3: nombre con guión
     @Test
     public void testNombreConGuion() {
         insertar("Ana-Belén", true);
     }
 
-    // ── PARTICIÓN INVÁLIDA 1: nombre vacío ────────────────────
+    // PARTICIÓN INVÁLIDA 1: nombre vacío
     @Test
     public void testNombreVacio() {
         insertar("", false);
     }
 
-    // ── PARTICIÓN INVÁLIDA 2: nombre nulo ─────────────────────
+    // PARTICIÓN INVÁLIDA 2: nombre nulo
     @Test
     public void testNombreNulo() {
         scenarioRule.getScenario().onActivity(activity -> {
@@ -72,25 +72,25 @@ public class ReservaNombreClienteTest {
         });
     }
 
-    // ── PARTICIÓN INVÁLIDA 3: nombre solo espacios ────────────
+    // PARTICIÓN INVÁLIDA 3: nombre solo espacios
     @Test
     public void testNombreSoloEspacios() {
         insertar("     ", false);
     }
 
-    // ── PARTICIÓN VÁLIDA 4: nombre con caracteres especiales─
+    // PARTICIÓN VÁLIDA 4: nombre con caracteres especiales
     @Test
     public void testNombreConCaracteresEspeciales() {
         insertar("Cliente@#$%", true);
     }
 
-    // ── PARTICIÓN VÁLIDA 5: nombre con números ──────────────
+    // PARTICIÓN VÁLIDA 5: nombre con números
     @Test
     public void testNombreConNumeros() {
         insertar("Cliente123", true);
     }
 
-    // ── Helper ────────────────────────────────────────────────
+
     private void insertar(String nombre, boolean debeAceptarse) {
         scenarioRule.getScenario().onActivity(activity -> {
             ReservaRepository repo = activity.getReservaRepositoryMain();
