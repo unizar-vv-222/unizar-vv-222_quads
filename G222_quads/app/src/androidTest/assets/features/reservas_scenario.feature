@@ -1,5 +1,3 @@
-# Fichero: app/src/androidTest/assets/features/reservas_scenario.feature
-#
 # BLOQUE 1 – Pruebas de aceptación funcionales (Scenario Testing)
 # Técnica: scenario testing (flujos reales de usuario sobre la UI)
 
