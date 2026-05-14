@@ -2,6 +2,8 @@ package es.unizar.eina.g222_quads;
 
 import static org.junit.Assert.assertEquals;
 
+import android.database.sqlite.SQLiteConstraintException;
+
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -10,6 +12,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
+import java.util.concurrent.ExecutionException;
 
 import es.unizar.eina.g222_quads.database.Quad;
 import es.unizar.eina.g222_quads.database.QuadRepository;
@@ -43,24 +47,24 @@ public class QuadCreationTest {
     }
 
     // 2. TEST DE MATRÍCULA REPETIDA (Restricción de Primary Key)
-    @Test//(expected = android.database.sqlite.SQLiteConstraintException.class)
+    @Test (expected = RuntimeException.class)
     public void testInsertDuplicateMatricula() {
         scenarioRule.getScenario().onActivity(activity -> {
             QuadRepository repo = activity.getQuadRespositoryMain();
-            Quad q = new Quad("1111AAA", true, 50.0, "Original_MONOPLAZA");
+            Quad q = new Quad("1111AAA", false, 50.0, "Original_MONOPLAZA");
             try {
                 // Insertamos el primero MONOPLAZA
                 repo.insert(q).get();
 
                 // Insertamos el primero BIPLAZA
-                repo.insert(new Quad("2222AAA", false, 50.0, "Original_BIPLAZA")).get();
+                repo.insert(new Quad("2222AAA", true, 50.0, "Original_BIPLAZA")).get();
                 int cont_prev = repo.numQuads();
 
                 // El segundo con la misma PK debería lanzar la excepción y el test pasará
                 repo.insert(q).get();
                 int cont_post = repo.numQuads();
 
-                //La segunda inserción no se ha ejecutado debido a que la matricula está duplicada
+                // La segunda inserción no se ha ejecutado debido a que la matricula está duplicada
                 assertEquals(cont_prev, cont_post);
             } catch (Exception e) {
                 throw new RuntimeException(e);

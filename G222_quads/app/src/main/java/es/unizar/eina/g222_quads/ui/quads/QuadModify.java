@@ -3,7 +3,6 @@ package es.unizar.eina.g222_quads.ui.quads;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +11,8 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.concurrent.ExecutionException;
 
 import es.unizar.eina.g222_quads.R;
 import es.unizar.eina.g222_quads.database.Quad;
@@ -138,7 +139,7 @@ public class QuadModify extends BaseActivity {
     private void saveQuad() {
 
         if (!isFormValid()) {
-            Toast.makeText(this, R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.quad_empty_not_saved, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -151,7 +152,7 @@ public class QuadModify extends BaseActivity {
             return;
         }
 
-        // tipo = true → monoplaza, false → biplaza
+        // tipo = true → biplaza, false → monoplaza
         boolean tipo = (mTipo.getCheckedRadioButtonId() == R.id.tipo_biplaza);
 
         Quad quad = new Quad(matricula, tipo, precio, descripcion);
@@ -164,11 +165,20 @@ public class QuadModify extends BaseActivity {
             finish();
 
         } else {
-            mQuadViewModel.insert(quad);
 
-            Toast.makeText(this, "Quad creado correctamente", Toast.LENGTH_SHORT).show();
-            setResult(RESULT_OK);
-            finish();
+            try {
+                mQuadViewModel.insert(quad);
+
+                Toast.makeText(this, "Quad creado correctamente", Toast.LENGTH_SHORT).show();
+
+                setResult(RESULT_OK);
+                finish();
+            } catch (ExecutionException e) {
+                Toast.makeText(this, "Ya existe un quad con esa matrícula", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Error al guardar el quad", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 

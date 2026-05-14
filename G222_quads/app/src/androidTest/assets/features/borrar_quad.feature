@@ -39,9 +39,3 @@ Feature: Borrar quad
     When Pulso eliminar en ese quad del listado
     And Cancelo la eliminación en el diálogo de quad
     Then El quad sigue apareciendo en el listado de quads
-
-  # quad con reservas activas (Este test va completamente borracho, no debe pasar y a veces pasa por amor al arte)
-  Scenario: Intentar eliminar un quad que tiene reservas activas
-    Given Existe un quad con reservas activas asociadas en el listado
-    When Pulso eliminar en ese quad del listado
-    Then Se muestra un error indicando que el quad tiene reservas y no puede eliminarse

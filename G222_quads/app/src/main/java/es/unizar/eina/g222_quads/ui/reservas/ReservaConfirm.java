@@ -30,6 +30,7 @@ public class ReservaConfirm extends BaseActivity {
     private TextView tvCliente;
     private TextView tvFechas;
     private TextView tvPrecio;
+    private TextView tvNoQuads;
 
     private Button btnConfirmar;
     private Button btnCancelar;
@@ -65,6 +66,7 @@ public class ReservaConfirm extends BaseActivity {
         tvCliente = findViewById(R.id.text_cliente);
         tvFechas = findViewById(R.id.text_fechas);
         tvPrecio = findViewById(R.id.text_precio_total);
+        tvNoQuads = findViewById(R.id.confirm_no_quads);
         btnConfirmar = findViewById(R.id.button_confirm);
         btnCancelar = findViewById(R.id.button_cancel);
 
@@ -116,6 +118,16 @@ public class ReservaConfirm extends BaseActivity {
 
     private void pintarListaSinPrecios() {
         List<ItemConfirm> items = new ArrayList<>();
+
+        if (cascosPorQuad.isEmpty()) {
+            tvNoQuads.setVisibility(TextView.VISIBLE);
+            rvQuads.setVisibility(RecyclerView.GONE);
+            return;
+        }
+
+        tvNoQuads.setVisibility(TextView.GONE);
+        rvQuads.setVisibility(RecyclerView.VISIBLE);
+
         for (Map.Entry<String, Integer> e : cascosPorQuad.entrySet()) {
             items.add(new ItemConfirm(e.getKey(), 0.0, e.getValue())); // precio placeholder
         }

@@ -24,7 +24,7 @@ public interface QuadDao {
      * @param quad quad a insertar
      * @return id de fila insertada o -1 si se ha ignorado por conflicto
      */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     long insert(Quad quad);
 
     /**

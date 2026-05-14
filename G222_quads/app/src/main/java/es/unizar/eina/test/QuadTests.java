@@ -26,7 +26,7 @@ public class QuadTests {
     public void testInsertQuad() {
         // Insert válido Monoplaza
         try {
-            Quad q = new Quad("1234ABC", true, 65.0, "Rojo");
+            Quad q = new Quad("1234ABC", false, 65.0, "Rojo");
             quadRepo.insert(q);
             Log.d("TEST_QUAD", "Insert válido Monoplaza");
 
@@ -36,7 +36,7 @@ public class QuadTests {
 
         // Insert válido Biplaza
         try {
-            Quad q = new Quad("1235ABC", false, 65.0, "Rojo");
+            Quad q = new Quad("1235ABC", true, 65.0, "Rojo");
             quadRepo.insert(q);
             Log.d("TEST_QUAD", "Insert válido Biplaza");
         } catch (Throwable t) {
@@ -91,10 +91,10 @@ public class QuadTests {
 
         // Actualización Monoplaza -> Biplaza
         try {
-            q.setTipo(false); // de monoplaza a biplaza
+            q.setTipo(true); // de monoplaza a biplaza
             quadRepo.update(q);
 
-            q.setTipo(true); // de biplaza a monoplaza
+            q.setTipo(false); // de biplaza a monoplaza
             quadRepo.update(q);
 
             Log.d("TEST_QUAD", "Actualización de tipo OK");
@@ -183,7 +183,7 @@ public class QuadTests {
 
                 Quad q = new Quad(
                         matricula,
-                        true,             //Monoplaza
+                        false,             //Monoplaza
                         10.00,
                         "Quad volumen " + num      // Descripción
                 );
