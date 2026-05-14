@@ -250,8 +250,8 @@ public class NavigationPathTest {
 
             new Thread(() -> {
                 try {
-                    quadRepo.deleteAll();
-                    reservaRepo.deleteAll();
+                    quadRepo.deleteAll().get();
+                    reservaRepo.deleteAll().get();
 
                     for (int i = 1; i <= 30; i++) {
                         quadRepo.insert(new Quad(

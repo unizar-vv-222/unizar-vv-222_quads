@@ -199,11 +199,8 @@ public class ReservaSelectQuads extends BaseActivity {
 
         Map<String, Integer> seleccion = mAdapter.getCascosPorQuad();
 
-        if (seleccion == null || seleccion.isEmpty()) {
-            Toast.makeText(this,
-                    "Selecciona al menos un quad",
-                    Toast.LENGTH_LONG).show();
-            return;
+        if (seleccion == null) {
+            seleccion = new HashMap<>();
         }
 
         Intent intent = new Intent(this, ReservaConfirm.class);

@@ -32,7 +32,7 @@ public class Quad {
      * Crea un quad con todos sus campos.
      *
      * @param matricula   Matrícula del quad. Es la clave primaria.
-     * @param tipo        Tipo del quad (true = monoplaza, false = biplaza).
+     * @param tipo        Tipo del quad (false = monoplaza, true = biplaza).
      * @param precio      Precio de alquiler del quad.
      * @param descripcion Descripción textual del quad.
      */
@@ -59,8 +59,8 @@ public class Quad {
 
     /**
      * Devuelve el tipo del quad.
-     * True = monoplaza
-     * False = biplaza
+     * True = biplaza
+     * False = monoplaza
      */
     public boolean getTipo() {
         return this.tipo;

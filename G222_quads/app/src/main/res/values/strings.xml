@@ -90,7 +90,8 @@
     <string name="button_ordenar">Ordenar</string>
     <string name="button_limpiar">Limpiar datos</string>
 
-    <string name="empty_not_saved">Reserva no guardada porque está vacía.</string>
+    <string name="quad_empty_not_saved">Quad no guardado porque está vacío.</string>
+    <string name="reserva_empty_not_saved">Reserva no guardada porque está vacía.</string>
     <string name="add_quad">Add quad</string>
     <string name="matricula">Matricula</string>
     <string name="tipo">Tipo</string>

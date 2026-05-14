@@ -40,7 +40,7 @@
         android:id="@+id/quad_tipo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Monoplaza"
+        android:text="@string/monoplaza"
         android:textSize="14sp"
         android:textColor="@color/color_dark"
         android:fontFamily="@font/poppins_regular"

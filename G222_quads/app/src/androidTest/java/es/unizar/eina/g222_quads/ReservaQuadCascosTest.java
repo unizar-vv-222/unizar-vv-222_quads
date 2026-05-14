@@ -175,7 +175,7 @@ public class ReservaQuadCascosTest {
                 quadRepo.insert(
                         new Quad(
                                 "1111AAA",
-                                true,
+                                false,
                                 60.0,
                                 "Monoplaza test"
                         )
@@ -215,7 +215,7 @@ public class ReservaQuadCascosTest {
                 quadRepo.insert(
                         new Quad(
                                 "1111AAA",
-                                true,
+                                false,
                                 60.0,
                                 "Monoplaza test"
                         )
@@ -230,7 +230,7 @@ public class ReservaQuadCascosTest {
                                     );
                             return quad != null &&
                                     esCascoValido(
-                                            quad.getTipo(),
+                                            !quad.getTipo(),
                                             e.getValue()
                                     );
                         });
@@ -257,7 +257,7 @@ public class ReservaQuadCascosTest {
                 quadRepo.insert(
                         new Quad(
                                 "2222BBB",
-                                false,
+                                true,
                                 80.0,
                                 "Biplaza test"
                         )
@@ -325,7 +325,7 @@ public class ReservaQuadCascosTest {
                 quadRepo.insert(
                         new Quad(
                                 "3333CCC",
-                                true,
+                                false,
                                 55.0,
                                 "Monoplaza libre"
                         )
@@ -391,7 +391,7 @@ public class ReservaQuadCascosTest {
                 quadRepo.insert(
                         new Quad(
                                 "4444DDD",
-                                false,
+                                true,
                                 70.0,
                                 "Biplaza consecutiva"
                         )
@@ -457,7 +457,7 @@ public class ReservaQuadCascosTest {
                 quadRepo.insert(
                         new Quad(
                                 "5555EEE",
-                                true,
+                                false,
                                 65.0,
                                 "Monoplaza edicion"
                         )

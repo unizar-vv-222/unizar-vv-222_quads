@@ -1,11 +1,14 @@
 package es.unizar.eina.g222_quads.ui.quads;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import es.unizar.eina.g222_quads.database.Quad;
 import es.unizar.eina.g222_quads.database.QuadRepository;
@@ -52,8 +55,8 @@ public class QuadViewModel extends AndroidViewModel {
     /**
      * Inserta un nuevo quad
      */
-    public void insert(Quad quad) {
-        mRepository.insert(quad);
+    public long insert(Quad quad) throws Exception {
+       return mRepository.insert(quad).get();
     }
 
     /**

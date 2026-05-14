@@ -60,14 +60,12 @@ public class EspressoTest {
     public void borrarQuadsIniciales() {
 
         scenarioRule.getScenario().onActivity(activity -> {
-            activity.getQuadRespositoryMain().deleteAll();
+            try {
+                activity.getQuadRespositoryMain().deleteAll().get();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test

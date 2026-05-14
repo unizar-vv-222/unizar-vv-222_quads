@@ -71,7 +71,7 @@ public class RunStepsDefinition {
 
             new Thread(() -> {
                 try {
-                    quadRepo.deleteAll();
+                    quadRepo.deleteAll().get();
                     for (int i = 1; i <= 5; i++) {
                         quadRepo.insert(new Quad(
                                 String.format("%04dAAA", i),
@@ -527,7 +527,7 @@ public class RunStepsDefinition {
         withActivity(activity -> {
             new Thread(() -> {
                 try {
-                    activity.getQuadRespositoryMain().deleteAll();
+                    activity.getQuadRespositoryMain().deleteAll().get();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 } finally {
@@ -570,9 +570,9 @@ public class RunStepsDefinition {
                 .perform(clearText(), replaceText(precio), closeSoftKeyboard());
 
         if(Objects.equals(tipo, "true")){
-            onView(withId(R.id.tipo_monoplaza)).perform(click());
-        }else{
             onView(withId(R.id.tipo_biplaza)).perform(click());
+        }else{
+            onView(withId(R.id.tipo_monoplaza)).perform(click());
         }
         onView(withId(R.id.descripcion))
                 .perform(clearText(), replaceText(descripcion), closeSoftKeyboard());
@@ -692,11 +692,6 @@ public class RunStepsDefinition {
         onView(withId(R.id.matricula)).check(matches(isDisplayed()));
     }
 
-    @Entonces("Se muestra un error indicando que el quad tiene reservas y no puede eliminarse")
-    public void error_quad_con_reservas() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
     @Entonces("El listado de quads es visible con al menos un elemento")
     public void listado_quads_visible() {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
@@ -726,13 +721,6 @@ public class RunStepsDefinition {
     public void existe_quad_sin_reservas() {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
-
-    @Dado("Existe un quad con reservas activas asociadas en el listado")
-    public void existe_quad_con_reservas() throws InterruptedException {
-        // El setup del @Before ya inserta quads y reservas asociadas
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
 
 
     // Casos de uso de reservas
