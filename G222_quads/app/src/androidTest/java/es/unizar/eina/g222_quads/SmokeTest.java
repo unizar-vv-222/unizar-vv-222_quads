@@ -23,7 +23,7 @@ import es.unizar.eina.g222_quads.ui.quads.G222_quads;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class SmokeTest {
 
     @Rule
     public ActivityScenarioRule<G222_quads> scenarioRule = new ActivityScenarioRule<>(G222_quads.class);
