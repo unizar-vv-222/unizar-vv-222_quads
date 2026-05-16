@@ -40,7 +40,7 @@ public class SmokeTest {
                 int cont_post = quadRepository.numQuads();
                 assertEquals(cont_prev + 1, cont_post);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                fail(e.getMessage());
             }
         });
     }
@@ -61,7 +61,7 @@ public class SmokeTest {
             try {
                 quadRepository.insert(quadOriginal).get();
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                fail(e.getMessage());
             }
 
             // 3. Recuperamos el quad (necesitarás un método en el repo que busque por matrícula)
