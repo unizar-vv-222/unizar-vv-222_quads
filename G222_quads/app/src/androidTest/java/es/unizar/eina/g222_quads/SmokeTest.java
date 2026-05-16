@@ -28,14 +28,17 @@ public class SmokeTest {
     @Rule
     public ActivityScenarioRule<G222_quads> scenarioRule = new ActivityScenarioRule<>(G222_quads.class);
 
+    private String matricula;
+
     @Test
     public void testCreationIncreasesNumberOfNotes() {
+        matricula = "6767ABC";
         scenarioRule.getScenario().onActivity(activity -> {
             // Acceso al repositorio a través de la actividad
             QuadRepository quadRepository = activity.getQuadRespositoryMain();
             int cont_prev = quadRepository.numQuads();
             try {
-                Quad q = new Quad("6767ABC", true, 65.0, "Rojo");
+                Quad q = new Quad(matricula, true, 65.0, "Rojo");
                 quadRepository.insert(q).get();
                 int cont_post = quadRepository.numQuads();
                 assertEquals(cont_prev + 1, cont_post);
@@ -47,11 +50,12 @@ public class SmokeTest {
 
     @Test
     public void testCreationVerificationInfo() {
+        matricula = "1234ABC";
         scenarioRule.getScenario().onActivity(activity -> {
             // Acceso al repositorio a través de la actividad
             QuadRepository quadRepository = activity.getQuadRespositoryMain();
 
-            String matricula = "1234ABC";
+
             Boolean tipo = true;
             Double precio = 55.0;
             String descripcion = "Verde";
@@ -83,8 +87,7 @@ public class SmokeTest {
         scenarioRule.getScenario().onActivity(activity -> {
             QuadRepository quadRepository = activity.getQuadRespositoryMain();
             try {
-                quadRepository.deleteByMatricula("6767ABC").get();  // Esperar
-                quadRepository.deleteByMatricula("1234ABC").get();  // Esperar
+                quadRepository.deleteByMatricula(matricula).get();  // Esperar
             } catch (Exception e) {
                 // Ignorar si no existen
             }
