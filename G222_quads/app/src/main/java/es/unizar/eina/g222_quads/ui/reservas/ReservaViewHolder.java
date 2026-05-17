@@ -36,7 +36,7 @@ public class ReservaViewHolder extends RecyclerView.ViewHolder {
     private ReservaViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        txtMain = itemView.findViewById(R.id.textView);
+        txtMain = itemView.findViewById(R.id.text_view);
         btnEdit = itemView.findViewById(R.id.btn_edit);
         btnDelete = itemView.findViewById(R.id.btn_delete);
     }

@@ -8,9 +8,9 @@
     android:background="@drawable/item_background"
     android:padding="12dp">
 
-    <!-- Texto del quad -->
+    <!-- Texto -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="0000XXX"

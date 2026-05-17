@@ -53,6 +53,12 @@ public interface ReservaDao {
     int deleteAll();
 
     /**
+     * Recupera el número de reservas de la tabla.
+     */
+    @Query("SELECT COUNT(*) FROM reserva")
+    int getNumReservas();
+
+    /**
      * Actualiza el precio de una reserva.
      *
      * @param reservaId id de la reserva

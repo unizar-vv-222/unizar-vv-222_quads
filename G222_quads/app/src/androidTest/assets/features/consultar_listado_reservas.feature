@@ -10,11 +10,11 @@
 #     4 - solo reservas caducadas
 #
 #   Criterio de ordenación:
-#     5 – orden por defecto
+#     5 – orden por defecto (nombre de cliente)
 #     6 – ordenado por fecha de recogida
 #     7 – ordenado por fecha de devolución
 #     8 – ordenado por nombre de cliente
-#     9 – ordenado por número de teléfono
+#     9 – ordenado por número de móvil
 #
 #   Estado del listado:
 #     9  (válida) – listado con una o más reservas
@@ -29,7 +29,7 @@
 #   5  | todas       | por fecha recogida | Sí       | listado ordenado por fecha recogida
 #   6  | todas       | por fecha dev.     | Sí       | listado ordenado por fecha devolución
 #   7  | todas       | por nombre         | Sí       | listado ordenado por nombre
-#   8  | todas       | por teléfono       | Sí       | listado ordenado por teléfono
+#   8  | todas       | por móvil          | Sí       | listado ordenado por móvil
 
 Feature: Consultar listado de reservas
   Como propietario de la empresa de alquiler
@@ -47,40 +47,42 @@ Feature: Consultar listado de reservas
 
   # filtrar solo previstas
   Scenario: Filtrar el listado para mostrar solo reservas previstas
-    Given Existen reservas previstas en el sistema
+    Given Existen reservas previstas, vigentes y caducadas en el sistema
     When Selecciono el filtro "Reservas previstas" en el listado de reservas
-    Then El listado muestra únicamente reservas con fecha de recogida futura
+    Then La primera reserva del listado tiene nombre "Reserva Prevista"
 
   # filtrar solo vigentes
   Scenario: Filtrar el listado para mostrar solo reservas vigentes
+    Given Existen reservas previstas, vigentes y caducadas en el sistema
     When Selecciono el filtro "Reservas vigentes" en el listado de reservas
     Then El listado muestra únicamente reservas actualmente en curso o aparece vacío
 
   # filtrar solo caducadas
   Scenario: Filtrar el listado para mostrar solo reservas caducadas
+    Given Existen reservas previstas, vigentes y caducadas en el sistema
     When Selecciono el filtro "Reservas caducadas" en el listado de reservas
     Then El listado muestra únicamente reservas con fecha de devolución pasada o aparece vacío
 
-    # ordenar por fecha de recogida
+  # ordenar por fecha de recogida
   Scenario: Ordenar el listado de reservas por fecha de recogida
     Given Existen al menos dos reservas en el sistema
     When Selecciono ordenar reservas por fecha de recogida
-    Then El listado de reservas aparece ordenado por fecha de recogida de forma ascendente
+    Then La primera reserva del listado tiene nombre "Reserva Fecha Menor"
 
   # ordenar por fecha de devolución
   Scenario: Ordenar el listado de reservas por fecha de devolución
     Given Existen al menos dos reservas en el sistema
     When Selecciono ordenar reservas por fecha de devolución
-    Then El listado de reservas aparece ordenado por fecha de devolución de forma ascendente
+    Then La primera reserva del listado tiene nombre "Reserva Fecha Menor"
 
   # ordenar por nombre
   Scenario: Ordenar el listado de reservas por nombre de cliente
     Given Existen al menos dos reservas en el sistema
     When Selecciono ordenar reservas por nombre de cliente
-    Then El listado de reservas aparece ordenado alfabéticamente por nombre de cliente
+    Then La primera reserva del listado tiene nombre "Ana Cliente"
 
-  # ordenar por teléfono
-  Scenario: Ordenar el listado de reservas por número de teléfono
+  # ordenar por móvil
+  Scenario: Ordenar el listado de reservas por número de móvil
     Given Existen al menos dos reservas en el sistema
-    When Selecciono ordenar reservas por número de teléfono
-    Then El listado de reservas aparece ordenado por número de teléfono de forma ascendente
+    When Selecciono ordenar reservas por número de móvil
+    Then La primera reserva del listado tiene nombre "Ana Cliente"

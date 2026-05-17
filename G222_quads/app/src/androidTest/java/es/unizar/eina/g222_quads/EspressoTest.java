@@ -133,7 +133,7 @@ public class EspressoTest {
                     ));
 
             onView(allOf(
-                    withId(R.id.textView),
+                    withId(R.id.text_view),
                     withText(matricula)
             )).check(matches(isDisplayed()));
 

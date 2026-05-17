@@ -113,6 +113,16 @@ public class ReservaRepository {
 
     public LiveData<List<Reserva>> getAllReservas() { return mAllReservas; }
 
+    public int numReservas() {
+        try {
+            return databaseWriteExecutor.submit(
+                    mReservaDao::getNumReservas
+            ).get();
+        } catch (ExecutionException | InterruptedException e) {
+            return -1;
+        }
+    }
+
     public Future<Integer> deleteAll() {
         return databaseWriteExecutor.submit(mReservaDao::deleteAll);
     }

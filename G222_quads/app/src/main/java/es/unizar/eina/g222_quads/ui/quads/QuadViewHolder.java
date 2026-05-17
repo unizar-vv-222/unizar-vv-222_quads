@@ -35,7 +35,7 @@ public class QuadViewHolder extends RecyclerView.ViewHolder {
     private QuadViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        txtMatricula = itemView.findViewById(R.id.textView);
+        txtMatricula = itemView.findViewById(R.id.text_view);
         btnEdit = itemView.findViewById(R.id.btn_edit);
         btnDelete = itemView.findViewById(R.id.btn_delete);
     }

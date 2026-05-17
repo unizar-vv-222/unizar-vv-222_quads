@@ -5,15 +5,14 @@
 #
 #   Precondición (reserva existente):
 #     1 (válida)   – reserva existente en el listado
-#     2 (válida)   – listado vacío (no hay reservas)
 #
 #   Origen de la acción:
-#     3 (válida)   – eliminación desde el listado (botón en ítem)
-#     4 (válida)   – eliminación desde la pantalla de detalle
+#     2 (válida)   – eliminación desde el listado (botón en ítem)
+#     3 (válida)   – eliminación desde la pantalla de detalle
 #
 #   Confirmación del diálogo:
-#     5 (válida)   – usuario confirma la eliminación
-#     6 (válida)   – usuario cancela el diálogo de confirmación
+#     4 (válida)   – usuario confirma la eliminación
+#     5 (válida)   – usuario cancela el diálogo de confirmación
 #
 # Tabla de casos de prueba:
 #   CP | Origen    | Diálogo   | Resultado esperado

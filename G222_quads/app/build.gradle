@@ -39,6 +39,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-android:2.10.0'
     implementation 'androidx.test.espresso:espresso-contrib:3.7.0'
+    implementation 'androidx.test.espresso:espresso-intents:3.7.0'
     annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 

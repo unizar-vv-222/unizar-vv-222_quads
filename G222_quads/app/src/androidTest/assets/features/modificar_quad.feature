@@ -6,26 +6,33 @@
 #   Precondición (quad existente):
 #     1 (válida)   – quad existente seleccionado para editar
 #
-#   Campo precio:
-#     2 (válida)   – precio numérico positivo distinto al original
-#     3 (inválida) – precio vacío
-#     4 (inválida) – precio cero o negativo
+#   Origen de la acción:
+#     2 (válida)   – eliminación desde el listado (botón en ítem)
+#     3 (válida)   – eliminación desde la pantalla de detalle
 #
-#   Campo nombre:
-#     5 (válida)   – nombre no vacío distinto al original
-#     6 (inválida) – nombre vacío
+#   Campo tipo:
+#     4 (válida)   – tipo True (biplaza)
+#     5 (válida)   - tipo False (monoplaza)
+#
+#   Campo precio:
+#     6 (válida)   – precio positivo
+#     7 (inválida) – precio cero o negativo
+#
+#   Campo descripción:
+#     5 (válida)   – descripción no vacío
+#     6 (inválida) – descripción vacío
 #
 #   Acción del usuario:
 #     7 (válida)   – usuario confirma los cambios (guardar)
 #     8 (válida)   – usuario cancela la edición (sin cambios)
 #
 # Tabla de casos de prueba:
-#   CP | Precio nuevo | Nombre nuevo | Acción   | Resultado esperado
-#   1  | 80.0         | "Quad Mod"   | guardar  | quad actualizado en listado
-#   2  | ""           | "Quad Mod"   | guardar  | error / botón guardar deshabilitado
-#   3  | -5.0         | "Quad Mod"   | guardar  | error / botón guardar deshabilitado
-#   4  | 80.0         | ""           | guardar  | error / botón guardar deshabilitado
-#   5  | 80.0         | "Quad Mod"   | cancelar | quad sin cambios en listado
+#   CP | Tipo   | Precio | Descripción   | Origen   | Acción   | Resultado esperado
+#   1  | True   | 80.0   | "Quad Mod"    | Listado  | guardar  | quad actualizado en listado
+#   2  | False  | 80.0   | "Quad Mod"    | Detalle  | guardar  | quad actualizado en listado
+#   3  | False  | -5.0   | "Quad Mod"    | Listado  | guardar  | error / botón guardar deshabilitado
+#   4  | False  | 80.0   | ""            | Listado  | guardar  | error / botón guardar deshabilitado
+#   5  | False  | 80.0   | "Quad Mod"    | Listado  | cancelar | quad sin cambios en listado
 
 Feature: Modificar quad
   Como propietario de la empresa de alquiler
@@ -37,37 +44,37 @@ Feature: Modificar quad
     And Accedo a la sección de quads
     And Existe al menos un quad en el listado
 
-  # modificación válida
-  Scenario: Modificar precio y nombre de un quad correctamente
+  # modificaciones válidas
+  Scenario: Modificar tipo, precio y descripción de un quad correctamente a biplaza desde listado
     When Pulso editar en el primer quad del listado
-    And Cambio el precio a "80.0" y la descripcion a "Quad Modificado" del quad
+    And Cambio el tipo a "true", el precio a "80.0" y la descripcion a "Quad Modificado" del quad
     And Pulso guardar en el formulario de quad
-    Then El listado de quads es visible con al menos un elemento
+    Then El quad seleccionado muestra en detalle el tipo "true", el precio "80.00" y la descripción "Quad Modificado"
 
-  # precio vacío al modificar
-  Scenario: Intentar modificar un quad dejando el precio vacío
-    When Pulso editar en el primer quad del listado
-    And Borro el precio del formulario de quad
-    And El usuario pulsa el botón guardar del formulario de quad
-    Then Permanece en el formulario de quad
+  Scenario: Modificar tipo, precio y descripción de un quad correctamente a monoplaza desde detalle
+    When Pulso sobre el primer quad del listado
+    And Pulso editar en el detalle del quad
+    And Cambio el tipo a "false", el precio a "80.0" y la descripcion a "Quad Modificado" del quad
+    And Pulso guardar en el formulario de quad
+    Then El quad seleccionado muestra en detalle el tipo "false", el precio "80.00" y la descripción "Quad Modificado"
 
   # precio negativo al modificar
   Scenario: Intentar modificar un quad con precio negativo
     When Pulso editar en el primer quad del listado
-    And Cambio el precio a "-5.0" y la descripcion a "Quad Modificado" del quad
-    And El usuario pulsa el botón guardar del formulario de quad
+    And Cambio el tipo a "false", el precio a "-5.0" y la descripcion a "Quad Modificado" del quad
+    And Pulso guardar en el formulario de quad
     Then Permanece en el formulario de quad
 
-  # nombre vacío al modificar
-  Scenario: Intentar modificar un quad dejando el nombre vacío
+  # descripción vacía al modificar
+  Scenario: Intentar modificar un quad dejando la descripción vacía
     When Pulso editar en el primer quad del listado
-    And Cambio el precio a "80.0" y la descripcion a "" del quad
-    And El usuario pulsa el botón guardar del formulario de quad
+    And Cambio el tipo a "false", el precio a "80.0" y la descripcion a "" del quad
+    And Pulso guardar en el formulario de quad
     Then Permanece en el formulario de quad
 
   # cancelar la edición
   Scenario: Cancelar la modificación de un quad
     When Pulso editar en el primer quad del listado
-    And Cambio el precio a "999.0" y la descripcion a "No debe guardarse" del quad
+    And Cambio el tipo a "false", el precio a "999.0" y la descripcion a "No debe guardarse" del quad
     And Pulso cancelar en el formulario de quad
-    Then El quad no muestra el nombre "No debe guardarse" en el listado
+    Then El quad seleccionado no muestra en detalle la descripción "No debe guardarse"

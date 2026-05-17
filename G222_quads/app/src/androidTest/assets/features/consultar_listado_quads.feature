@@ -4,7 +4,7 @@
 # Clases de equivalencia identificadas:
 #
 #   Criterio de ordenación:
-#     1 – ordenado por defecto (sin criterio explícito)
+#     1 – ordenado por defecto (por matrícula)
 #     2 – ordenado por matrícula
 #     3 – ordenado por tipo
 #     4 – ordenado por precio
