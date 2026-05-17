@@ -155,346 +155,7 @@ public class RunStepsDefinition {
         };
     }
 
-
-    // BLOQUE 1 – Scenario Testing
-
-    @Dado("Abro la aplicación de gestión de quads")
-    public void abro_la_aplicacion() {
-        scenario.onActivity(activity -> assertNotNull(activity));
-    }
-
-    @Dado("Accedo a la sección de reservas")
-    public void accedo_a_reservas() {
-        onView(withId(R.id.reserva)).perform(click());
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    //
-    @Cuando("Pulso el botón de nueva reserva")
-    public void pulso_nueva_reserva() {
-        withActivity(activity -> {
-            numReservasAntes = activity.getReservaRepositoryMain().numReservas();
-        });
-
-        onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.nombre_cliente)).check(matches(isDisplayed()));
-    }
-
-    @Cuando("Relleno el formulario con nombre {string} y teléfono {string}")
-    public void relleno_formulario(String nombre, String telefono) {
-        onView(withId(R.id.nombre_cliente)).check(matches(isDisplayed()));
-        onView(withId(R.id.nombre_cliente))
-                .perform(clearText(), replaceText(nombre), closeSoftKeyboard());
-        onView(withId(R.id.movil_cliente))
-                .perform(clearText(), replaceText(telefono), closeSoftKeyboard());
-    }
-
-    @Cuando("Selecciono una fecha de recogida futura")
-    public void selecciono_fecha_recogida() {
-        onView(withId(R.id.fecha_recogida)).perform(click());
-        Calendar recogida = Calendar.getInstance();
-        recogida.add(Calendar.YEAR, 1);
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
-                .perform(PickerActions.setDate(
-                        recogida.get(Calendar.YEAR),
-                        recogida.get(Calendar.MONTH) + 1,
-                        recogida.get(Calendar.DAY_OF_MONTH)));
-        onView(withText("Aceptar")).perform(click());
-        onView(withId(R.id.horario_recogida_manana)).perform(click());
-    }
-
-    @Cuando("Selecciono una fecha de devolución posterior a la recogida")
-    public void selecciono_fecha_devolucion() {
-        onView(withId(R.id.fecha_devolucion)).perform(click());
-        Calendar devolucion = Calendar.getInstance();
-        devolucion.add(Calendar.YEAR, 1);
-        devolucion.add(Calendar.DAY_OF_YEAR, 2);
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
-                .perform(PickerActions.setDate(
-                        devolucion.get(Calendar.YEAR),
-                        devolucion.get(Calendar.MONTH) + 1,
-                        devolucion.get(Calendar.DAY_OF_MONTH)));
-        onView(withText("Aceptar")).perform(click());
-        onView(withId(R.id.horario_devolucion_tarde)).perform(forceClick());
-    }
-
-    //
-    @Cuando("Pulso continuar para seleccionar quads")
-    public void pulso_continuar() {
-        onView(withId(R.id.button_continue))
-                .check(matches(isDisplayed()))
-                .perform(click());
-        onView(withId(R.id.recyclerview_quads)).check(matches(isDisplayed()));
-    }
-
-    //
-    @Cuando("Selecciono el primer quad disponible")
-    public void selecciono_primer_quad() {
-        onView(withId(R.id.recyclerview_quads)).check(matches(isDisplayed()));
-        onView(withId(R.id.recyclerview_quads))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, checkFirstCheckbox()));
-    }
-
-    //
-    @Cuando("Confirmo la selección de quads")
-    public void confirmo_seleccion_quads() {
-        onView(withId(R.id.button_confirm))
-                .check(matches(isDisplayed()))
-                .perform(click());
-        // Esperar a que cargue la pantalla de confirmación
-        onView(withId(R.id.title_confirm_reserva)).check(matches(isDisplayed()));
-    }
-
-    @Cuando("Confirmo la reserva")
-    public void confirmo_la_reserva() {
-        onView(withId(R.id.title_confirm_reserva))
-                .check(matches(isDisplayed()));
-        onView(withId(R.id.button_confirm))
-                .check(matches(isDisplayed()))
-                .check(matches(isEnabled()))
-                .perform(click());
-        try {
-            onView(withText("Aceptar")).inRoot(isDialog()).perform(click());
-        } catch (Exception e) {
-            onView(withText("Aceptar")).perform(click());
-        }
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("La reserva aparece en el listado de reservas")
-    public void reserva_aparece_en_listado() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Cuando("Pulso el botón cancelar en el formulario de reserva")
-    public void pulso_cancelar_formulario() {
-        onView(withId(R.id.button_cancel)).check(matches(isDisplayed()));
-        onView(withId(R.id.button_cancel)).perform(click());
-        // Esperar a que vuelva al listado
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("Vuelvo al listado de reservas sin crear ninguna nueva")
-    public void vuelvo_al_listado() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Cuando("Pulso sobre la primera reserva del listado")
-    public void pulso_primera_reserva() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-        onView(withId(R.id.recyclerview))
-                .perform(actionOnItemAtPosition(0, click()));
-        // Esperar a que cargue el detalle
-        onView(withId(R.id.button_edit)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("Se muestra la pantalla de detalle de la reserva")
-    public void se_muestra_detalle() {
-        onView(withId(R.id.button_edit)).check(matches(isDisplayed()));
-    }
-
-    @Cuando("Pulso el botón eliminar en el detalle")
-    public void pulso_eliminar_detalle() {
-        onView(withId(R.id.button_delete)).check(matches(isDisplayed()));
-        onView(withId(R.id.button_delete)).perform(click());
-    }
-
-    @Cuando("Confirmo la eliminación")
-    public void confirmo_eliminacion() {
-        // Intentar con isDialog(), si falla intentar sin él
-        try {
-            onView(withText("Eliminar")).inRoot(isDialog()).check(matches(isDisplayed()));
-            onView(withText("Eliminar")).inRoot(isDialog()).perform(click());
-        } catch (Exception e) {
-            onView(withText("Eliminar")).check(matches(isDisplayed()));
-            onView(withText("Eliminar")).perform(click());
-        }
-        // Esperar a que vuelva al listado
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("Vuelvo al listado de reservas")
-    public void vuelvo_al_listado_tras_eliminar() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-
-    // BLOQUE 2 – Caja negra: particiones de equivalencia
-
-    @Cuando("Introduzco nombre {string} y teléfono {string}")
-    public void introduzco_nombre_y_telefono(String nombre, String telefono) {
-        onView(withId(R.id.nombre_cliente)).check(matches(isDisplayed()));
-        onView(withId(R.id.nombre_cliente))
-                .perform(clearText(), replaceText(nombre), closeSoftKeyboard());
-        onView(withId(R.id.movil_cliente))
-                .perform(clearText(), replaceText(telefono), closeSoftKeyboard());
-    }
-
-    @Cuando("Introduzco fechas con desplazamiento de recogida {string} y devolución {string}")
-    public void introduzco_fechas(String diasRecogidaStr, String diasDevolucionStr) {
-        int diasRecogida   = Integer.parseInt(diasRecogidaStr);
-        int diasDevolucion = Integer.parseInt(diasDevolucionStr);
-
-        onView(withId(R.id.fecha_recogida)).check(matches(isDisplayed()));
-        onView(withId(R.id.fecha_recogida)).perform(click());
-        Calendar recogida = Calendar.getInstance();
-        recogida.add(Calendar.DAY_OF_YEAR, diasRecogida);
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
-                .perform(PickerActions.setDate(
-                        recogida.get(Calendar.YEAR),
-                        recogida.get(Calendar.MONTH) + 1,
-                        recogida.get(Calendar.DAY_OF_MONTH)));
-        onView(withText("Aceptar")).perform(click());
-        onView(withId(R.id.horario_recogida_manana)).perform(click());
-
-        onView(withId(R.id.fecha_devolucion)).perform(click());
-        Calendar devolucion = Calendar.getInstance();
-        devolucion.add(Calendar.DAY_OF_YEAR, diasDevolucion);
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
-                .perform(PickerActions.setDate(
-                        devolucion.get(Calendar.YEAR),
-                        devolucion.get(Calendar.MONTH) + 1,
-                        devolucion.get(Calendar.DAY_OF_MONTH)));
-        onView(withText("Aceptar")).perform(click());
-        onView(withId(R.id.horario_devolucion_tarde)).perform(forceClick());
-    }
-
-    @Entonces("El botón continuar {string}")
-    public void el_boton_continuar(String resultado) {
-        if ("funciona".equals(resultado)) {
-            onView(withId(R.id.button_continue)).check(matches(isEnabled()));
-        } else {
-            onView(withId(R.id.nombre_cliente)).check(matches(isDisplayed()));
-        }
-    }
-
-    @Dado("Existe un quad con matrícula {string} y precio {string} euros por día")
-    public void existe_quad_con_precio(final String matricula, final String precioStr) {
-        final CountDownLatch latch = new CountDownLatch(1);
-        withActivity(activity -> {
-            new Thread(() -> {
-                try {
-                    double precio = Double.parseDouble(precioStr);
-                    QuadRepository repo = activity.getQuadRespositoryMain();
-                    Quad quad = new Quad(matricula, true, precio, "Quad test Cucumber");
-                    repo.insert(quad).get();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    latch.countDown();
-                }
-            }).start();
-        });
-        try { latch.await(); } catch (InterruptedException e) { e.printStackTrace(); }
-    }
-
-    @Dado("Existe una reserva para ese quad con precio total calculado")
-    public void existe_reserva_para_ese_quad() {
-        AtomicReference<Integer> idRef     = new AtomicReference<>();
-        AtomicReference<Double>  precioRef = new AtomicReference<>();
-        final CountDownLatch latch = new CountDownLatch(1);
-
-        withActivity(activity -> {
-            new Thread(() -> {
-                try {
-                    ReservaRepository rRepo = activity.getReservaRepositoryMain();
-
-                    Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.DAY_OF_YEAR, 1);
-                    long recogida = cal.getTimeInMillis();
-                    cal.add(Calendar.DAY_OF_YEAR, 2);
-                    long devolucion = cal.getTimeInMillis();
-
-                    Reserva reserva = new Reserva(
-                            "Cucumber Test", "611000000",
-                            recogida, false,
-                            devolucion, false
-                    );
-                    long idReserva = rRepo.insert(reserva);
-                    assertTrue("La reserva debe insertarse", idReserva > 0);
-
-                    rRepo.recalcularPrecioReserva(
-                            (int) idReserva,
-                            recogida, false,
-                            devolucion, false
-                    );
-
-                    Reserva r = rRepo.getReservaByIdSync((int) idReserva);
-                    idRef.set((int) idReserva);
-                    precioRef.set(r.getPrecioTotal());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    latch.countDown();
-                }
-            }).start();
-        });
-
-        try { latch.await(); } catch (InterruptedException e) { e.printStackTrace(); }
-
-        idReservaParaPrecio        = idRef.get();
-        precioReservaAntesDeCambio = precioRef.get();
-    }
-
-    @Cuando("Modifico el precio del quad {string} a {string} euros por día")
-    public void modifico_precio_quad(String matricula, String nuevoPrecioStr) {
-        onView(withId(R.id.quad)).perform(click());
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-
-        // Scroll hasta el quad con esa matrícula
-        onView(withId(R.id.recyclerview))
-                .perform(RecyclerViewActions.scrollTo(hasDescendant(withText(matricula))));
-
-        // Pulsar btn_edit directamente en el item del RecyclerView
-        onView(withId(R.id.recyclerview))
-                .perform(RecyclerViewActions.actionOnItem(
-                        hasDescendant(withText(matricula)),
-                        clickChildViewWithId(R.id.btn_edit)
-                ));
-
-        // Esperar a que cargue el formulario de edición
-        onView(withId(R.id.precio)).check(matches(isDisplayed()));
-        onView(withId(R.id.precio))
-                .perform(clearText(), replaceText(nuevoPrecioStr), closeSoftKeyboard());
-        onView(withId(R.id.button_save)).check(matches(isDisplayed()));
-        onView(withId(R.id.button_save)).perform(click());
-
-        // Volver a main
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-        pressBack();
-    }
-
-    @Entonces("El precio total de la reserva sigue siendo el mismo que al crearla")
-    public void precio_reserva_no_cambia() {
-        assertTrue("No se encontró ninguna reserva de prueba", idReservaParaPrecio > 0);
-
-        final CountDownLatch latch = new CountDownLatch(1);
-        final AtomicReference<Double> precioActual = new AtomicReference<>();
-
-        withActivity(activity -> {
-            new Thread(() -> {
-                try {
-                    ReservaRepository rRepo = activity.getReservaRepositoryMain();
-                    Reserva r = rRepo.getReservaByIdSync(idReservaParaPrecio);
-                    precioActual.set(r.getPrecioTotal());
-                } finally {
-                    latch.countDown();
-                }
-            }).start();
-        });
-
-        try { latch.await(); } catch (InterruptedException e) { e.printStackTrace(); }
-
-        assertEquals(
-                "El precio total debe mantenerse igual aunque el quad cambie de precio",
-                precioReservaAntesDeCambio,
-                precioActual.get(),
-                0.01
-        );
-    }
-
     // Helpers privados
-
     private ViewAction checkFirstCheckbox() {
         return new ViewAction() {
             @Override public Matcher<View> getConstraints() { return isEnabled(); }
@@ -754,7 +415,48 @@ public class RunStepsDefinition {
                 .check(matches(isDisplayed()));
     }
 
-    // STEPS NUEVOS – Casos de uso de quads
+    @Dado("Abro la aplicación de gestión de quads")
+    public void abro_la_aplicacion() {
+        scenario.onActivity(activity -> assertNotNull(activity));
+    }
+
+    @Dado("Accedo a la sección de reservas")
+    public void accedo_a_reservas() {
+        onView(withId(R.id.reserva)).perform(click());
+        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
+    }
+
+    @Dado("Existe un quad sin reservas asociadas en el listado")
+    public void existe_quad_sin_reservas() {
+        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerview)).check(matches(hasDescendant(withId(R.id.text_view))));
+    }
+
+    @Dado("Existe al menos una reserva en el listado")
+    public void existe_al_menos_una_reserva() {
+        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
+
+        withActivity(activity -> {
+            int total = activity.getReservaRepositoryMain().numReservas();
+            assertTrue("Debe existir al menos una reserva", total > 0);
+        });
+    }
+
+    @Dado("Existen al menos dos reservas en el sistema")
+    public void existen_al_menos_dos_reservas() {
+        insertarReservasParaOrdenacion();
+
+        onView(withId(R.id.recyclerview))
+                .check(matches(isDisplayed()));
+    }
+
+    @Dado("Existen reservas previstas, vigentes y caducadas en el sistema")
+    public void existen_reservas_previstas_vigentes_caducadas() {
+        insertarReservasParaFiltros();
+
+        onView(withId(R.id.recyclerview))
+                .check(matches(isDisplayed()));
+    }
 
     @Dado("Accedo a la sección de quads")
     public void accedo_a_quads() {
@@ -762,7 +464,6 @@ public class RunStepsDefinition {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
     @Dado("Existe al menos un quad en el listado")
     public void existe_al_menos_un_quad() {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
@@ -770,7 +471,6 @@ public class RunStepsDefinition {
                 .check(matches(hasDescendant(withId(R.id.text_view))));
     }
 
-    //
     @Dado("Existen al menos dos quads en el sistema")
     public void existen_al_menos_dos_quads() {
         withActivity(activity -> {
@@ -785,7 +485,6 @@ public class RunStepsDefinition {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
     @Dado("Existen al menos dos quads de distintos tipos en el sistema")
     public void existen_quads_distintos_tipos() {
         withActivity(activity -> {
@@ -800,7 +499,6 @@ public class RunStepsDefinition {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
     @Dado("Existen al menos dos quads con distintos precios en el sistema")
     public void existen_quads_distintos_precios() {
         withActivity(activity -> {
@@ -815,7 +513,6 @@ public class RunStepsDefinition {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
     @Dado("No existe ningún quad en el sistema")
     public void no_existe_ningun_quad() {
         withActivity(activity -> {
@@ -823,7 +520,6 @@ public class RunStepsDefinition {
         });
     }
 
-    //
     @Dado("Ya existe un quad con matrícula {string} en el sistema")
     public void existe_quad_con_matricula(String matricula) throws InterruptedException {
         final CountDownLatch latch = new CountDownLatch(1);
@@ -842,14 +538,46 @@ public class RunStepsDefinition {
         latch.await();
     }
 
-    //
+    @Cuando("Pulso el botón de nueva reserva")
+    public void pulso_nueva_reserva() {
+        withActivity(activity -> {
+            numReservasAntes = activity.getReservaRepositoryMain().numReservas();
+        });
+
+        onView(withId(R.id.fab)).perform(click());
+        onView(withId(R.id.nombre_cliente)).check(matches(isDisplayed()));
+    }
+
+    @Cuando("Pulso continuar para seleccionar quads")
+    public void pulso_continuar() {
+        onView(withId(R.id.button_continue))
+                .check(matches(isDisplayed()))
+                .perform(click());
+        onView(withId(R.id.recyclerview_quads)).check(matches(isDisplayed()));
+    }
+
+    @Cuando("Selecciono el primer quad disponible")
+    public void selecciono_primer_quad() {
+        onView(withId(R.id.recyclerview_quads)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerview_quads))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, checkFirstCheckbox()));
+    }
+
+    @Cuando("Confirmo la selección de quads")
+    public void confirmo_seleccion_quads() {
+        onView(withId(R.id.button_confirm))
+                .check(matches(isDisplayed()))
+                .perform(click());
+        // Esperar a que cargue la pantalla de confirmación
+        onView(withId(R.id.title_confirm_reserva)).check(matches(isDisplayed()));
+    }
+
     @Cuando("Pulso el botón de nuevo quad")
     public void pulso_nuevo_quad() {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.matricula)).check(matches(isDisplayed()));
     }
 
-    //
     @Cuando("Introduzco la matrícula {string}, el precio {string}, el tipo {string} y la descripcion {string}")
     public void introduzco_datos_quad(String matricula, String precio, String tipo, String descripcion) {
         onView(withId(R.id.matricula))
@@ -866,20 +594,17 @@ public class RunStepsDefinition {
                 .perform(clearText(), replaceText(descripcion), closeSoftKeyboard());
     }
 
-    //
     @Cuando("Pulso guardar en el formulario de quad")
     public void pulso_guardar_quad() {
         onView(withId(R.id.button_save)).perform(click());
     }
 
-    //
     @Cuando("Pulso cancelar en el formulario de quad")
     public void pulso_cancelar_quad() {
         onView(withId(R.id.button_cancel)).perform(click());
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
     @Cuando("Pulso sobre el primer quad del listado")
     public void pulso_sobre_primer_quad_listado() {
         onView(withId(R.id.recyclerview))
@@ -891,12 +616,6 @@ public class RunStepsDefinition {
         onView(withId(R.id.detail_matricula)).check(matches(isDisplayed()));
     }
 
-    @Cuando("Borro el precio del formulario de quad")
-    public void borro_precio_quad() {
-        onView(withId(R.id.precio)).perform(clearText(), closeSoftKeyboard());
-    }
-
-    //
     @Cuando("Cambio el tipo a {string}, el precio a {string} y la descripcion a {string} del quad")
     public void cambio_tipo_precio_y_descripcion_quad(String tipo, String precio, String descripcion) {
         if (Objects.equals(tipo, "true")) {
@@ -910,7 +629,6 @@ public class RunStepsDefinition {
                 .perform(clearText(), replaceText(descripcion), closeSoftKeyboard());
     }
 
-    //
     @Cuando("Pulso editar en el primer quad del listado")
     public void pulso_editar_primer_quad() {
         onView(withId(R.id.recyclerview))
@@ -919,7 +637,6 @@ public class RunStepsDefinition {
         onView(withId(R.id.matricula)).check(matches(isDisplayed()));
     }
 
-    //
     @Cuando("Pulso eliminar en el primer quad del listado")
     public void pulso_eliminar_quad() {
         onView(withId(R.id.recyclerview))
@@ -927,7 +644,6 @@ public class RunStepsDefinition {
                         0, guardarMatriculaYClickDelete()));
     }
 
-    //
     @Cuando("Pulso eliminar en el detalle del quad")
     public void pulso_eliminar_detalle_quad() {
         onView(withId(R.id.button_delete))
@@ -935,7 +651,6 @@ public class RunStepsDefinition {
                 .perform(click());
     }
 
-    //
     @Cuando("Pulso editar en el detalle del quad")
     public void pulso_editar_detalle_quad() {
         onView(withId(R.id.button_edit))
@@ -943,198 +658,34 @@ public class RunStepsDefinition {
                 .perform(click());
     }
 
-    //
-    @Entonces("Permanece en la pantalla de detalle del quad")
-    public void sigue_en_detalle_quad() {
-        onView(withId(R.id.detail_matricula)).check(matches(isDisplayed()));
-    }
-
-
-    //
     @Cuando("Confirmo la eliminación en el diálogo de quad")
     public void confirmo_eliminacion_quad() {
         onView(withText("Eliminar")).inRoot(isDialog()).perform(click());
     }
 
-    //
     @Cuando("Cancelo la eliminación en el diálogo de quad")
     public void cancelo_eliminacion_quad() {
         onView(withText("Cancelar")).inRoot(isDialog()).perform(click());
     }
 
-    //
     @Cuando("Selecciono ordenar quads por matrícula")
     public void ordeno_quads_por_matricula() {
         onView(withId(R.id.orden_quads)).perform(click());
         onView(withText("Por matrícula")).inRoot(isDialog()).perform(click());
     }
 
-    //
     @Cuando("Selecciono ordenar quads por tipo")
     public void ordeno_quads_por_tipo() {
         onView(withId(R.id.orden_quads)).perform(click());
         onView(withText("Por tipo")).inRoot(isDialog()).perform(click());
     }
 
-    //
     @Cuando("Selecciono ordenar quads por precio")
     public void ordeno_quads_por_precio() {
         onView(withId(R.id.orden_quads)).perform(click());
         onView(withText("Por precio")).inRoot(isDialog()).perform(click());
     }
 
-    //
-    @Entonces("El quad con matrícula {string} aparece en el listado de quads")
-    public void quad_aparece_en_listado(String matricula) {
-        onView(withId(R.id.recyclerview))
-                .perform(RecyclerViewActions.scrollTo(hasDescendant(withText(matricula))));
-        onView(withId(R.id.recyclerview))
-                .check(matches(hasDescendant(withText(matricula))));
-    }
-
-    //
-    @Entonces("El quad con matrícula {string} no aparece en el listado de quads")
-    public void quad_no_aparece_en_listado(String matricula) {
-        onView(withText(matricula)).check(doesNotExist());
-    }
-
-    //
-    @Entonces("Permanece en el formulario de quad")
-    public void sigue_en_formulario_quad() {
-        onView(withId(R.id.matricula)).check(matches(isDisplayed()));
-        onView(withId(R.id.button_save)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("El quad aparece en el listado con la matricula {string}")
-    public void quad_aparece_con_matricula(String matricula) {
-        onView(withId(R.id.recyclerview))
-                .check(matches(hasDescendant(withText(matricula))));
-    }
-
-    //
-    @Entonces("El quad ya no aparece en el listado de quads")
-    public void quad_no_aparece_en_listado() {
-        onView(withText(matriculaQuadSeleccionado)).check(doesNotExist());
-    }
-
-    //
-    @Entonces("El quad sigue apareciendo en el listado de quads")
-    public void quad_sigue_en_listado() {
-        onView(withId(R.id.recyclerview))
-                .check(matches(hasDescendant(withText(matriculaQuadSeleccionado))));
-    }
-
-    //
-    @Entonces("El quad seleccionado muestra en detalle el tipo {string}, el precio {string} y la descripción {string}")
-    public void quad_muestra_en_detalle(String tipo, String precio, String descripcion) {
-        abrirDetalleQuadSeleccionado();
-
-        if (Objects.equals(tipo, "true")) {
-            onView(withId(R.id.detail_tipo)).check(matches(withText("Tipo: Biplaza")));
-        } else {
-            onView(withId(R.id.detail_tipo)).check(matches(withText("Tipo: Monoplaza")));
-        }
-
-        onView(withId(R.id.detail_precio))
-                .check(matches(withSubstring(precio)));
-
-        onView(withId(R.id.detail_descripcion))
-                .check(matches(withText(descripcion)));
-    }
-
-    //
-    @Entonces("El quad seleccionado no muestra en detalle la descripción {string}")
-    public void quad_no_muestra_descripcion_en_detalle(String descripcion) {
-        abrirDetalleQuadSeleccionado();
-
-        onView(withId(R.id.detail_descripcion))
-                .check(matches(Matchers.not(withText(descripcion))));
-    }
-
-    @Entonces("Se muestra un error de matrícula duplicada")
-    public void error_matricula_duplicada() {
-        onView(withId(R.id.matricula)).check(matches(isDisplayed()));
-    }
-
-    //
-    @Entonces("El listado de quads es visible con al menos un elemento")
-    public void listado_quads_visible() {
-        onView(withId(R.id.recyclerview))
-                .check(matches(isDisplayed()));
-
-        onView(withId(R.id.recyclerview))
-                .check(matches(hasDescendant(withId(R.id.text_view))));
-    }
-
-    //
-    @Entonces("El listado de quads aparece ordenado por matrícula de forma ascendente")
-    public void listado_quads_ordenado_matricula() {
-        onView(withId(R.id.recyclerview))
-                .perform(actionOnItemAtPosition(0, assertMatriculaEnItem("1111AAA")));
-    }
-
-    //
-    @Entonces("El listado de quads aparece ordenado por tipo")
-    public void listado_quads_ordenado_tipo() {
-        onView(withId(R.id.recyclerview))
-                .perform(actionOnItemAtPosition(0, assertMatriculaEnItem("1111AAA")));
-    }
-
-    //
-    @Entonces("El listado de quads aparece ordenado por precio de forma ascendente")
-    public void listado_quads_ordenado_precio() {
-        onView(withId(R.id.recyclerview))
-                .perform(actionOnItemAtPosition(0, assertMatriculaEnItem("2222BBB")));
-    }
-
-    //
-    @Entonces("El listado de quads está vacío")
-    public void listado_quads_vacio() {
-        withActivity(activity -> {
-            int total = activity.getQuadRespositoryMain().numQuads();
-            assertEquals(0, total);
-        });
-    }
-
-    //
-    @Dado("Existe un quad sin reservas asociadas en el listado")
-    public void existe_quad_sin_reservas() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-        onView(withId(R.id.recyclerview)).check(matches(hasDescendant(withId(R.id.text_view))));
-    }
-
-
-    // Casos de uso de reservas
-    //
-    @Dado("Existe al menos una reserva en el listado")
-    public void existe_al_menos_una_reserva() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-
-        withActivity(activity -> {
-            int total = activity.getReservaRepositoryMain().numReservas();
-            assertTrue("Debe existir al menos una reserva", total > 0);
-        });
-    }
-
-    //
-    @Dado("Existen al menos dos reservas en el sistema")
-    public void existen_al_menos_dos_reservas() {
-        insertarReservasParaOrdenacion();
-
-        onView(withId(R.id.recyclerview))
-                .check(matches(isDisplayed()));
-    }
-
-    //
-    @Dado("Existen reservas previstas, vigentes y caducadas en el sistema")
-    public void existen_reservas_previstas_vigentes_caducadas() {
-        insertarReservasParaFiltros();
-
-        onView(withId(R.id.recyclerview))
-                .check(matches(isDisplayed()));
-    }
-
-    //
     @Cuando("Introduzco nombre de cliente {string} y móvil {string} en reserva")
     public void introduzco_nombre_y_movil_reserva(String nombre, String movil) {
         onView(withId(R.id.nombre_cliente))
@@ -1143,7 +694,6 @@ public class RunStepsDefinition {
                 .perform(clearText(), replaceText(movil), closeSoftKeyboard());
     }
 
-    //
     @Cuando("Introduzco fecha de recogida en {int} días y devolución en {int} días")
     public void introduzco_fechas_dias(int diasRecogida, int diasDevolucion) {
         onView(withId(R.id.fecha_recogida)).perform(click());
@@ -1175,7 +725,6 @@ public class RunStepsDefinition {
         onView(withText("Aceptar")).perform(click());
     }
 
-    //
     @Cuando("Introduzco hora de recogida {string} y hora de devolución {string}")
     public void introduzco_horarios(String horaRecogida, String horaDevolucion) {
         if (Objects.equals(horaRecogida, "true")) {
@@ -1191,14 +740,12 @@ public class RunStepsDefinition {
         }
     }
 
-    //
     @Cuando("Pulso cancelar en el formulario de reserva")
     public void pulso_cancelar_reserva() {
         onView(withId(R.id.button_cancel)).perform(click());
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
     @Cuando("Pulso editar en la primera reserva del listado")
     public void pulso_editar_primera_reserva() {
         onView(withId(R.id.recyclerview))
@@ -1210,7 +757,6 @@ public class RunStepsDefinition {
         onView(withId(R.id.nombre_cliente)).check(matches(isDisplayed()));
     }
 
-    //
     @Cuando("Cambio el nombre a {string} y el móvil a {string} en reserva")
     public void cambio_nombre_y_movil_reserva(String nombre, String movil) {
         onView(withId(R.id.nombre_cliente))
@@ -1219,7 +765,6 @@ public class RunStepsDefinition {
                 .perform(clearText(), replaceText(movil), closeSoftKeyboard());
     }
 
-    //
     @Cuando("Pulso eliminar en la primera reserva del listado de reservas")
     public void pulso_eliminar_primera_reserva() {
         withActivity(activity -> {
@@ -1231,27 +776,22 @@ public class RunStepsDefinition {
                         0, clickChildViewWithId(R.id.btn_delete)));
     }
 
-    //
     @Cuando("Confirmo la eliminación en el diálogo de reserva")
     public void confirmo_eliminacion_reserva() {
         onView(withText("Eliminar")).inRoot(isDialog()).perform(click());
     }
 
-    //
     @Cuando("Cancelo la eliminación en el diálogo de reserva")
     public void cancelo_eliminacion_reserva() {
         onView(withText("Cancelar")).inRoot(isDialog()).perform(click());
     }
 
-    //
     @Cuando("Cancelo la eliminación en el diálogo de reserva desde el listado")
     public void cancelo_eliminacion_reserva_listado() {
         onView(withText("Cancelar")).inRoot(isDialog()).perform(click());
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-
-    //
     @Cuando("Pulso sobre la primera reserva del listado para ver su detalle")
     public void pulso_primera_reserva_detalle() {
         withActivity(activity -> {
@@ -1264,19 +804,16 @@ public class RunStepsDefinition {
         onView(withId(R.id.button_edit)).check(matches(isDisplayed()));
     }
 
-    //
     @Cuando("Pulso el botón eliminar en el detalle de la reserva")
     public void pulso_eliminar_en_detalle_reserva() {
         onView(withId(R.id.button_delete)).check(matches(isDisplayed())).perform(click());
     }
 
-    //
     @Cuando("Pulso el botón editar en el detalle de la reserva")
     public void pulso_editar_en_detalle_reserva() {
         onView(withId(R.id.button_edit)).check(matches(isDisplayed())).perform(click());
     }
 
-    //
     @Cuando("Pulso el botón enviar en el detalle de la reserva")
     public void pulso_enviar_en_detalle_reserva() {
         onView(withId(R.id.btn_enviar))
@@ -1284,17 +821,6 @@ public class RunStepsDefinition {
                 .perform(click());
     }
 
-    //
-    @Entonces("Se lanza la acción de envío de la reserva")
-    public void se_lanza_accion_envio_reserva() {
-
-        intended(anyOf(
-                hasAction(Intent.ACTION_SEND),
-                hasAction(Intent.ACTION_SENDTO)
-        ));
-    }
-
-    //
     @Cuando("Confirmo la reserva en la pantalla de confirmación")
     public void confirmo_reserva_en_confirmacion() {
         onView(withId(R.id.button_confirm)).check(matches(isDisplayed())).perform(click());
@@ -1306,14 +832,146 @@ public class RunStepsDefinition {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
     @Cuando("Cancelo la reserva en la pantalla de confirmación")
     public void cancelo_reserva_en_confirmacion() {
         onView(withId(R.id.button_cancel)).perform(click());
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
+    @Cuando("Selecciono el filtro {string} en el listado de reservas")
+    public void selecciono_filtro_reservas(String filtro) {
+        onView(withId(R.id.filtro_reservas)).perform(click());
+        onView(withText(filtro)).inRoot(isPlatformPopup()).perform(click());
+    }
+
+    @Cuando("Selecciono ordenar reservas por fecha de recogida")
+    public void ordeno_reservas_por_recogida() {
+        onView(withId(R.id.orden_reservas)).perform(click());
+        onView(withText("Por fecha de recogida")).inRoot(isDialog()).perform(click());
+    }
+
+    @Cuando("Selecciono ordenar reservas por fecha de devolución")
+    public void ordeno_reservas_por_devolucion() {
+        onView(withId(R.id.orden_reservas)).perform(click());
+        onView(withText("Por fecha de devolución")).inRoot(isDialog()).perform(click());
+    }
+
+    @Cuando("Selecciono ordenar reservas por nombre de cliente")
+    public void ordeno_reservas_por_nombre() {
+        onView(withId(R.id.orden_reservas)).perform(click());
+        onView(withText("Por nombre de cliente")).inRoot(isDialog()).perform(click());
+    }
+
+    @Cuando("Selecciono ordenar reservas por número de móvil")
+    public void ordeno_reservas_por_telefono() {
+        onView(withId(R.id.orden_reservas)).perform(click());
+        onView(withText("Por teléfono")).inRoot(isDialog()).perform(click());
+    }
+
+    @Entonces("Permanece en la pantalla de detalle del quad")
+    public void sigue_en_detalle_quad() {
+        onView(withId(R.id.detail_matricula)).check(matches(isDisplayed()));
+    }
+
+    @Entonces("El quad con matrícula {string} aparece en el listado de quads")
+    public void quad_aparece_en_listado(String matricula) {
+        onView(withId(R.id.recyclerview))
+                .perform(RecyclerViewActions.scrollTo(hasDescendant(withText(matricula))));
+        onView(withId(R.id.recyclerview))
+                .check(matches(hasDescendant(withText(matricula))));
+    }
+
+    @Entonces("El quad con matrícula {string} no aparece en el listado de quads")
+    public void quad_no_aparece_en_listado(String matricula) {
+        onView(withText(matricula)).check(doesNotExist());
+    }
+
+    @Entonces("Permanece en el formulario de quad")
+    public void sigue_en_formulario_quad() {
+        onView(withId(R.id.matricula)).check(matches(isDisplayed()));
+        onView(withId(R.id.button_save)).check(matches(isDisplayed()));
+    }
+
+    @Entonces("El quad ya no aparece en el listado de quads")
+    public void quad_no_aparece_en_listado() {
+        onView(withText(matriculaQuadSeleccionado)).check(doesNotExist());
+    }
+
+    @Entonces("El quad sigue apareciendo en el listado de quads")
+    public void quad_sigue_en_listado() {
+        onView(withId(R.id.recyclerview))
+                .check(matches(hasDescendant(withText(matriculaQuadSeleccionado))));
+    }
+
+    @Entonces("El quad seleccionado muestra en detalle el tipo {string}, el precio {string} y la descripción {string}")
+    public void quad_muestra_en_detalle(String tipo, String precio, String descripcion) {
+        abrirDetalleQuadSeleccionado();
+
+        if (Objects.equals(tipo, "true")) {
+            onView(withId(R.id.detail_tipo)).check(matches(withText("Tipo: Biplaza")));
+        } else {
+            onView(withId(R.id.detail_tipo)).check(matches(withText("Tipo: Monoplaza")));
+        }
+
+        onView(withId(R.id.detail_precio))
+                .check(matches(withSubstring(precio)));
+
+        onView(withId(R.id.detail_descripcion))
+                .check(matches(withText(descripcion)));
+    }
+
+    @Entonces("El quad seleccionado no muestra en detalle la descripción {string}")
+    public void quad_no_muestra_descripcion_en_detalle(String descripcion) {
+        abrirDetalleQuadSeleccionado();
+
+        onView(withId(R.id.detail_descripcion))
+                .check(matches(Matchers.not(withText(descripcion))));
+    }
+
+    @Entonces("El listado de quads es visible con al menos un elemento")
+    public void listado_quads_visible() {
+        onView(withId(R.id.recyclerview))
+                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.recyclerview))
+                .check(matches(hasDescendant(withId(R.id.text_view))));
+    }
+
+    @Entonces("El listado de quads aparece ordenado por matrícula de forma ascendente")
+    public void listado_quads_ordenado_matricula() {
+        onView(withId(R.id.recyclerview))
+                .perform(actionOnItemAtPosition(0, assertMatriculaEnItem("1111AAA")));
+    }
+
+    @Entonces("El listado de quads aparece ordenado por tipo")
+    public void listado_quads_ordenado_tipo() {
+        onView(withId(R.id.recyclerview))
+                .perform(actionOnItemAtPosition(0, assertMatriculaEnItem("1111AAA")));
+    }
+
+    @Entonces("El listado de quads aparece ordenado por precio de forma ascendente")
+    public void listado_quads_ordenado_precio() {
+        onView(withId(R.id.recyclerview))
+                .perform(actionOnItemAtPosition(0, assertMatriculaEnItem("2222BBB")));
+    }
+
+    @Entonces("El listado de quads está vacío")
+    public void listado_quads_vacio() {
+        withActivity(activity -> {
+            int total = activity.getQuadRespositoryMain().numQuads();
+            assertEquals(0, total);
+        });
+    }
+
+    @Entonces("Se lanza la acción de envío de la reserva")
+    public void se_lanza_accion_envio_reserva() {
+
+        intended(anyOf(
+                hasAction(Intent.ACTION_SEND),
+                hasAction(Intent.ACTION_SENDTO)
+        ));
+    }
+
     @Entonces("La primera reserva del listado tiene nombre {string}")
     public void primera_reserva_tiene_nombre(String nombreEsperado) {
         abrirPrimeraReservaDelListado();
@@ -1322,49 +980,6 @@ public class RunStepsDefinition {
                 .check(matches(withSubstring(nombreEsperado)));
     }
 
-
-    @Cuando("Pulso atrás en la pantalla de confirmación de reserva")
-    public void pulso_atras_en_confirmacion() {
-        pressBack();
-        onView(withId(R.id.recyclerview_quads)).check(matches(isDisplayed()));
-    }
-
-    //
-    @Cuando("Selecciono el filtro {string} en el listado de reservas")
-    public void selecciono_filtro_reservas(String filtro) {
-        onView(withId(R.id.filtro_reservas)).perform(click());
-        onView(withText(filtro)).inRoot(isPlatformPopup()).perform(click());
-    }
-
-    //
-    @Cuando("Selecciono ordenar reservas por fecha de recogida")
-    public void ordeno_reservas_por_recogida() {
-        onView(withId(R.id.orden_reservas)).perform(click());
-        onView(withText("Por fecha de recogida")).inRoot(isDialog()).perform(click());
-    }
-
-    //
-    @Cuando("Selecciono ordenar reservas por fecha de devolución")
-    public void ordeno_reservas_por_devolucion() {
-        onView(withId(R.id.orden_reservas)).perform(click());
-        onView(withText("Por fecha de devolución")).inRoot(isDialog()).perform(click());
-    }
-
-    //
-    @Cuando("Selecciono ordenar reservas por nombre de cliente")
-    public void ordeno_reservas_por_nombre() {
-        onView(withId(R.id.orden_reservas)).perform(click());
-        onView(withText("Por nombre de cliente")).inRoot(isDialog()).perform(click());
-    }
-
-    //
-    @Cuando("Selecciono ordenar reservas por número de móvil")
-    public void ordeno_reservas_por_telefono() {
-        onView(withId(R.id.orden_reservas)).perform(click());
-        onView(withText("Por teléfono")).inRoot(isDialog()).perform(click());
-    }
-
-    //
     @Entonces("Hay una reserva nueva en el listado de reservas")
     public void reserva_de_cliente_aparece() {
         withActivity(activity -> {
@@ -1375,25 +990,12 @@ public class RunStepsDefinition {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
-    //
     @Entonces("Permanece en el formulario de reserva")
     public void sigue_en_formulario_reserva() {
         onView(withId(R.id.nombre_cliente)).check(matches(isDisplayed()));
         onView(withId(R.id.button_continue)).check(matches(isDisplayed()));
     }
 
-    @Entonces("El botón continuar de la reserva está deshabilitado")
-    public void boton_continuar_reserva_deshabilitado() {
-        onView(withId(R.id.button_continue))
-                .check(matches(Matchers.not(isEnabled())));
-    }
-
-    @Entonces("El botón confirmar de la selección de quads está deshabilitado")
-    public void boton_confirmar_quads_deshabilitado() {
-        onView(withId(R.id.button_confirm)).check(matches(isDisplayed()));
-    }
-
-    //
     @Entonces("Vuelvo al listado de reservas sin reserva nueva")
     public void vuelvo_al_listado_sin_reserva_nueva() {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
@@ -1404,7 +1006,6 @@ public class RunStepsDefinition {
         });
     }
 
-    //
     @Entonces("La reserva seleccionada muestra en detalle el nombre {string} y el móvil {string}")
     public void reserva_muestra_en_detalle(String nombre, String movil) {
         abrirDetalleReservaSeleccionada();
@@ -1416,7 +1017,6 @@ public class RunStepsDefinition {
                 .check(matches(withSubstring(movil)));
     }
 
-    //
     @Entonces("La reserva seleccionada no muestra en detalle el nombre {string}")
     public void reserva_no_muestra_nombre_en_detalle(String nombre) {
         abrirDetalleReservaSeleccionada();
@@ -1425,7 +1025,6 @@ public class RunStepsDefinition {
                 .check(matches(Matchers.not(withSubstring(nombre))));
     }
 
-    //
     @Entonces("La reserva ya no aparece en el listado de reservas")
     public void reserva_no_aparece_en_listado() {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
@@ -1436,7 +1035,6 @@ public class RunStepsDefinition {
         });
     }
 
-    //
     @Entonces("La reserva sigue apareciendo en el listado de reservas")
     public void reserva_sigue_en_listado() {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
@@ -1447,7 +1045,6 @@ public class RunStepsDefinition {
         });
     }
 
-    //
     @Entonces("Vuelvo al listado de reservas y la reserva eliminada no aparece")
     public void vuelvo_al_listado_y_reserva_eliminada() {
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
@@ -1458,7 +1055,6 @@ public class RunStepsDefinition {
         });
     }
 
-    //
     @Entonces("Sigo en la pantalla de detalle de la reserva")
     public void sigo_en_detalle_reserva() {
         onView(withId(R.id.button_edit)).check(matches(isDisplayed()));
@@ -1469,12 +1065,6 @@ public class RunStepsDefinition {
         });
     }
 
-    @Entonces("La reserva no muestra el nombre {string} en el listado")
-    public void reserva_no_muestra_nombre(String nombre) {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    //
     @Entonces("El listado de reservas es visible con al menos un elemento")
     public void listado_reservas_visible() {
         onView(withId(R.id.recyclerview))
@@ -1484,11 +1074,6 @@ public class RunStepsDefinition {
             int total = activity.getReservaRepositoryMain().numReservas();
             assertTrue(total > 0);
         });
-    }
-
-    @Entonces("El listado muestra únicamente reservas con fecha de recogida futura")
-    public void listado_solo_previstas() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
     @Entonces("El listado muestra únicamente reservas actualmente en curso o aparece vacío")
@@ -1512,28 +1097,4 @@ public class RunStepsDefinition {
         });
     }
 
-    @Entonces("El listado de reservas aparece ordenado por fecha de recogida de forma ascendente")
-    public void listado_reservas_ordenado_recogida() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("El listado de reservas aparece ordenado por fecha de devolución de forma ascendente")
-    public void listado_reservas_ordenado_devolucion() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("El listado de reservas aparece ordenado alfabéticamente por nombre de cliente")
-    public void listado_reservas_ordenado_nombre() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("El listado de reservas aparece ordenado por número de teléfono de forma ascendente")
-    public void listado_reservas_ordenado_telefono() {
-        onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
-    }
-
-    @Entonces("Vuelvo a la pantalla de selección de quads")
-    public void vuelvo_a_seleccion_quads() {
-        onView(withId(R.id.recyclerview_quads)).check(matches(isDisplayed()));
-    }
 }
