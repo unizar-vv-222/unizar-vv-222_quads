@@ -4,21 +4,21 @@
 # Clases de equivalencia identificadas:
 #
 #   Filtro de estado:
-#     1 – todas las reservas (sin filtro)
-#     2 – solo reservas previstas (fechas futuras)
-#     3 – solo reservas vigentes (en curso)
-#     4 - solo reservas caducadas
+#     1 (válida) – todas las reservas (sin filtro)
+#     2 (válida) – solo reservas previstas (fechas futuras)
+#     3 (válida) – solo reservas vigentes (en curso)
+#     4 (válida) - solo reservas caducadas
 #
 #   Criterio de ordenación:
-#     5 – orden por defecto (nombre de cliente)
-#     6 – ordenado por fecha de recogida
-#     7 – ordenado por fecha de devolución
-#     8 – ordenado por nombre de cliente
-#     9 – ordenado por número de móvil
+#     5 (válida) – orden por defecto (nombre de cliente)
+#     6 (válida) – ordenado por fecha de recogida
+#     7 (válida) – ordenado por fecha de devolución
+#     8 (válida) – ordenado por nombre de cliente
+#     9 (válida) – ordenado por número de teléfono
 #
 #   Estado del listado:
-#     9  (válida) – listado con una o más reservas
-#     10 (válida) – listado vacío tras aplicar filtro
+#     10 (válida) – listado con una o más reservas
+#     11 (válida) – listado vacío tras aplicar filtro
 #
 # Tabla de casos de prueba:
 #   CP | Filtro      | Ordenación         | Reservas | Resultado esperado
@@ -29,7 +29,7 @@
 #   5  | todas       | por fecha recogida | Sí       | listado ordenado por fecha recogida
 #   6  | todas       | por fecha dev.     | Sí       | listado ordenado por fecha devolución
 #   7  | todas       | por nombre         | Sí       | listado ordenado por nombre
-#   8  | todas       | por móvil          | Sí       | listado ordenado por móvil
+#   8  | todas       | por teléfono       | Sí       | listado ordenado por teléfono
 
 Feature: Consultar listado de reservas
   Como propietario de la empresa de alquiler

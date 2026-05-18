@@ -16,10 +16,10 @@
 #
 # Tabla de casos de prueba:
 #   CP | Origen    | Diálogo   | Resultado esperado
-#   1  | listado   | confirmar | reserva eliminada del listado
-#   2  | listado   | cancelar  | reserva permanece en el listado
-#   3  | detalle   | confirmar | reserva eliminada, vuelve al listado
-#   4  | detalle   | cancelar  | reserva permanece, sigue en detalle
+#   1  | Listado   | Confirmar | reserva eliminada del listado
+#   2  | Listado   | Cancelar  | reserva permanece en el listado
+#   3  | Detalle   | Confirmar | reserva eliminada, vuelve al listado
+#   4  | Detalle   | Cancelar  | reserva permanece, sigue en detalle
 
 Feature: Eliminar reserva
   Como propietario de la empresa de alquiler

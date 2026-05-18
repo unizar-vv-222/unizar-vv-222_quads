@@ -46,7 +46,7 @@
 #     26 (válida)  - usuario cancela el formulario desde última pantalla
 #
 # Tabla de casos de prueba:
-#   CP | Nombre     | Móvil       | Fechas                          | Hora recogida | Hora devolución   | Quads | Origen    | Acción    | Resultado esperado
+#   CP | Nombre     | Teléfono    | Fechas                          | Hora recogida | Hora devolución   | Quads | Origen    | Acción    | Resultado esperado
 #   1  | "Client 1" | "612345678" | fechaRecogida < fechaDevolucion | true          | false             | 0     | Listado   | confirmar | reserva creada
 #   2  | "Client 2" | "612345678" | fechaRecogida < fechaDevolucion | false         | true              | 1     | Listado   | confirmar | reserva creada
 #   3  | "Client 3" | "612345678" | fechaRecogida = fechaDevolucion | false         | true              | 1     | Detalle   | confirmar | reserva creada

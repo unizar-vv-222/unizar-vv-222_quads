@@ -4,10 +4,10 @@
 # Clases de equivalencia identificadas:
 #
 #   Criterio de ordenación:
-#     1 – ordenado por defecto (por matrícula)
-#     2 – ordenado por matrícula
-#     3 – ordenado por tipo
-#     4 – ordenado por precio
+#     1 (válida) – ordenado por defecto (por matrícula)
+#     2 (válida) – ordenado por matrícula
+#     3 (válida) – ordenado por tipo
+#     4 (válida) – ordenado por precio
 #
 #   Estado del listado:
 #     5 (válida)   – listado con uno o más quads
