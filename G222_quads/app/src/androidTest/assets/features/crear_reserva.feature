@@ -16,42 +16,43 @@
 #   Fechas de recogida y devolución:
 #     7 (válida)    - fechaRecogida <= fechaDevolucion
 #     8 (válida)    - fechaRecogida >= fecha actual
-#     10 (inválida) - fechaRecogida > fechaDevolucion
-#     11 (inválida) - fechaRecogida < fecha actual
+#     9 (inválida) - fechaRecogida > fechaDevolucion
+#     10 (inválida) - fechaRecogida < fecha actual
 #
 #   Horarios de recogida y devolución:
-#     13 (válida)   - horaRecogida = true
-#     14 (válida)   - horaRecogida = false
-#     15 (válida)   - si fechaRecogida == fechaDevolucion, horaRecogida = false
-#     16 (válida)   - horaDevolucion = true
-#     17 (válida)   - horaDevolucion = false
-#     18 (válida)   - si fechaRecogida == fechaDevolucion, horaDevolucion = true
-#     19 (inválida) - si fechaRecogida == fechaDevolucion, horaRecogida = true
-#     20 (inválida) - si fechaRecogida == fechaDevolucion, horaDevolucion = false
+#     11 (válida)   - horaRecogida = true
+#     12 (válida)   - horaRecogida = false
+#     13 (válida)   - si fechaRecogida == fechaDevolucion, horaRecogida = false
+#     14 (válida)   - horaDevolucion = true
+#     15 (válida)   - horaDevolucion = false
+#     16 (válida)   - si fechaRecogida == fechaDevolucion, horaDevolucion = true
+#     17 (inválida) - si fechaRecogida == fechaDevolucion, horaRecogida = true
+#     18 (inválida) - si fechaRecogida == fechaDevolucion, horaDevolucion = false
 #
 #   Quads seleccionados:
-#     21 (válida)   - ningún quad seleccionado
-#     22 (válida)   - al menos un quad seleccionado
+#     19 (válida)   - ningún quad seleccionado
+#     20 (válida)   - al menos un quad seleccionado
 #
 #   Acción final:
-#     23 (válida)  – usuario confirma la reserva
-#     24 (válida)  – usuario cancela el formulario en primera pantalla
-#     25 (válida)  - usuario cancela el formulario desde última pantalla
+#     21 (válida)  – usuario confirma la reserva
+#     22 (válida)  – usuario cancela el formulario en primera pantalla
+#     23 (válida)  - usuario cancela el formulario desde última pantalla
 #
 # Tabla de casos de prueba:
 #   CP | Nombre     | Teléfono    | Fechas                          | Hora recogida | Hora devolución   | Quads | Acción    | Resultado esperado
 #   1  | "Client 1" | "612345678" | fechaRecogida < fechaDevolucion | true          | false             | 0     | confirmar | reserva creada
 #   2  | "Client 2" | "612345678" | fechaRecogida < fechaDevolucion | false         | true              | 1     | confirmar | reserva creada
 #   3  | "Client 3" | "612345678" | fechaRecogida = fechaDevolucion | false         | true              | 1     | confirmar | reserva creada
-#   4  | ""         | "612345678" | fechaRecogida < fechaDevolucion | true          | false             | -     | –         | permanece en el formulario
-#   5  | "Client 5" | ""          | fechaRecogida < fechaDevolucion | true          | false             | -     | –         | permanece en el formulario
-#   6  | "Client 6" | "612ABC678" | fechaRecogida < fechaDevolucion | true          | false             | -     | –         | permanece en el formulario
-#   7  | "Client 7" | "612345678" | fechaPasadaRec < fechaDevolucion| true          | false             | -     | –         | permanece en el formulario
-#   8  | "Client 8" | "612345678" | fechaRecogida > fechaDevolucion | true          | false             | -     | –         | permanece en el formulario
-#   9  | "Client 9" | "612345678" | fechaRecogida = fechaDevolucion | true          | true              | -     | –         | permanece en el formulario
-#   10 | "Client 10"| "612345678" | fechaRecogida = fechaDevolucion | false         | false             | -     | –         | permanece en el formulario
-#   11 | "Client 11"| "612345678" | -                               | -             | -                 | -     | cancelar_1| vuelve al listado sin nueva reserva
-#   12 | "Client 12"| "612345678" | fechaRecogida < fechaDevolucion | true          | false             | 1     | cancelar  | vuelve al listado sin nueva reserva
+#   4  | "Client 11"| "612345678" | -                               | -             | -                 | -     | cancelar_1| vuelve al listado sin nueva reserva
+#   5  | "Client 12"| "612345678" | fechaRecogida < fechaDevolucion | true          | false             | 1     | cancelar  | vuelve al listado sin nueva reserva
+#   6  | ""         | "612345678" | fechaRecogida < fechaDevolucion | true          | false             | -     | –         | permanece en el formulario
+#   7  | "Client 5" | ""          | fechaRecogida < fechaDevolucion | true          | false             | -     | –         | permanece en el formulario
+#   8  | "Client 6" | "612ABC678" | fechaRecogida < fechaDevolucion | true          | false             | -     | –         | permanece en el formulario
+#   9  | "Client 7" | "612345678" | fechaPasadaRec < fechaDevolucion| true          | false             | -     | –         | permanece en el formulario
+#   10 | "Client 8" | "612345678" | fechaRecogida > fechaDevolucion | true          | false             | -     | –         | permanece en el formulario
+#   11 | "Client 9" | "612345678" | fechaRecogida = fechaDevolucion | true          | true              | -     | –         | permanece en el formulario
+#   12 | "Client 10"| "612345678" | fechaRecogida = fechaDevolucion | false         | false             | -     | –         | permanece en el formulario
+
 
 Feature: Crear reserva
   Como propietario de la empresa de alquiler

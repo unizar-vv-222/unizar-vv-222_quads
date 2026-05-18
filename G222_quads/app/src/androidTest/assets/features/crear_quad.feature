@@ -29,15 +29,15 @@
 #   CP | Matrícula  | Tipo  | Precio | Descripción | Acción     | Resultado esperado            | Anotaciones                     | Clases cubiertas
 #   1  | "1234ABC"  | True  | 50.0   | "Quad X"    | guardar    | quad creado                   | -                               | 1, 2, 5, 7, 9 y 11
 #   2  | "4321CBA"  | False | 50.0   | "Quad X"    | guardar    | quad creado                   | -                               | 1, 2, 6, 7, 9 y 11
-#   3  | ""         | False | 50.0   | "Quad X"    | guardar    | error / botón guardar         | -                               | 3
+#   3  | "1235ABC"  | True  | 50.0   | "Quad X"    | cancelar   | sin cambios en listado        | -                               | 1, 2, 5, 7, 9 y 12
+#   4  | ""         | False | 50.0   | "Quad X"    | guardar    | error / botón guardar         | -                               | 3
 #      |            |       |        |             |            | deshabilitado                 |                                 |
-#   4  | "1234ABC"  | False | 50.0   | "Quad Y"    | guardar    | error matrícula  duplicada    | Ya existe un quad con matrícula | 4
+#   5  | "1234ABC"  | False | 50.0   | "Quad Y"    | guardar    | error matrícula  duplicada    | Ya existe un quad con matrícula | 4
 #      |            |       |        |             |            | / botón guardar deshabilitado | "1234ABC" en el sistema.        |
-#   5  | "5678DEF"  | False | -10.0  | "Quad X"    | guardar    | error / botón guardar         | -                               | 8
+#   6  | "5678DEF"  | False | -10.0  | "Quad X"    | guardar    | error / botón guardar         | -                               | 8
 #      |            |       |        |             |            | deshabilitado                 |                                 |
-#   6  | "5678DEF"  | False | 50.0   | ""          | guardar    | error / botón guardar         | -                               | 10
+#   7  | "5678DEF"  | False | 50.0   | ""          | guardar    | error / botón guardar         | -                               | 10
 #      |            |       |        |             |            | deshabilitado                 |                                 |
-#   7  | "1235ABC"  | True  | 50.0   | "Quad X"    | cancelar   | quad sin cambios en listado   | -                               | 1, 2, 5, 7, 9 y 12
 
 Feature: Crear quad
   Como propietario de la empresa de alquiler
@@ -60,6 +60,14 @@ Feature: Crear quad
     And Introduzco la matrícula "4321CBA", el precio "50.0", el tipo "false" y la descripcion "Quad X"
     And Pulso guardar en el formulario de quad
     Then El quad con matrícula "4321CBA" aparece en el listado de quads
+
+  # cancelar la edición
+  Scenario: Cancelar la creación de un quad
+    When Pulso el botón de nuevo quad
+    And Introduzco la matrícula "1235ABC", el precio "50.0", el tipo "true" y la descripcion "Quad X"
+    And Pulso cancelar en el formulario de quad
+    Then El quad con matrícula "1235ABC" no aparece en el listado de quads
+
 
   # matrícula con formato incorrecto
   Scenario: Intentar crear un quad con matrícula con formato incorrecto
@@ -90,9 +98,3 @@ Feature: Crear quad
     And Pulso guardar en el formulario de quad
     Then Permanece en el formulario de quad
 
-  # cancelar la edición
-  Scenario: Cancelar la creación de un quad
-    When Pulso el botón de nuevo quad
-    And Introduzco la matrícula "1235ABC", el precio "50.0", el tipo "true" y la descripcion "Quad X"
-    And Pulso cancelar en el formulario de quad
-    Then El quad con matrícula "1235ABC" no aparece en el listado de quads
