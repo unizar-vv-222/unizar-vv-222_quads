@@ -195,7 +195,9 @@ public class RunStepsDefinition {
                 matriculaQuadSeleccionado = matriculaView.getText().toString();
 
                 View deleteButton = view.findViewById(R.id.btn_delete);
-                deleteButton.performClick();
+                if (deleteButton != null) {
+                    deleteButton.performClick();
+                }
             }
         };
     }
@@ -218,7 +220,9 @@ public class RunStepsDefinition {
                 matriculaQuadSeleccionado = matriculaView.getText().toString();
 
                 View editButton = view.findViewById(R.id.btn_edit);
-                editButton.performClick();
+                if (editButton != null) {
+                    editButton.performClick();
+                }
             }
         };
     }
@@ -278,7 +282,9 @@ public class RunStepsDefinition {
                 textoReservaSeleccionada = reservaView.getText().toString();
 
                 View editButton = view.findViewById(R.id.btn_edit);
-                editButton.performClick();
+                if (editButton != null) {
+                    editButton.performClick();
+                }
             }
         };
     }
@@ -672,19 +678,19 @@ public class RunStepsDefinition {
 
     @Cuando("Selecciono ordenar quads por matrícula")
     public void ordeno_quads_por_matricula() {
-        onView(withId(R.id.orden_quads)).perform(click());
+        onView(withId(R.id.orden_quads)).perform(forceClick());
         onView(withText("Por matrícula")).inRoot(isDialog()).perform(click());
     }
 
     @Cuando("Selecciono ordenar quads por tipo")
     public void ordeno_quads_por_tipo() {
-        onView(withId(R.id.orden_quads)).perform(click());
+        onView(withId(R.id.orden_quads)).perform(forceClick());
         onView(withText("Por tipo")).inRoot(isDialog()).perform(click());
     }
 
     @Cuando("Selecciono ordenar quads por precio")
     public void ordeno_quads_por_precio() {
-        onView(withId(R.id.orden_quads)).perform(click());
+        onView(withId(R.id.orden_quads)).perform(forceClick());
         onView(withText("Por precio")).inRoot(isDialog()).perform(click());
     }
 
