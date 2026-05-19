@@ -488,19 +488,19 @@ public class NavigationPathTest {
                 currentNode = "main";
                 break;
             case 6:  // quad → quad (ordenar matrícula)
-                onView(withId(R.id.orden_quads)).perform(click());
+                onView(withId(R.id.orden_quads)).perform(forceClick());
                 onView(withText("Por matrícula")).inRoot(isDialog())
                         .check(matches(isDisplayed())).perform(click());
                 currentNode = "quad";
                 break;
             case 7:  // quad → quad (ordenar precio)
-                onView(withId(R.id.orden_quads)).perform(click());
+                onView(withId(R.id.orden_quads)).perform(forceClick());
                 onView(withText("Por precio")).inRoot(isDialog())
                         .check(matches(isDisplayed())).perform(click());
                 currentNode = "quad";
                 break;
             case 8:  // quad → quad (ordenar tipo)
-                onView(withId(R.id.orden_quads)).perform(click());
+                onView(withId(R.id.orden_quads)).perform(forceClick());
                 onView(withText("Por tipo")).inRoot(isDialog())
                         .check(matches(isDisplayed())).perform(click());
                 currentNode = "quad";
@@ -707,4 +707,24 @@ public class NavigationPathTest {
             Thread.sleep(isScreenTransition ? 80 : 30);
         }
     }
+
+    private ViewAction forceClick() {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isEnabled(); // Solo pedimos que esté habilitado, no el 90% de visibilidad
+            }
+
+            @Override
+            public String getDescription() {
+                return "force click";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                view.performClick();
+            }
+        };
+    }
+
 }

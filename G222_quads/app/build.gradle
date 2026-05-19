@@ -14,10 +14,10 @@ android {
         versionName "1.0"
 
         // Para ejectar pruebas Cucumber
-        testInstrumentationRunner "io.cucumber.android.runner.CucumberAndroidJUnitRunner"
+        //testInstrumentationRunner "io.cucumber.android.runner.CucumberAndroidJUnitRunner"
 
         // Para ejecutar pruebas Junit o Expresso
-        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
